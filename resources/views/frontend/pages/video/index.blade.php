@@ -1,0 +1,157 @@
+@php
+    $meta = [
+        'seo' => [
+            'title' => 'Videos — TechPark English',
+            'image' => asset('seo.jpg'),
+        ],
+    ];
+@endphp
+@extends('frontend.layouts.layout', $meta)
+
+@push('styles')
+<style>
+/* ===== Hero ===== */
+.video-hero { background: linear-gradient(135deg, #001830 0%, #002147 60%, #003b7a 100%); padding: 60px 0 50px; position: relative; overflow: hidden; }
+.video-hero::before { content:''; position:absolute; top:-80px; right:-60px; width:350px; height:350px; background:rgba(250,176,5,0.06); border-radius:50%; }
+.video-hero::after  { content:''; position:absolute; bottom:-120px; left:-80px; width:400px; height:400px; background:rgba(255,255,255,0.02); border-radius:50%; }
+
+/* ===== Video Card ===== */
+.video-card {
+    background: #fff; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,33,71,0.08); border: 1px solid #eef2f8;
+    transition: all 0.35s ease; cursor: pointer; height: 100%;
+}
+.video-card:hover { transform: translateY(-6px); box-shadow: 0 16px 45px rgba(0,33,71,0.13); border-color: transparent; }
+.video-thumb-wrap { position: relative; overflow: hidden; }
+.video-thumb-wrap img { width: 100%; height: 210px; object-fit: cover; display: block; transition: transform 0.45s; }
+.video-card:hover .video-thumb-wrap img { transform: scale(1.05); }
+.video-play-btn {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 58px; height: 58px; background: rgba(250,176,5,0.92); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 10px rgba(250,176,5,0.2); transition: all 0.3s;
+}
+.video-card:hover .video-play-btn { background: #fab005; box-shadow: 0 0 0 14px rgba(250,176,5,0.25); transform: translate(-50%, -50%) scale(1.1); }
+.video-play-btn i { color: #fff; font-size: 1.3rem; margin-left: 4px; }
+.video-duration { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.72); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+.video-body { padding: 16px 18px 18px; }
+.video-title { font-weight: 700; color: #002147; font-size: 0.92rem; line-height: 1.45; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.video-desc { font-size: 0.78rem; color: #888; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ===== Lightbox Modal ===== */
+.video-modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+    z-index: 9999; align-items: center; justify-content: center;
+}
+.video-modal-overlay.open { display: flex; }
+.video-modal-inner { position: relative; width: 90vw; max-width: 900px; }
+.video-modal-inner iframe { width: 100%; aspect-ratio: 16/9; border-radius: 12px; border: none; display: block; }
+.video-modal-close {
+    position: absolute; top: -48px; right: 0; background: none; border: none;
+    color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; opacity: 0.8; transition: all 0.2s;
+}
+.video-modal-close:hover { opacity: 1; transform: rotate(90deg); }
+
+/* ===== Empty state ===== */
+.video-empty { text-align: center; padding: 80px 20px; }
+.video-empty i { font-size: 4rem; color: #dde3ea; margin-bottom: 20px; display: block; }
+
+/* ===== Pagination ===== */
+.video-paginate { margin-top: 50px; }
+.video-paginate .pagination .page-link { border-radius: 8px; margin: 0 3px; border: 1px solid #e2e8f0; color: #002147; font-weight: 600; padding: 8px 14px; transition: all 0.2s; }
+.video-paginate .pagination .page-link:hover { background: #002147; color: #fff; border-color: #002147; }
+.video-paginate .pagination .page-item.active .page-link { background: linear-gradient(135deg, #002147, #003b7a); border-color: transparent; color: #fff; }
+</style>
+@endpush
+
+@section('contents')
+
+{{-- Hero --}}
+<section class="video-hero">
+    <div class="container position-relative" style="z-index:1;">
+        <div class="text-center">
+            <span style="background:rgba(250,176,5,0.18); border:1px solid rgba(250,176,5,0.5); color:#fab005; font-size:0.75rem; font-weight:700; padding:6px 18px; border-radius:50px; display:inline-block; margin-bottom:14px; letter-spacing:0.8px; text-transform:uppercase;"><i class="fa-solid fa-video me-1"></i> আমাদের ভিডিও</span>
+            <h1 class="fw-bold text-white mb-3" style="font-size:2.2rem;">ভিডিও গ্যালারি</h1>
+            <p style="color:rgba(255,255,255,0.65); font-size:0.95rem; max-width:520px; margin:0 auto;">TechPark English-এর ক্লাস, ইভেন্ট ও শিক্ষার্থীদের অভিজ্ঞতার ভিডিও।</p>
+        </div>
+    </div>
+</section>
+
+{{-- Videos Grid --}}
+<section class="py-5" style="background:#f4f7fb;">
+    <div class="container py-3">
+        @if($videos->count() > 0)
+            <div class="row g-4">
+                @foreach($videos as $video)
+                @php
+                    // Extract YouTube embed ID from any URL format
+                    $yt_id = null;
+                    if (preg_match('/(?:youtube\.com\/(?:embed\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video->youtube_url ?? '', $m)) {
+                        $yt_id = $m[1];
+                    }
+                    $embed_url = $yt_id ? "https://www.youtube.com/embed/{$yt_id}?autoplay=1&rel=0" : '';
+                    $thumb     = $video->thumbnail
+                        ? assetHelper($video->thumbnail)
+                        : ($yt_id ? "https://img.youtube.com/vi/{$yt_id}/maxresdefault.jpg" : 'https://dummyimage.com/600x340/002147/fab005&text=Video');
+                @endphp
+                <div class="col-lg-4 col-md-6">
+                    <div class="video-card" onclick="openVideoModal('{{ addslashes($embed_url) }}', '{{ addslashes($video->title) }}')">
+                        <div class="video-thumb-wrap">
+                            <img src="{{ $thumb }}" alt="{{ $video->title }}" loading="lazy">
+                            <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                        <div class="video-body">
+                            <div class="video-title">{{ $video->title }}</div>
+                            @if($video->description)
+                                <div class="video-desc">{{ $video->description }}</div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <div class="video-paginate d-flex justify-content-center">
+                {{ $videos->links() }}
+            </div>
+        @else
+            <div class="video-empty">
+                <i class="fa-solid fa-video-slash"></i>
+                <h4 class="fw-bold mb-2" style="color:#002147;">কোনো ভিডিও পাওয়া যায়নি</h4>
+                <p class="text-muted">শীঘ্রই ভিডিও যুক্ত করা হবে।</p>
+            </div>
+        @endif
+    </div>
+</section>
+
+{{-- Video Modal --}}
+<div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
+    <div class="video-modal-inner" id="videoModalInner">
+        <button class="video-modal-close" onclick="closeVideoModalBtn()"><i class="fa-solid fa-xmark"></i></button>
+        <iframe id="videoIframe" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </div>
+</div>
+
+@endsection
+
+@push('scripts')
+<script>
+function openVideoModal(embedUrl, title) {
+    if (!embedUrl) return;
+    document.getElementById('videoIframe').src = embedUrl;
+    document.getElementById('videoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeVideoModalBtn() {
+    document.getElementById('videoIframe').src = '';
+    document.getElementById('videoModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+function closeVideoModal(e) {
+    if (e.target === document.getElementById('videoModal')) closeVideoModalBtn();
+}
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeVideoModalBtn();
+});
+</script>
+@endpush

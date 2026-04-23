@@ -1,0 +1,119 @@
+{
+  "_pinia-678d64ec.js": {
+    "assets": [
+      "assets/fa-brands-400-c411f119.woff2",
+      "assets/fa-brands-400-bc844b5b.ttf",
+      "assets/fa-regular-400-c732f106.woff2",
+      "assets/fa-regular-400-64f9fb62.ttf",
+      "assets/fa-solid-900-1f0189e0.woff2",
+      "assets/fa-solid-900-31f099c1.ttf",
+      "assets/fa-v4compatibility-2aca24b3.woff2",
+      "assets/fa-v4compatibility-a6274a12.ttf"
+    ],
+    "css": [
+      "assets/pinia-47e0bdbe.css"
+    ],
+    "file": "assets/pinia-678d64ec.js"
+  },
+  "_routes-27c2691d.js": {
+    "css": [
+      "assets/routes-61d4b174.css"
+    ],
+    "file": "assets/routes-27c2691d.js",
+    "imports": [
+      "_pinia-678d64ec.js"
+    ]
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
+    "file": "assets/fa-brands-400-bc844b5b.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2": {
+    "file": "assets/fa-brands-400-c411f119.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf": {
+    "file": "assets/fa-regular-400-64f9fb62.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400-c732f106.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf": {
+    "file": "assets/fa-solid-900-31f099c1.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
+    "file": "assets/fa-solid-900-1f0189e0.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf": {
+    "file": "assets/fa-v4compatibility-a6274a12.ttf",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.ttf"
+  },
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2": {
+    "file": "assets/fa-v4compatibility-2aca24b3.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-v4compatibility.woff2"
+  },
+  "pinia.css": {
+    "file": "assets/pinia-47e0bdbe.css",
+    "src": "pinia.css"
+  },
+  "resources/js/backend/Views/Admin/app.css": {
+    "file": "assets/app-f723577e.css",
+    "src": "resources/js/backend/Views/Admin/app.css"
+  },
+  "resources/js/backend/Views/Admin/app.js": {
+    "css": [
+      "assets/app-f723577e.css"
+    ],
+    "file": "assets/app-1341204e.js",
+    "imports": [
+      "_routes-27c2691d.js",
+      "_pinia-678d64ec.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/backend/Views/Admin/app.js"
+  },
+  "resources/js/backend/Views/SuperAdmin/app.css": {
+    "file": "assets/app-634f4fba.css",
+    "src": "resources/js/backend/Views/SuperAdmin/app.css"
+  },
+  "resources/js/backend/Views/SuperAdmin/app.js": {
+    "css": [
+      "assets/app-634f4fba.css"
+    ],
+    "file": "assets/app-fe103ee7.js",
+    "imports": [
+      "_routes-27c2691d.js",
+      "_pinia-678d64ec.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/backend/Views/SuperAdmin/app.js"
+  },
+  "resources/js/frontend/app.css": {
+    "file": "assets/app-e956ca09.css",
+    "src": "resources/js/frontend/app.css"
+  },
+  "resources/js/frontend/app.js": {
+    "css": [
+      "assets/app-e956ca09.css"
+    ],
+    "file": "assets/app-13b9d63e.js",
+    "imports": [
+      "_pinia-678d64ec.js"
+    ],
+    "isEntry": true,
+    "src": "resources/js/frontend/app.js"
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-041e359a.css",
+    "isEntry": true,
+    "src": "resources/sass/app.scss"
+  },
+  "routes.css": {
+    "file": "assets/routes-61d4b174.css",
+    "src": "routes.css"
+  }
+}
