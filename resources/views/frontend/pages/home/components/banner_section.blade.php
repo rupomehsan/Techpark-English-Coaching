@@ -1,4 +1,4 @@
-<section class="banner_part" style="position: relative; overflow: visible;">
+<section class="banner_part" style="position: relative; overflow: hidden;">
     <div class="owl-carousel" style="position: relative;">
             @foreach ($banners as $banner)
                 <div class="py-3">

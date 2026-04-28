@@ -13,6 +13,11 @@ use App\Modules\Management\WebsiteManagement\OurTrainer\Models\Model as OurTrain
 use App\Modules\Management\CourseManagement\CourseBatch\Models\Model as CourseBatches;
 use App\Modules\Management\WebsiteManagement\SuccssStories\Models\Model as SuccessStory;
 use App\Modules\Management\WebsiteManagement\OurSpeciality\Models\Model as OurSpeciality;
+use App\Modules\Management\WebsiteManagement\AtAGlance\Models\Model as AtAGlance;
+use App\Modules\Management\WebsiteManagement\WhyUs\Models\Model as WhyUs;
+use App\Modules\Management\WebsiteManagement\OurService\Models\Model as OurService;
+use App\Modules\Management\VideoManagement\OurVideo\Models\Model as OurVideo;
+use App\Modules\Management\CourseManagement\CourseInstructors\Models\Model as CourseInstructor;
 
 
 class Home
@@ -32,11 +37,38 @@ class Home
         $banners = Banner::where('is_featured', 1)->where('status', 1)->orderBy('id', 'desc')->get();
         $subBanners = SubBanner::where('status', 1)->orderBy('id', 'desc')->get();
         $our_speciality = OurSpeciality::where('status', 1)->orderBy('id', 'desc')->get();
-        $success_stories = SuccessStory::where('status', 1)->limit(6)->orderBy('id', 'desc')->get();
+        $success_stories = SuccessStory::active()->limit(6)->orderBy('id', 'desc')->get();
         $our_trainers = OurTrainer::where('status', 1)->orderBy('id', 'desc')->first();
         $seminars = Seminars::where('date_time', '>', Carbon::today())->where('status', 'active')->get();
         $brands = Brand::where('status', 1)->get();
         $courseBatch = CourseBatches::active()->orderBy('id', 'DESC')->get();
+
+        // Task 1: At a Glance stats
+        $at_a_glances = AtAGlance::active()->orderBy('id', 'asc')->get();
+
+        // Task 2: Why Us (singleton record)
+        $why_us = WhyUs::active()->first();
+
+        // Task 3: Our Services
+        $our_services = OurService::active()->orderBy('id', 'asc')->get();
+
+        // Task 4: Our Videos (latest 4)
+        $our_videos = OurVideo::active()->orderBy('id', 'desc')->take(4)->get();
+
+        // Trainers from CourseInstructors
+        $course_instructors = CourseInstructor::active()->orderBy('id', 'asc')->get();
+
+        // Task 5: Featured seminar — today's first, else next upcoming
+        $featured_seminar = Seminars::active()
+            ->whereDate('date_time', Carbon::today())
+            ->orderBy('date_time', 'asc')
+            ->first();
+        if (!$featured_seminar) {
+            $featured_seminar = Seminars::active()
+                ->where('date_time', '>', Carbon::now())
+                ->orderBy('date_time', 'asc')
+                ->first();
+        }
 
         $courses = $course['courses'];
         $course_types = $course['course_types'];
@@ -47,11 +79,17 @@ class Home
             'our_speciality' => $our_speciality,
             'success_stories' => $success_stories,
             'our_trainers' => $our_trainers,
-            "seminars" => $seminars,
+            'seminars' => $seminars,
+            'featured_seminar' => $featured_seminar,
             'brands' => $brands,
             'courseBatches' => $courseBatch,
             'courses' => $courses,
             'course_types' => $course_types,
+            'at_a_glances' => $at_a_glances,
+            'why_us' => $why_us,
+            'our_services' => $our_services,
+            'our_videos' => $our_videos,
+            'course_instructors' => $course_instructors,
         ];
 
 

@@ -155,29 +155,28 @@
     {{-- ===== Stats Strip ===== --}}
     <section class="abt-stats">
         <div class="container">
+            @php
+                $stat_list = (isset($at_a_glances) && $at_a_glances->count() > 0) ? $at_a_glances : collect([
+                    (object)['number' => '15,000+', 'title' => 'মোট শিক্ষার্থী'],
+                    (object)['number' => '700+',    'title' => 'রেসিডেন্সিয়াল ব্যাচ'],
+                    (object)['number' => '95%',     'title' => 'সাফল্যের হার'],
+                    (object)['number' => '20+',     'title' => 'দক্ষ প্রশিক্ষক'],
+                ]);
+                $stat_cols = $stat_list->count() <= 4 ? 'col-md-3 col-6' : 'col-md-2 col-4';
+            @endphp
             <div class="row g-3 justify-content-center">
-                <div class="col-md-3 col-6 abt-stat-item">
-                    <div class="abt-stat-num">15,000+</div>
-                    <div class="abt-stat-lbl">মোট শিক্ষার্থী</div>
+                @foreach($stat_list as $stat)
+                <div class="{{ $stat_cols }} abt-stat-item">
+                    <div class="abt-stat-num">{{ $stat->number }}</div>
+                    <div class="abt-stat-lbl">{{ $stat->title }}</div>
                 </div>
-                <div class="col-md-3 col-6 abt-stat-item">
-                    <div class="abt-stat-num">700+</div>
-                    <div class="abt-stat-lbl">রেসিডেন্সিয়াল ব্যাচ</div>
-                </div>
-                <div class="col-md-3 col-6 abt-stat-item">
-                    <div class="abt-stat-num">95%</div>
-                    <div class="abt-stat-lbl">সাফল্যের হার</div>
-                </div>
-                <div class="col-md-3 col-6 abt-stat-item">
-                    <div class="abt-stat-num">20+</div>
-                    <div class="abt-stat-lbl">দক্ষ প্রশিক্ষক</div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
 
     {{-- ===== Motto / Quote Section ===== --}}
-    @if(isset($our_moto))
+    {{-- @if(isset($our_moto))
     <section class="abt-motto py-5">
         <div class="container py-4">
             <div class="motto-card">
@@ -187,7 +186,7 @@
             </div>
         </div>
     </section>
-    @endif
+    @endif --}}
 
     {{-- ===== Mission Section ===== --}}
     @if(isset($our_mission))
@@ -207,12 +206,7 @@
                     <h2 class="abt-title mb-0">{{ $our_mission->title }}</h2>
                     <div class="abt-divider"></div>
                     <div class="abt-body mb-4">{!! $our_mission->description !!}</div>
-                    <ul class="check-list">
-                        <li><i class="fa-solid fa-circle-check"></i> সঠিক পরিবেশে ইংরেজি শেখার সুযোগ</li>
-                        <li><i class="fa-solid fa-circle-check"></i> বিশেষজ্ঞ প্রশিক্ষকদের তত্ত্বাবধান</li>
-                        <li><i class="fa-solid fa-circle-check"></i> ব্যক্তিগত লক্ষ্য নির্ধারণ ও অগ্রগতি পর্যবেক্ষণ</li>
-                        <li><i class="fa-solid fa-circle-check"></i> আজীবন শেখার সুযোগ ও কমিউনিটি সাপোর্ট</li>
-                    </ul>
+
                 </div>
             </div>
         </div>
@@ -234,11 +228,7 @@
                     <h2 class="abt-title abt-title-white mb-0">{{ $our_vision->title }}</h2>
                     <div class="abt-divider" style="background:linear-gradient(90deg,#fab005,rgba(255,255,255,0.2));"></div>
                     <div class="abt-body abt-body-white mb-4">{!! $our_vision->description !!}</div>
-                    <ul class="check-list">
-                        <li style="color:rgba(255,255,255,0.75);"><i class="fa-solid fa-circle-check" style="color:#fab005;"></i> বাংলাদেশের সেরা ইংরেজি শিক্ষা প্রতিষ্ঠান হওয়া</li>
-                        <li style="color:rgba(255,255,255,0.75);"><i class="fa-solid fa-circle-check" style="color:#fab005;"></i> প্রতিটি শিক্ষার্থীর ইংরেজি দক্ষতা নিশ্চিত করা</li>
-                        <li style="color:rgba(255,255,255,0.75);"><i class="fa-solid fa-circle-check" style="color:#fab005;"></i> সারা দেশে ইংরেজি শিক্ষার সহজলভ্যতা বাড়ানো</li>
-                    </ul>
+                 
                 </div>
             </div>
         </div>
@@ -262,7 +252,7 @@
                     <img id="mainTeamImage" src="{{ assetHelper(optional($team_top_image)->image) }}" alt="{{ $team_top_image->title ?? 'Team' }}" loading="lazy">
                 </div>
                 @if(isset($team_related_image) && $team_related_image && $team_related_image->count() > 0)
-                <div class="carousel-thumbnails owl-carousel">
+                <div class="carousel-thumbnails owl-carousel no-global-owl">
                     @foreach($team_related_image as $img)
                         <div class="carousel-thumb-item">
                             <img src="{{ assetHelper(optional($img)->image) }}" alt="{{ $img->title ?? 'Team' }}" loading="lazy" onclick="changeMainImage(this)">

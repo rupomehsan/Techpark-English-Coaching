@@ -96,7 +96,7 @@ textarea.cf-input { resize: vertical; min-height: 130px; }
 {{-- ===== Contact Info Cards ===== --}}
 <section class="py-5" style="background:#f4f7fb;">
     <div class="container py-2">
-        <div class="row g-4 mb-5">
+        <div class="row g-4 mb-5 justify-content-center">
 
             {{-- Phone --}}
             <div class="col-lg-3 col-md-6">

@@ -1,3 +1,19 @@
+/* ===== Global overflow fix =====
+   body has overflow-x:hidden in style.css already.
+   html itself is the scrollable root — lock it. */
+html {
+    overflow-x: hidden;
+}
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+/* Only images need the 100% guard */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 .swal2-popup.swal2-toast.swal2-show {
     z-index: 999999;
 }
@@ -73,13 +89,13 @@
     .course_info_div
     .course_info_thubnail_and_icon {
     position: relative;
-    width: 411px;
-    /* height: 272px; */
-    /* height: 100%; */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     text-align: center;
-    /* margin: 20px; */
-    margin: 20px 0px;
+    margin: 0;
     border-radius: 16px 16px 0px 0px;
+    overflow: hidden;
 }
 .my_courses_area
     .my_contunued_courses
@@ -394,7 +410,8 @@ li {
 .owl-carousel .owl-item img {
     display: block;
     width: 100%;
-    height: 600px;
+    height: auto;
+    max-height: 560px;
     object-fit: cover;
 }
 .course_item_content img {
@@ -406,8 +423,9 @@ li {
     .owl-carousel .owl-item img {
         display: block;
         width: 100%;
-        height: 100%;
-        object-fit: contain;
+        height: auto;
+        max-height: 280px;
+        object-fit: cover;
     }
 }
 .course_card_area img {
@@ -431,7 +449,7 @@ li {
 
 .owl-carousel {
     position: relative;
-    padding: 20px;
+    padding: 0;
 }
 .owl-carousel .c_card {
     background: #fff;
@@ -441,7 +459,7 @@ li {
 }
 .owl-carousel .c_card .card_img_area {
     width: 100%;
-    height: 400px;
+    height: 280px;
     overflow: hidden;
     border-radius: 10px 10px 0 0;
 }
@@ -461,36 +479,27 @@ li {
     pointer-events: none;
 }
 .owl-nav button {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.55);
     border: none;
-    font-size: 40px;
+    font-size: 22px;
     color: #fff;
     cursor: pointer;
-    padding: 20px;
+    padding: 10px 14px;
     border-radius: 50%;
     pointer-events: auto;
-    transition:
-        background 0.3s,
-        transform 0.2s;
+    transition: background 0.3s, transform 0.2s;
     z-index: 10;
     position: relative;
 }
 .owl-nav .owl-prev::before,
 .owl-nav .owl-next::before {
-    content: "";
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    right: -29px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.2);
-    z-index: -1;
+    display: none;
 }
 .owl-nav .owl-prev {
-    left: 60px;
+    left: 8px;
 }
 .owl-nav .owl-next {
-    right: 60px;
+    right: 8px;
 }
 .owl-nav button.owl-prev,
 .owl-nav button.owl-next {
@@ -500,11 +509,70 @@ li {
 }
 .owl-nav .owl-next span,
 .owl-nav .owl-prev span {
-    font-size: 20px;
+    font-size: 18px;
     color: white;
+}
+@media (max-width: 768px) {
+    .owl-nav .owl-prev { left: 4px; }
+    .owl-nav .owl-next { right: 4px; }
+    .owl-nav button { padding: 8px 10px; font-size: 16px; }
 }
 .free_seminar_area_sub_title {
     border: 0px solid red;
     padding-top: 16px;
     padding-bottom: 40px;
+}
+
+/* ===== Centre-align card grids — fix right-side gaps ===== */
+
+/* Home page course cards: grid on desktop was left-aligned */
+.our_course_area .our_course_area_content .our_course_all_card {
+    justify-content: center !important;
+}
+
+/* Tablet (768-991px): flex-wrap with no justify-content defaulted to flex-start */
+@media (min-width: 768px) and (max-width: 991.9px) {
+    .our_course_area .our_course_area_content .our_course_all_card {
+        justify-content: center !important;
+    }
+    /* Give cards explicit widths so they fill rows evenly (gap: 22px → half = 11px) */
+    .our_course_area .our_course_area_content .our_course_all_card .c_card {
+        width: calc(50% - 11px) !important;
+        max-width: 400px !important;
+        min-width: 0 !important;
+    }
+}
+
+/* Trainers section desktop: also left-aligned with no justify-content */
+@media (min-width: 992px) {
+    .trainers_area .trainers_description .trainers_details {
+        justify-content: center !important;
+    }
+}
+
+/* ===== Mobile overflow guards for fixed-width elements ===== */
+@media (max-width: 575px) {
+    /* Service cards — were 410px fixed, overflow on small phones */
+    .our_it_services_area .my_it_service_area_content .service_area .service,
+    .my_it_service_area .my_it_service_area_content .service_area .service {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Trainer detail card */
+    .trainers_area .trainers_description .trainers_details .trainer_details {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* Course card grid — ensure no card exceeds viewport */
+    .our_course_area .our_course_area_content .our_course_all_card .c_card {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Containers that shouldn't add extra horizontal space */
+    .container { padding-left: 16px !important; padding-right: 16px !important; }
 }

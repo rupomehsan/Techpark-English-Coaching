@@ -15,7 +15,39 @@
 .video-hero::before { content:''; position:absolute; top:-80px; right:-60px; width:350px; height:350px; background:rgba(250,176,5,0.06); border-radius:50%; }
 .video-hero::after  { content:''; position:absolute; bottom:-120px; left:-80px; width:400px; height:400px; background:rgba(255,255,255,0.02); border-radius:50%; }
 
+/* ===== Category Tabs ===== */
+.video-tabs-wrap {
+    background: #fff; border-bottom: 2px solid #eef2f8;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,33,71,0.06);
+}
+.video-tabs {
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none; list-style: none;
+    margin: 0; padding: 0;
+}
+.video-tabs::-webkit-scrollbar { display: none; }
+.video-tab-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 16px 22px; font-size: 0.88rem; font-weight: 700;
+    color: #6c757d; white-space: nowrap; cursor: pointer;
+    border: none; background: none; border-bottom: 3px solid transparent;
+    transition: all 0.25s; position: relative; bottom: -2px;
+}
+.video-tab-btn:hover { color: #002147; }
+.video-tab-btn.active { color: #002147; border-bottom-color: #fab005; }
+.video-tab-count {
+    background: #f0f4ff; color: #003d82;
+    font-size: 0.7rem; font-weight: 800; border-radius: 50px;
+    padding: 2px 8px; min-width: 22px; text-align: center;
+}
+.video-tab-btn.active .video-tab-count { background: #fab005; color: #fff; }
+
 /* ===== Video Card ===== */
+.video-section { background: #f4f7fb; padding: 48px 0 72px; }
+.video-tab-panel { display: none; }
+.video-tab-panel.active { display: block; }
+
 .video-card {
     background: #fff; border-radius: 16px; overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,33,71,0.08); border: 1px solid #eef2f8;
@@ -33,7 +65,6 @@
 }
 .video-card:hover .video-play-btn { background: #fab005; box-shadow: 0 0 0 14px rgba(250,176,5,0.25); transform: translate(-50%, -50%) scale(1.1); }
 .video-play-btn i { color: #fff; font-size: 1.3rem; margin-left: 4px; }
-.video-duration { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.72); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
 .video-body { padding: 16px 18px 18px; }
 .video-title { font-weight: 700; color: #002147; font-size: 0.92rem; line-height: 1.45; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .video-desc { font-size: 0.78rem; color: #888; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -53,14 +84,12 @@
 .video-modal-close:hover { opacity: 1; transform: rotate(90deg); }
 
 /* ===== Empty state ===== */
-.video-empty { text-align: center; padding: 80px 20px; }
-.video-empty i { font-size: 4rem; color: #dde3ea; margin-bottom: 20px; display: block; }
+.video-empty { text-align: center; padding: 60px 20px; }
+.video-empty i { font-size: 3.5rem; color: #dde3ea; margin-bottom: 16px; display: block; }
 
-/* ===== Pagination ===== */
-.video-paginate { margin-top: 50px; }
-.video-paginate .pagination .page-link { border-radius: 8px; margin: 0 3px; border: 1px solid #e2e8f0; color: #002147; font-weight: 600; padding: 8px 14px; transition: all 0.2s; }
-.video-paginate .pagination .page-link:hover { background: #002147; color: #fff; border-color: #002147; }
-.video-paginate .pagination .page-item.active .page-link { background: linear-gradient(135deg, #002147, #003b7a); border-color: transparent; color: #fff; }
+@media(max-width:576px) {
+    .video-tab-btn { padding: 14px 16px; font-size: 0.82rem; }
+}
 </style>
 @endpush
 
@@ -77,27 +106,47 @@
     </div>
 </section>
 
-{{-- Videos Grid --}}
-<section class="py-5" style="background:#f4f7fb;">
-    <div class="container py-3">
-        @if($videos->count() > 0)
+{{-- Category Tabs --}}
+<div class="video-tabs-wrap">
+    <div class="container">
+        <ul class="video-tabs">
+            <li>
+                <button class="video-tab-btn active" data-target="tab-all">
+                    <i class="fa-solid fa-border-all"></i> সব ভিডিও
+                    <span class="video-tab-count">{{ $all_videos->count() }}</span>
+                </button>
+            </li>
+            @foreach($categories as $cat)
+            <li>
+                <button class="video-tab-btn" data-target="tab-cat-{{ $cat->id }}">
+                    {{ $cat->title }}
+                    <span class="video-tab-count">{{ isset($videos_by_category[$cat->id]) ? $videos_by_category[$cat->id]->count() : 0 }}</span>
+                </button>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+</div>
+
+{{-- Videos --}}
+<section class="video-section">
+    <div class="container">
+
+        {{-- All Videos Tab --}}
+        <div class="video-tab-panel active" id="tab-all">
+            @if($all_videos->count() > 0)
             <div class="row g-4">
-                @foreach($videos as $video)
+                @foreach($all_videos as $video)
                 @php
-                    // Extract YouTube embed ID from any URL format
-                    $yt_id = null;
-                    if (preg_match('/(?:youtube\.com\/(?:embed\/|watch\?v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video->youtube_url ?? '', $m)) {
-                        $yt_id = $m[1];
-                    }
-                    $embed_url = $yt_id ? "https://www.youtube.com/embed/{$yt_id}?autoplay=1&rel=0" : '';
-                    $thumb     = $video->thumbnail
-                        ? assetHelper($video->thumbnail)
-                        : ($yt_id ? "https://img.youtube.com/vi/{$yt_id}/maxresdefault.jpg" : 'https://dummyimage.com/600x340/002147/fab005&text=Video');
+                    preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video->video_link ?? '', $vm);
+                    $yt_id = $vm[1] ?? null;
+                    $embed = $yt_id ? "https://www.youtube.com/embed/{$yt_id}?autoplay=1&rel=0" : '';
+                    $thumb = $yt_id ? "https://img.youtube.com/vi/{$yt_id}/mqdefault.jpg" : 'https://dummyimage.com/600x340/002147/fab005&text=Video';
                 @endphp
                 <div class="col-lg-4 col-md-6">
-                    <div class="video-card" onclick="openVideoModal('{{ addslashes($embed_url) }}', '{{ addslashes($video->title) }}')">
+                    <div class="video-card" onclick="openVideoModal('{{ addslashes($embed) }}', '{{ addslashes($video->title) }}')">
                         <div class="video-thumb-wrap">
-                            <img src="{{ $thumb }}" alt="{{ $video->title }}" loading="lazy">
+                            <img src="{{ $thumb }}" alt="{{ $video->title }}" loading="lazy" onerror="this.src='https://dummyimage.com/600x340/002147/fab005&text=Video'">
                             <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
                         </div>
                         <div class="video-body">
@@ -110,17 +159,53 @@
                 </div>
                 @endforeach
             </div>
-
-            <div class="video-paginate d-flex justify-content-center">
-                {{ $videos->links() }}
-            </div>
-        @else
+            @else
             <div class="video-empty">
                 <i class="fa-solid fa-video-slash"></i>
                 <h4 class="fw-bold mb-2" style="color:#002147;">কোনো ভিডিও পাওয়া যায়নি</h4>
                 <p class="text-muted">শীঘ্রই ভিডিও যুক্ত করা হবে।</p>
             </div>
-        @endif
+            @endif
+        </div>
+
+        {{-- Per-category Tabs --}}
+        @foreach($categories as $cat)
+        <div class="video-tab-panel" id="tab-cat-{{ $cat->id }}">
+            @php $cat_videos = $videos_by_category[$cat->id] ?? collect(); @endphp
+            @if($cat_videos->count() > 0)
+            <div class="row g-4">
+                @foreach($cat_videos as $video)
+                @php
+                    preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video->video_link ?? '', $vm2);
+                    $yt2 = $vm2[1] ?? null;
+                    $em2 = $yt2 ? "https://www.youtube.com/embed/{$yt2}?autoplay=1&rel=0" : '';
+                    $th2 = $yt2 ? "https://img.youtube.com/vi/{$yt2}/mqdefault.jpg" : 'https://dummyimage.com/600x340/002147/fab005&text=Video';
+                @endphp
+                <div class="col-lg-4 col-md-6">
+                    <div class="video-card" onclick="openVideoModal('{{ addslashes($em2) }}', '{{ addslashes($video->title) }}')">
+                        <div class="video-thumb-wrap">
+                            <img src="{{ $th2 }}" alt="{{ $video->title }}" loading="lazy" onerror="this.src='https://dummyimage.com/600x340/002147/fab005&text=Video'">
+                            <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                        <div class="video-body">
+                            <div class="video-title">{{ $video->title }}</div>
+                            @if($video->description)
+                                <div class="video-desc">{{ $video->description }}</div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @else
+            <div class="video-empty">
+                <i class="fa-solid fa-video-slash"></i>
+                <h4 class="fw-bold mb-2" style="color:#002147;">এই ক্যাটাগরিতে কোনো ভিডিও নেই</h4>
+            </div>
+            @endif
+        </div>
+        @endforeach
+
     </div>
 </section>
 
@@ -136,6 +221,18 @@
 
 @push('scripts')
 <script>
+// Tab switching
+document.querySelectorAll('.video-tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.video-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.video-tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        var target = btn.getAttribute('data-target');
+        var panel = document.getElementById(target);
+        if (panel) panel.classList.add('active');
+    });
+});
+
 function openVideoModal(embedUrl, title) {
     if (!embedUrl) return;
     document.getElementById('videoIframe').src = embedUrl;

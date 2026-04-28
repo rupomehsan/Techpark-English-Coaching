@@ -95,69 +95,256 @@
 .milestone-content { display:none; padding:12px; background:#fff; }
 .milestone-item.active .milestone-content { display:block; }
 
-/* ===== Right Sidebar — Course Info Card ===== */
-.course_info { }
+/* ===== Course Info Card ===== */
+.course_info { min-width:0; }
 .course_info_div {
     background:#fff; border-radius:18px; overflow:hidden;
     box-shadow:0 8px 40px rgba(0,33,71,0.12); border:1px solid #eef2f8;
-    position:sticky; top:80px;
+    position:sticky; top:80px; width:100%; box-sizing:border-box;
 }
-.course_info_thubnail { position:relative; }
-.course_main_img { width:100%; height:220px !important; object-fit:cover; display:block; }
-.course_info_icon {
-    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:60px; height:60px; background:rgba(250,176,5,0.95); border-radius:50%;
+
+/* ===== Thumbnail / Play Button ===== */
+.cic-thumb {
+    position:relative; cursor:pointer; overflow:hidden; display:block;
+    height:230px;
+}
+.cic-thumb-img {
+    width:100%; height:100%; object-fit:cover; display:block;
+    transition:transform 0.45s ease;
+}
+.cic-thumb:hover .cic-thumb-img { transform:scale(1.05); }
+.cic-thumb-overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,8,20,0.15) 0%, rgba(0,8,20,0.7) 100%);
+}
+/* Play button */
+.cic-play-btn {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-58%);
+    width:62px; height:62px;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 0 0 8px rgba(250,176,5,0.25); transition:transform 0.3s;
+    transition:transform 0.3s;
 }
-.course_info_icon:hover { transform:translate(-50%,-50%) scale(1.1); }
-.course_info_icon img { width:28px; height:28px; object-fit:contain; filter:brightness(0) invert(1); }
-.course_info_thubnail_and_icon { position:relative; }
+.cic-thumb:hover .cic-play-btn { transform:translate(-50%,-58%) scale(1.12); }
+.cic-play-ring {
+    position:absolute; inset:0; border-radius:50%;
+    background:rgba(250,176,5,0.92);
+    box-shadow:0 0 0 0 rgba(250,176,5,0.5);
+    animation:playPulse 2s infinite;
+}
+@keyframes playPulse {
+    0%  { box-shadow:0 0 0 0 rgba(250,176,5,0.55); }
+    70% { box-shadow:0 0 0 14px rgba(250,176,5,0); }
+    100%{ box-shadow:0 0 0 0 rgba(250,176,5,0); }
+}
+.cic-play-icon {
+    position:relative; z-index:1;
+    color:#fff; font-size:1.3rem; margin-left:4px;
+}
+/* "Watch Intro" label */
+.cic-thumb-label {
+    position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+    background:rgba(0,0,0,0.55); backdrop-filter:blur(6px);
+    color:#fff; font-size:0.7rem; font-weight:600; letter-spacing:0.5px;
+    padding:5px 14px; border-radius:50px;
+    border:1px solid rgba(255,255,255,0.2);
+    white-space:nowrap;
+}
 
-.course_info_time { padding:16px 20px; background:linear-gradient(135deg,#002147,#003b7a); }
-.time_have { text-align:center; }
-.time_have_title { color:rgba(255,255,255,0.75); font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-ul.timer { display:flex; justify-content:center; align-items:center; gap:8px; list-style:none; padding:0; margin:0; }
-ul.timer li { text-align:center; color:#fff; font-size:0.7rem; }
-ul.timer li .amount { font-size:1.5rem; font-weight:800; color:#fab005; line-height:1; }
-.course_booked { text-align:center; margin-top:10px; color:rgba(255,255,255,0.85); font-size:0.8rem; font-weight:700; }
+/* ===== Timer Section ===== */
+.course_info_time {
+    padding:16px 20px 14px;
+    background:linear-gradient(135deg,#001830 0%,#002147 60%,#003b7a 100%);
+    text-align:center;
+}
+.time_have_title {
+    color:rgba(255,255,255,0.55) !important;
+    font-size:0.62rem !important;
+    text-transform:uppercase !important;
+    letter-spacing:1.6px !important;
+    font-weight:700 !important;
+    display:block; margin-bottom:12px;
+}
+ul.timer {
+    display:flex; justify-content:center; align-items:flex-end;
+    gap:0; list-style:none; padding:0; margin:0;
+}
+ul.timer li {
+    text-align:center;
+    color:rgba(255,255,255,0.9) !important;
+    font-size:0.58rem !important;
+    padding:0 8px; line-height:1;
+}
+ul.timer li .amount {
+    font-size:1.75rem !important; font-weight:800 !important;
+    color:#fab005 !important; line-height:1 !important;
+    display:block !important; margin-bottom:4px;
+    font-variant-numeric:tabular-nums;
+}
+ul.timer li .timer-label {
+    color:rgba(255,255,255,0.45) !important;
+    font-size:0.55rem !important; text-transform:uppercase !important;
+    letter-spacing:0.6px !important; display:block !important;
+}
+.timer-sep {
+    color:rgba(255,255,255,0.2) !important;
+    font-size:1.5rem !important; font-weight:200 !important;
+    padding:0; align-self:center; line-height:1; padding-bottom:10px;
+}
+/* Booked progress bar */
+.cic-booked-bar-wrap { margin-top:14px; }
+.cic-booked-bar-row {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:5px;
+}
+.cic-booked-label { color:rgba(255,255,255,0.6); font-size:0.65rem; font-weight:600; }
+.cic-booked-pct { color:#fab005; font-size:0.72rem; font-weight:800; }
+.cic-booked-track {
+    height:5px; background:rgba(255,255,255,0.12); border-radius:50px;
+    overflow:hidden;
+}
+.cic-booked-fill {
+    height:100%; background:linear-gradient(90deg,#fab005,#ff8c00);
+    border-radius:50px; transition:width 1s ease;
+}
 
-.course_fee { padding:16px 20px; display:flex; align-items:baseline; gap:10px; justify-content:center; border-bottom:1px solid #eef2f8; }
-.course_fee .twenty_thousand { font-size:1rem; color:#aaa; text-decoration:line-through; }
-.course_fee .ten_thousand { font-size:1.8rem; font-weight:800; color:#002147; }
+/* ===== Price Row ===== */
+.cic-price-row {
+    padding:14px 20px;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    border-bottom:1px solid #eef2f8;
+    background:#fafcff;
+}
+.cic-price-block { display:flex; align-items:baseline; gap:8px; }
+.cic-old-price { font-size:0.95rem; color:#bbb; text-decoration:line-through; }
+.cic-new-price { font-size:2rem; font-weight:800; color:#002147; line-height:1; }
+.cic-discount-badge {
+    background:linear-gradient(135deg,#e63946,#c1121f);
+    color:#fff; font-size:0.7rem; font-weight:700;
+    padding:4px 10px; border-radius:6px; letter-spacing:0.4px;
+}
 
-.admit_course { padding:16px 20px; }
+.admit_course { padding:14px 16px; }
 .admit_course_title_and_icon {
-    display:flex; align-items:center; justify-content:center; gap:10px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
     background:linear-gradient(135deg,#002147,#003b7a); color:#fff !important;
-    padding:13px 20px; border-radius:50px; text-decoration:none; font-weight:700;
-    font-size:0.9rem; transition:all 0.3s; text-align:center; flex-grow:1;
+    padding:12px 16px; border-radius:50px; text-decoration:none; font-weight:700;
+    font-size:0.85rem; transition:all 0.3s; text-align:center; flex-grow:1;
+    white-space:nowrap; min-width:0;
 }
 .admit_course_title_and_icon:hover { background:linear-gradient(135deg,#fab005,#e09600); box-shadow:0 6px 20px rgba(250,176,5,0.35); }
-.admit_course_title { color:#fff; }
-.admit_course_icon { color:#fff; }
+.admit_course_title { color:#fff !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.admit_course_icon { color:#fff !important; flex-shrink:0; }
 
-.admit_course_batch { background:#f8fbff; border-radius:10px; padding:12px 14px; margin-top:12px; }
-.admit_course_batch_title { font-size:0.8rem; color:#555; margin-bottom:8px; }
-.admit_course_batch_title span { font-weight:700; color:#002147; }
-.admit_course_start_and_deadline { display:flex; gap:8px; }
-.admit_course_start, .admit_course_deadline { flex:1; }
-.admit_course_start_title, .admit_course_deadline_title { font-size:0.68rem; color:#888; display:flex; align-items:center; gap:4px; margin-bottom:3px; }
-.admit_course_start_date, .admit_course_deadline_date { font-size:0.75rem; font-weight:700; color:#002147; }
-.admit_course_line { width:1px; background:#e2e8f0; }
-.admit_course_batch_details { background:#f8fbff; border-radius:10px; padding:12px 14px; margin-top:8px; }
-.admit_course_orientation, .admit_course_class_date, .admit_course_class_time { font-size:0.78rem; color:#555; margin-bottom:6px; display:flex; align-items:flex-start; gap:6px; }
-.admit_course_orientation i, .admit_course_class_date i, .admit_course_class_time i { color:#fab005; margin-top:2px; flex-shrink:0; }
+/* ===== Batch Info Card ===== */
+.batch-info-card {
+    margin-top:14px;
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid #dce8ff;
+    background:#fff;
+}
+
+/* Header */
+.batch-header {
+    display:flex; align-items:center; gap:12px;
+    background:linear-gradient(135deg,#002147,#003b7a);
+    padding:12px 16px;
+}
+.batch-badge {
+    width:36px; height:36px; border-radius:10px;
+    background:rgba(250,176,5,0.2); border:1px solid rgba(250,176,5,0.4);
+    display:flex; align-items:center; justify-content:center;
+    color:#fab005; font-size:0.9rem; flex-shrink:0;
+}
+.batch-label {
+    font-size:0.6rem; text-transform:uppercase; letter-spacing:1px;
+    color:rgba(255,255,255,0.55); font-weight:600;
+}
+.batch-name {
+    font-size:0.88rem; font-weight:700; color:#fff; margin-top:1px;
+}
+
+/* Dates grid */
+.batch-dates-grid {
+    display:flex; align-items:center;
+    padding:14px 16px; gap:10px;
+    background:#f7faff; border-bottom:1px solid #e8eef8;
+}
+.batch-date-item {
+    flex:1; display:flex; align-items:flex-start; gap:10px; min-width:0;
+}
+.batch-date-icon {
+    width:32px; height:32px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.8rem; flex-shrink:0; margin-top:1px;
+}
+.batch-date-start .batch-date-icon { background:#e8fff2; color:#00a651; }
+.batch-date-end   .batch-date-icon { background:#fff0f0; color:#dc3545; }
+.batch-date-label {
+    font-size:0.6rem; text-transform:uppercase; letter-spacing:0.6px;
+    color:#999; font-weight:600; margin-bottom:3px;
+}
+.batch-date-value {
+    font-size:0.78rem; font-weight:700; color:#002147; line-height:1.2;
+}
+.batch-date-time {
+    font-size:0.68rem; color:#dc3545; font-weight:600; margin-top:2px;
+}
+.batch-date-arrow {
+    color:#ccd5e0; font-size:0.7rem; flex-shrink:0; padding-top:10px;
+}
+
+/* Meta rows */
+.batch-meta {
+    padding:12px 16px; display:flex; flex-direction:column; gap:10px;
+}
+.batch-meta-item {
+    display:flex; align-items:flex-start; gap:12px;
+}
+.batch-meta-item > i {
+    width:30px; height:30px; border-radius:8px;
+    background:#f0f5ff; color:#002147;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.75rem; flex-shrink:0; margin-top:1px;
+}
+.batch-meta-label {
+    font-size:0.6rem; text-transform:uppercase; letter-spacing:0.6px;
+    color:#999; font-weight:600; margin-bottom:2px;
+}
+.batch-meta-value {
+    font-size:0.78rem; font-weight:600; color:#2d3a4a; line-height:1.3;
+}
 
 /* Requirements section */
-.course_needed { padding:0 20px 20px; }
+.course_needed { padding:0 16px 20px; }
 .course_needed_title { font-weight:700; color:#002147; font-size:0.88rem; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid #eef2f8; }
-.course_needed_internet { display:flex; align-items:center; gap:8px; font-size:0.8rem; color:#555; margin-bottom:6px; }
-.course_needed_internet i { color:#fab005; }
+.course_needed_internet { display:flex; align-items:flex-start; gap:8px; font-size:0.8rem; color:#555; margin-bottom:6px; word-break:break-word; }
+.course_needed_internet i { color:#fab005; flex-shrink:0; margin-top:2px; }
 .course_hotline { background:linear-gradient(135deg,#002147,#003b7a) !important; border-radius:12px; text-align:center; }
-.course_hotline_title { color:rgba(255,255,255,0.85); font-size:0.78rem; margin-bottom:8px; }
-.course_hotline_number { color:#fab005 !important; font-weight:700; font-size:0.95rem; text-decoration:none; }
+.course_hotline_title { color:rgba(255,255,255,0.85) !important; font-size:0.78rem; margin-bottom:8px; }
+.course_hotline_number { color:#fab005 !important; font-weight:700; font-size:0.95rem; text-decoration:none; word-break:break-all; }
 .course_schedule { background:rgba(250,176,5,0.1); color:#c07800; font-size:0.75rem; font-weight:600; padding:6px 14px; border-radius:50px; text-align:center; margin-top:8px; }
+
+/* ===== Mobile Responsive Fixes ===== */
+@media(max-width:991px) {
+    .course_info_div { position:static; }
+    .admit_course { padding:12px 14px; }
+}
+@media(max-width:575px) {
+    #course_details { padding:20px 0 40px; }
+    .course_details_part { gap:16px; }
+    .cd-section-card { padding:18px 16px; margin-bottom:16px; }
+    .cic-thumb { height:190px; }
+    ul.timer li { padding:0 4px; }
+    ul.timer li .amount { font-size:1.3rem !important; }
+    .cic-new-price { font-size:1.6rem; }
+    .admit_course_start_and_deadline { flex-direction:column; gap:8px; }
+    .admit_course_line { display:none; }
+    .admit_course_start { padding-right:0; }
+    .admit_course_deadline { padding-left:0; }
+    .course_hotline_number { font-size:0.85rem; }
+    .d-flex.justify-content-between.align-items-center.gap-2 { flex-wrap:wrap; }
+}
 
 /* ===== Teachers Section ===== */
 .teacher_list .trainer-card-mini {

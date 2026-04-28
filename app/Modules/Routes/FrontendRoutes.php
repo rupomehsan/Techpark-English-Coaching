@@ -71,6 +71,7 @@ Route::get('/blog/{slug}', [BlogController::class, 'blog_details'])->name("blog_
 Route::post('/subscribed', [BlogController::class, 'subscribe'])->name("blog.subscribe");
 
 Route::get('/seminar', [SeminerController::class, 'seminar'])->name("seminar");
+Route::get('/all-seminers', [SeminerController::class, 'seminar'])->name("all-seminers");
 Route::get('/seminar/details/{id}', [SeminerController::class, 'seminar_details'])->name("seminar.details");
 Route::post('/seminar-registration', [SeminerController::class, 'registerSeminar'])->name("registerSeminar");
 Route::post('/seminar-subscribe', [SeminerController::class, 'subscribe'])->name("seminar.subscribe");

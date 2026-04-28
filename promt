@@ -1,0 +1,13 @@
+task 1 - at a glance dynamic this section in hte home page (stats-section name in html element) form this modue WebsiteManagement/AtAGlance
+
+task 2 - why techpark section only on form show and only update can be first time data save and form the next time will be the data only update resources/js/backend/Views/SuperAdmin/Management/WebsiteManagement/WhyUs
+
+in the home page also dynamci the home page section why-section on this data
+
+task 3 - in hte home page our service dynamci this section app/Modules/Management/WebsiteManagement/OurService use fetching data form this section
+
+task 4 - in teh home page video gallery section dynamic app/Modules/Management/VideoManagement/OurVideo fro this scction
+
+tsk 5 - seminer section dynamic show only today if not have today the next date data one will be show and also ad button fo rthe upcomming seminer list in the new page allseminers
+
+task 6 - in the home page success story will be dynamic and make alos create all-story show page in the home page show only 6 item. alnd allpage show all wiht pagination

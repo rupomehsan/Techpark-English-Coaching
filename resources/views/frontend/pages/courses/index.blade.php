@@ -99,7 +99,7 @@
     <section class="py-5" style="background:#f4f7fb;">
         <div class="container py-3">
             @if($courses->count() > 0)
-                <div class="row g-4">
+                <div class="row g-4 justify-content-center">
                     @foreach($courses as $course)
                     @php
                         $cc = new App\Http\Controllers\Course\CourseController();

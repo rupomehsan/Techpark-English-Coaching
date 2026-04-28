@@ -90,3 +90,8 @@ include_once base_path("app/Modules/Management/WebsiteManagement/TermConditionPo
 include_once base_path("app/Modules/Management/CourseManagement/CourseWhatYouWillGet/Routes/Route.php");
 include_once base_path("app/Modules/Management/CourseManagement/CourseEssentialRequirement/Routes/Route.php");
 include_once base_path("app/Modules/Management/VideoManagement/Video/Routes/Route.php");
+include_once base_path("app/Modules/Management/WebsiteManagement/AtAGlance/Routes/Route.php");
+include_once base_path("app/Modules/Management/WebsiteManagement/WhyUs/Routes/Route.php");
+include_once base_path("app/Modules/Management/WebsiteManagement/OurService/Routes/Route.php");
+include_once base_path("app/Modules/Management/VideoManagement/OurVideoCategory/Routes/Route.php");
+include_once base_path("app/Modules/Management/VideoManagement/OurVideo/Routes/Route.php");

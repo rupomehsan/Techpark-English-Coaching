@@ -102,7 +102,7 @@
     <!-- chating_and_go_to_top_area end -->
     
     <script>
-        $('.owl-carousel').owlCarousel({
+        $('.owl-carousel:not(.no-global-owl)').owlCarousel({
             loop: true,
             margin: 10,
             nav: true,

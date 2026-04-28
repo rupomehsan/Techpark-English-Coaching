@@ -77,7 +77,7 @@
 {{-- Trainers Grid --}}
 <section class="py-5" style="background:#f4f7fb;">
     <div class="container py-3">
-        <div class="row g-4">
+        <div class="row g-4 justify-content-center">
             @foreach($trainers as $trainer)
             <div class="col-lg-4 col-md-6">
                 <div class="trainer-pro-card">

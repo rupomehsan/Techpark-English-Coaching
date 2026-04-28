@@ -7,6 +7,11 @@ import SettingsRoutes from "../Management/Settings/setup/routes.js";
 //UserRoutes
 import UserRoutes from "../Management/UserManagement/User/setup/routes.js";
 //routes
+import OurVideoRoutes from '../../../GlobalManagement/VideoManagement/OurVideo/setup/routes.js';
+import OurVideoCategoryRoutes from '../../../GlobalManagement/VideoManagement/OurVideoCategory/setup/routes.js';
+import OurServiceRoutes from '../../../GlobalManagement/WebsiteManagement/OurService/setup/routes.js';
+import WhyUsRoutes from '../../../GlobalManagement/WebsiteManagement/WhyUs/setup/routes.js';
+import AtAGlanceRoutes from '../../../GlobalManagement/WebsiteManagement/AtAGlance/setup/routes.js';
 import TermConditionPolicyRoutes from '../../../GlobalManagement/WebsiteManagement/TermConditionPolicy/setup/routes.js';
 import CookiePolicyRoutes from '../../../GlobalManagement/WebsiteManagement/CookiePolicy/setup/routes.js';
 import RefundPolicyRoutes from '../../../GlobalManagement/WebsiteManagement/RefundPolicy/setup/routes.js';
@@ -58,6 +63,11 @@ const routes = {
       name: "adminDashboard",
     },
     //management routes
+        OurVideoRoutes,
+        OurVideoCategoryRoutes,
+        OurServiceRoutes,
+        WhyUsRoutes,
+        AtAGlanceRoutes,
         TermConditionPolicyRoutes,
         CookiePolicyRoutes,
         RefundPolicyRoutes,

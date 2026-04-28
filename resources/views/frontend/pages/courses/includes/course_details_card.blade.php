@@ -3,66 +3,81 @@
         $batch_info = $batch_details;
     @endphp
     <div class="course_info_div">
-        <div class="course_info_thubnail_and_icon my-0">
-            <div class="course_info_thubnail">
-                <img class="img-fluid course_main_img" src="{{ assetHelper(optional($data)->image) }}"
-                    alt="{{ optional($data)->title }}" style="width: 100%;" loading="lazy">
+
+        {{-- ===== Thumbnail + Play Button ===== --}}
+        <div class="cic-thumb" onclick="showVideo(`{{ optional($data)->intro_video }}`)" role="button" aria-label="Watch intro video">
+            <img class="cic-thumb-img" src="{{ assetHelper(optional($data)->image) }}" alt="{{ optional($data)->title }}" loading="lazy">
+            <div class="cic-thumb-overlay"></div>
+            <div class="cic-play-btn">
+                <div class="cic-play-ring"></div>
+                <i class="fa-solid fa-play cic-play-icon"></i>
             </div>
-            <div class="course_info_icon" style="cursor:pointer;"
-                onclick="showVideo(`{{ optional($data)->intro_video }}`)">
-                <img src="{{ asset('frontend/') }}/assets/images/course_info_icon.png" alt="">
+            <div class="cic-thumb-label">
+                <i class="fa-solid fa-video me-1"></i> Watch Intro
             </div>
         </div>
+
+        {{-- ===== Timer ===== --}}
         <div class="course_info_time">
-            <div class="time_have">
-                <div class="time_have_title">Time left</div>
-                <ul class="timer">
-                    <li class="d-none">
-                        <div class="amount" data-years></div>
-                        <div class="title">Years</div>
-                    </li>
-                    <li>
-                        <div class="amount" data-days></div>
-                        <div class="title">Days</div>
-                    </li>|
-                    <li>
-                        <div class="amount" data-hours></div>
-                        <div class="title">Hours</div>
-                    </li>|
-                    <li>
-                        <div class="amount" data-minutes></div>
-                        <div class="title">Minutes</div>
-                    </li>|
-                    <li>
-                        <div class="amount" data-seconds></div>
-                        <div class="title">Seconds</div>
-                    </li>
-                </ul>
-            </div>
+            <span class="time_have_title">Enrollment closes in</span>
+            <ul class="timer">
+                <li class="d-none">
+                    <div class="amount" data-years></div>
+                    <div class="timer-label">Yrs</div>
+                </li>
+                <li>
+                    <div class="amount" data-days></div>
+                    <div class="timer-label">Days</div>
+                </li>
+                <li class="timer-sep">:</li>
+                <li>
+                    <div class="amount" data-hours></div>
+                    <div class="timer-label">Hrs</div>
+                </li>
+                <li class="timer-sep">:</li>
+                <li>
+                    <div class="amount" data-minutes></div>
+                    <div class="timer-label">Min</div>
+                </li>
+                <li class="timer-sep">:</li>
+                <li>
+                    <div class="amount" data-seconds></div>
+                    <div class="timer-label">Sec</div>
+                </li>
+            </ul>
 
             @if ($batch_info?->show_percentage_on_cards == 'yes')
-                <div class="course_booked">
-                    <div>
-                        {{ $batch_info->booked_percent ?? 0 }}%
+                @php $pct = $batch_info->booked_percent ?? 0; @endphp
+                <div class="cic-booked-bar-wrap">
+                    <div class="cic-booked-bar-row">
+                        <span class="cic-booked-label"><i class="fa-solid fa-users me-1"></i>Seats Booked</span>
+                        <span class="cic-booked-pct">{{ $pct }}%</span>
                     </div>
-                    <div>Booked</div>
+                    <div class="cic-booked-track">
+                        <div class="cic-booked-fill" style="width:{{ min($pct,100) }}%"></div>
+                    </div>
                 </div>
             @endif
         </div>
 
-
-        <div class="course_fee">
-
+        {{-- ===== Price ===== --}}
+        <div class="cic-price-row">
             @if ($batch_info)
-                <del class="twenty_thousand">৳
-                    {{ number_format($batch_info->course_price ?? 0, 0, '.', ',') }}
-                </del>
-                <div class="ten_thousand">৳
-                    {{ number_format($batch_info->after_discount_price ?? 0, 0, '.', ',') }}
+                <div class="cic-price-block">
+                    <del class="cic-old-price">৳{{ number_format($batch_info->course_price ?? 0, 0, '.', ',') }}</del>
+                    <div class="cic-new-price">৳{{ number_format($batch_info->after_discount_price ?? 0, 0, '.', ',') }}</div>
                 </div>
+                @php
+                    $orig = $batch_info->course_price ?? 0;
+                    $disc = $batch_info->after_discount_price ?? 0;
+                    $save = $orig > 0 ? round(($orig - $disc) / $orig * 100) : 0;
+                @endphp
+                @if($save > 0)
+                    <div class="cic-discount-badge">{{ $save }}% OFF</div>
+                @endif
             @else
-                <div class="ten_thousand">৳
-                    {{ number_format($batch_info->course_price ?? 0, 0, '.', ',') }}
+                <div class="cic-price-block">
+                    <div class="cic-new-price">৳{{ number_format($batch_info->course_price ?? 0, 0, '.', ',') }}</div>
                 </div>
             @endif
         </div>
@@ -125,49 +140,69 @@
             </div>
 
 
-            <div class="admit_course_batch">
-                <div class="admit_course_batch_title">Batch <span>{{ $batch_info->batch_name }}</span>
-                </div>
-                <div class="admit_course_start_and_deadline">
-                    <div class="admit_course_start">
-                        <div class="admit_course_start_title"><span><i
-                                    class="fa-regular fa-calendar-days"></i></span><span>Admission Starts:</span>
-                        </div>
-                        <div class="admit_course_start_date">
-                            {{ \Carbon\Carbon::parse($batch_info->admission_start_date)->format('d M Y ') }}
-                        </div>
+            {{-- Batch Info Card --}}
+            <div class="batch-info-card">
+
+                {{-- Header row --}}
+                <div class="batch-header">
+                    <div class="batch-badge">
+                        <i class="fa-solid fa-layer-group"></i>
                     </div>
-                    <div class="admit_course_line"></div>
-                    <div class="admit_course_deadline">
-                        <div class="admit_course_deadline_title"><span><i
-                                    class="fa-regular fa-calendar-xmark"></i></span><span>Admission Ends:</span>
-                        </div>
-                        <div class="admit_course_deadline_date">
-                            {{ \Carbon\Carbon::parse($batch_info->admission_end_date)->format('d M Y g:i A') }}
-                        </div>
+                    <div>
+                        <div class="batch-label">Current Batch</div>
+                        <div class="batch-name">{{ $batch_info->batch_name }}</div>
                     </div>
                 </div>
-            </div>
-            <div class="admit_course_batch_details">
-                <div class="admit_course_orientation">
-                    <span>
-                        <i class="fa-regular fa-calendar-days"></i>
-                    </span>
-                    Orientation & First Class:
-                    {{ \Carbon\Carbon::parse($batch_info->first_class_date)->format('d M l Y') }}
-                    </span>
+
+                {{-- Admission dates --}}
+                <div class="batch-dates-grid">
+                    <div class="batch-date-item batch-date-start">
+                        <div class="batch-date-icon">
+                            <i class="fa-regular fa-calendar-check"></i>
+                        </div>
+                        <div class="batch-date-body">
+                            <div class="batch-date-label">Admission Opens</div>
+                            <div class="batch-date-value">{{ \Carbon\Carbon::parse($batch_info->admission_start_date)->format('d M Y') }}</div>
+                        </div>
+                    </div>
+                    <div class="batch-date-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="batch-date-item batch-date-end">
+                        <div class="batch-date-icon">
+                            <i class="fa-regular fa-calendar-xmark"></i>
+                        </div>
+                        <div class="batch-date-body">
+                            <div class="batch-date-label">Admission Closes</div>
+                            <div class="batch-date-value">{{ \Carbon\Carbon::parse($batch_info->admission_end_date)->format('d M Y') }}</div>
+                            <div class="batch-date-time">{{ \Carbon\Carbon::parse($batch_info->admission_end_date)->format('g:i A') }}</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="admit_course_class_date">
-                    <span><i class="fa-regular fa-calendar-days"></i></span>
-                    <span>Class Days: {{ $batch_info->class_days }}</span>
+
+                {{-- Class details --}}
+                <div class="batch-meta">
+                    <div class="batch-meta-item">
+                        <i class="fa-solid fa-flag-checkered"></i>
+                        <div>
+                            <div class="batch-meta-label">First Class</div>
+                            <div class="batch-meta-value">{{ \Carbon\Carbon::parse($batch_info->first_class_date)->format('d M Y, l') }}</div>
+                        </div>
+                    </div>
+                    <div class="batch-meta-item">
+                        <i class="fa-solid fa-calendar-week"></i>
+                        <div>
+                            <div class="batch-meta-label">Class Days</div>
+                            <div class="batch-meta-value">{{ $batch_info->class_days }}</div>
+                        </div>
+                    </div>
+                    <div class="batch-meta-item">
+                        <i class="fa-regular fa-clock"></i>
+                        <div>
+                            <div class="batch-meta-label">Class Time</div>
+                            <div class="batch-meta-value">{{ \Carbon\Carbon::parse($batch_info->class_start_time)->format('g:i A') }} – {{ \Carbon\Carbon::parse($batch_info->class_end_time)->format('g:i A') }}</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="admit_course_class_time"><span>
-                        <i class="fa-regular fa-calendar-days"></i></span>
-                    <span>Class Time:
-                        {{ \Carbon\Carbon::parse($batch_info->class_start_time)->format('g:i A') }} -
-                        {{ \Carbon\Carbon::parse($batch_info->class_end_time)->format('g:i A') }}
-                    </span>
-                </div>
+
             </div>
         </div>
     </div>

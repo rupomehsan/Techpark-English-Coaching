@@ -50,7 +50,7 @@ class HomeController extends Controller
 
     public function stories()
     {
-        $success_stories = SuccessStory::where('status', 1)->orderBy('id', 'desc')->paginate(6);
+        $success_stories = SuccessStory::active()->orderBy('id', 'desc')->paginate(12);
         return view('frontend.pages.success_stories.success_story_all', compact('success_stories'));
     }
 }

@@ -64,9 +64,33 @@
 
     /* ===== Why Choose Us ===== */
     .why-section { background: linear-gradient(135deg, #f0f5fb 0%, #e8f0fe 100%); }
-    .numbered-list { list-style: none; padding-left: 0; }
-    .numbered-list li { position: relative; padding-left: 52px; margin-bottom: 22px; }
-    .numbered-list li .num { position: absolute; left: 0; top: 0; width: 36px; height: 36px; background: linear-gradient(135deg, #fab005, #e09600); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(250,176,5,0.35); }
+    .why-desc-content { font-size: 0.95rem; line-height: 1.8; color: #444; }
+    .why-desc-content p { margin-bottom: 12px; }
+    .why-desc-content strong, .why-desc-content b { color: #002147; }
+    .why-desc-content ul, .why-desc-content ol { padding-left: 0; list-style: none; margin-bottom: 0; }
+    .why-desc-content ol li, .why-desc-content ul li {
+        position: relative; padding: 14px 16px 14px 60px;
+        margin-bottom: 14px; background: #fff;
+        border-radius: 12px; box-shadow: 0 2px 12px rgba(0,33,71,0.06);
+        border-left: 3px solid #fab005; counter-increment: why-counter;
+    }
+    .why-desc-content ol { counter-reset: why-counter; }
+    .why-desc-content ol li::before {
+        content: counter(why-counter);
+        position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+        width: 32px; height: 32px; background: linear-gradient(135deg,#fab005,#e09600);
+        color: #fff; border-radius: 50%; display: flex; align-items: center;
+        justify-content: center; font-weight: 800; font-size: 0.82rem;
+        box-shadow: 0 3px 10px rgba(250,176,5,0.35);
+    }
+    .why-desc-content ul li::before {
+        content: '✓';
+        position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+        width: 32px; height: 32px; background: linear-gradient(135deg,#002147,#003b7a);
+        color: #fab005; border-radius: 50%; display: flex; align-items: center;
+        justify-content: center; font-weight: 800; font-size: 0.85rem;
+    }
+    .why-desc-content li strong, .why-desc-content li b { display: block; color: #1a1a2e; font-size: 0.93rem; margin-bottom: 3px; }
     .video-thumb-wrap { position: relative; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.18); cursor: pointer; }
     .video-thumb-wrap img { width: 100%; display: block; transition: transform 0.45s ease; }
     .video-thumb-wrap:hover img { transform: scale(1.04); }
@@ -184,7 +208,27 @@
     .btn-seminar { background: linear-gradient(135deg, #002147, #003b7a); color: #fff; border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 1rem; width: 100%; transition: all 0.3s; cursor: pointer; }
     .btn-seminar:hover { background: linear-gradient(135deg, #fab005, #e09600); color: #fff; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(250,176,5,0.35); }
 
-    /* ===== Task 7: Success Stories — professional ===== */
+    /* ===== Marquee ===== */
+    .marquee-section { overflow: hidden; }
+    .marquee-row { display: flex; gap: 20px; width: max-content; }
+    .marquee-row-wrap { overflow: hidden; }
+    .marquee-row-wrap:first-child .marquee-row { animation: marquee-left 32s linear infinite; }
+    .marquee-row-wrap:last-child  .marquee-row { animation: marquee-right 36s linear infinite; }
+    @keyframes marquee-left  { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes marquee-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+    .marquee-row-wrap:hover .marquee-row { animation-play-state: paused; }
+    .mq-card { background: #fff; border-radius: 18px; padding: 22px 20px; box-shadow: 0 4px 20px rgba(0,33,71,0.07); border: 1px solid #f0f4f8; width: 300px; flex-shrink: 0; transition: box-shadow 0.3s; }
+    .mq-card:hover { box-shadow: 0 12px 40px rgba(0,33,71,0.13); }
+    .mq-vid-thumb { position: relative; border-radius: 10px; overflow: hidden; margin-bottom: 14px; cursor: pointer; }
+    .mq-vid-thumb img { width: 100%; height: 155px; object-fit: cover; display: block; transition: transform 0.4s; }
+    .mq-card:hover .mq-vid-thumb img { transform: scale(1.05); }
+    .mq-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 42px; height: 42px; background: rgba(255,0,0,0.88); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .mq-play i { color: #fff; font-size: 0.95rem; margin-left: 3px; }
+    .mq-name { font-weight: 700; color: #002147; font-size: 0.88rem; margin-bottom: 3px; }
+    .mq-role { font-size: 0.74rem; color: #fab005; font-weight: 600; }
+    .mq-stars { color: #fab005; font-size: 0.72rem; margin-top: 6px; }
+
+    /* ===== Success Stories — professional ===== */
     .testi-section { background: linear-gradient(180deg, #f4f7fb 0%, #fff 100%); }
     .testi-featured { background: linear-gradient(135deg, #002147, #003b7a); border-radius: 20px; padding: 40px 48px; color: #fff; position: relative; overflow: hidden; margin-bottom: 50px; }
     .testi-featured::before { content: '\201C'; position: absolute; top: -20px; left: 24px; font-size: 14rem; color: rgba(250,176,5,0.15); font-family: Georgia, serif; line-height: 1; }
@@ -261,26 +305,24 @@
     <section class="stats-section">
         <div class="container">
             <div class="row g-4 justify-content-center">
-                <div class="col-md-3 col-6 stat-item">
-                    <i class="fa-solid fa-users stat-icon"></i>
-                    <div class="stat-number">700+</div>
-                    <div class="stat-label">রেসিডেন্সিয়াল শিক্ষার্থী</div>
+                @php
+                    $stat_icons = ['fa-users','fa-calendar-check','fa-graduation-cap','fa-trophy','fa-star','fa-book','fa-chalkboard-user','fa-award'];
+                    $stat_fallback = [
+                        ['number'=>'700+',   'title'=>'রেসিডেন্সিয়াল শিক্ষার্থী'],
+                        ['number'=>'6+',     'title'=>'বছরের অভিজ্ঞতা'],
+                        ['number'=>'15,000+','title'=>'মোট শিক্ষার্থী'],
+                        ['number'=>'95%',    'title'=>'সাফল্যের হার'],
+                    ];
+                    $stats = (isset($at_a_glances) && $at_a_glances->count() > 0) ? $at_a_glances : collect($stat_fallback)->map(fn($s)=>(object)$s);
+                    $stat_count = $stats->count();
+                @endphp
+                @foreach($stats as $idx => $stat)
+                <div class="col-md-3 col-6 stat-item {{ $loop->last ? 'border-0' : '' }}">
+                    <i class="fa-solid {{ $stat_icons[$idx % count($stat_icons)] }} stat-icon"></i>
+                    <div class="stat-number">{{ $stat->number ?? $stat->number }}</div>
+                    <div class="stat-label">{{ $stat->title }}</div>
                 </div>
-                <div class="col-md-3 col-6 stat-item">
-                    <i class="fa-solid fa-calendar-check stat-icon"></i>
-                    <div class="stat-number">6+</div>
-                    <div class="stat-label">বছরের অভিজ্ঞতা</div>
-                </div>
-                <div class="col-md-3 col-6 stat-item">
-                    <i class="fa-solid fa-graduation-cap stat-icon"></i>
-                    <div class="stat-number">15,000+</div>
-                    <div class="stat-label">মোট শিক্ষার্থী</div>
-                </div>
-                <div class="col-md-3 col-6 stat-item border-0">
-                    <i class="fa-solid fa-trophy stat-icon"></i>
-                    <div class="stat-number">95%</div>
-                    <div class="stat-label">সাফল্যের হার</div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -350,40 +392,27 @@
     </section>
 
     {{-- Why Choose Us --}}
+    @php
+        $wy_title = $why_us->title       ?? 'কেন TechPark English বেছে নেবেন?';
+        $wy_desc  = $why_us->description ?? '<p>দেশের সেরা ইংরেজি শেখার পরিবেশ, বিশেষজ্ঞ শিক্ষক এবং প্রমাণিত পদ্ধতিতে আপনার সাফল্য নিশ্চিত করা হয়।</p>';
+        $wy_video = $why_us->video_link  ?? 'KlX7Z5OrFrw';
+        preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $wy_video, $wy_vid_match);
+        $wy_vid_id = $wy_vid_match[1] ?? $wy_video;
+    @endphp
     <section class="py-5 why-section">
         <div class="container py-4">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6">
-                    <h2 class="fw-bold mb-2" style="color:#002147; font-size:2rem; line-height:1.3;">কেন <span style="color:#fab005;">TechPark English</span> বেছে নেবেন?</h2>
-                    <p class="text-muted mb-4" style="font-size:0.95rem; line-height:1.8;">দেশের সেরা ইংরেজি শেখার পরিবেশ, বিশেষজ্ঞ শিক্ষক এবং প্রমাণিত পদ্ধতিতে আপনার সাফল্য নিশ্চিত করা হয়।</p>
-                    <ul class="numbered-list mt-3">
-                        <li>
-                            <span class="num">১</span>
-                            <h6 class="fw-bold mb-1" style="color:#222; font-size:0.95rem;">১০০% ইংলিশ পরিবেশ (২৪/৭)</h6>
-                            <p class="text-muted small mb-0" style="line-height:1.7;">২৪ ঘণ্টাই English Only Policy. ক্যাম্পাসে সর্বদা ইংরেজিতে কথা বলতে হবে।</p>
-                        </li>
-                        <li>
-                            <span class="num">২</span>
-                            <h6 class="fw-bold mb-1" style="color:#222; font-size:0.95rem;">সুপারভাইসড কোর্স ও স্কলারস অ্যাসাইনমেন্ট</h6>
-                            <p class="text-muted small mb-0" style="line-height:1.7;">সার্বক্ষণিক সাপোর্ট এবং মেন্টর দ্বারা নিবিড় পর্যবেক্ষণ।</p>
-                        </li>
-                        <li>
-                            <span class="num">৩</span>
-                            <h6 class="fw-bold mb-1" style="color:#222; font-size:0.95rem;">লক্ষ্য নির্ধারণ ও গাইডলাইন ফোকাস</h6>
-                            <p class="text-muted small mb-0" style="line-height:1.7;">এক-একজনের জন্য আলাদা লক্ষ্য নির্ধারণ করে ক্লাস নেওয়া হয়।</p>
-                        </li>
-                        <li>
-                            <span class="num">৪</span>
-                            <h6 class="fw-bold mb-1" style="color:#222; font-size:0.95rem;">বিশেষ 'ICU' সাপ্লাই ক্লাস</h6>
-                            <p class="text-muted small mb-0" style="line-height:1.7;">দুর্বল শিক্ষার্থীদের জন্য এক্সট্রা কেয়ার এবং স্পেশাল ক্লাস।</p>
-                        </li>
-                    </ul>
+                    <h2 class="fw-bold mb-3" style="color:#002147; font-size:2rem; line-height:1.3;">{!! $wy_title !!}</h2>
+                    <div class="why-desc-content" style="font-size:0.95rem; line-height:1.8; color:#555;">
+                        {!! $wy_desc !!}
+                    </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="video-thumb-wrap" onclick="openYtModal('KlX7Z5OrFrw')">
-                        <img src="https://img.youtube.com/vi/KlX7Z5OrFrw/maxresdefault.jpg"
+                    <div class="video-thumb-wrap" onclick="openYtModal('{{ $wy_vid_id }}')">
+                        <img src="https://img.youtube.com/vi/{{ $wy_vid_id }}/maxresdefault.jpg"
                              alt="TechPark English Video"
-                             onerror="this.src='https://img.youtube.com/vi/KlX7Z5OrFrw/hqdefault.jpg'">
+                             onerror="this.src='https://img.youtube.com/vi/{{ $wy_vid_id }}/hqdefault.jpg'">
                         <div class="play-overlay">
                             <div class="play-circle"><i class="fa-solid fa-play"></i></div>
                         </div>
@@ -405,56 +434,42 @@
         </div>
     </div>
 
-    {{-- Task 3: Our Services — gradient cards --}}
+    {{-- Our Services --}}
+    @php
+        $svc_fallback = [
+            ['icon'=>'fa-solid fa-bed',               'title'=>'আবাসন ব্যবস্থা',        'description'=>'সুবিধাজনক হোস্টেল সুবিধা সহ ২৪/৭ ইংরেজি পরিবেশ নিশ্চিত করা হয়।'],
+            ['icon'=>'fa-solid fa-video',              'title'=>'লাইভ অনলাইন ক্লাস',    'description'=>'দেশের যেকোনো প্রান্ত থেকে লাইভ ক্লাসে অংশ নিন নির্বিঘ্নে।'],
+            ['icon'=>'fa-solid fa-chalkboard-user',    'title'=>'প্র্যাক্টিস সেশন',     'description'=>'সার্বক্ষণিক স্পিকিং প্র্যাক্টিস এবং মেন্টর সাপোর্টের সুযোগ।'],
+            ['icon'=>'fa-solid fa-book-open-reader',   'title'=>'ফ্রি স্টাডি ম্যাটেরিয়ালস','description'=>'সম্পূর্ণ বিনামূল্যে পিডিএফ, শিট ও রেকর্ডেড লেকচার।'],
+            ['icon'=>'fa-solid fa-certificate',        'title'=>'ভেরিফাইড সার্টিফিকেট', 'description'=>'কোর্স শেষে আন্তর্জাতিক মানের ডিজিটাল ও প্রিন্টেড সার্টিফিকেট।'],
+            ['icon'=>'fa-solid fa-infinity',           'title'=>'আজীবন অ্যাক্সেস',      'description'=>"রেকর্ডেড ভিডিও লেসনে সারাজীবন অ্যাক্সেস — যেকোনো সময় শিখুন।"],
+        ];
+        $services_list = (isset($our_services) && $our_services->count() > 0)
+            ? $our_services
+            : collect($svc_fallback)->map(fn($s)=>(object)$s);
+    @endphp
     <section class="py-5 bg-white">
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="section-title mb-2">আমাদের সেবাসমূহ</h2>
                 <span class="section-subtitle">TechPark English শিক্ষার্থীদের সর্বোচ্চ সুবিধা নিশ্চিত করে</span>
             </div>
-            <div class="row g-4">
+            <div class="row g-4 justify-content-center">
+                @foreach($services_list as $svc)
                 <div class="col-lg-4 col-md-6">
                     <div class="service-card h-100">
-                        <div class="service-icon-wrap"><i class="fa-solid fa-bed"></i></div>
-                        <h5>আবাসন ব্যবস্থা</h5>
-                        <p>সুবিধাজনক হোস্টেল সুবিধা সহ ২৪/৭ ইংরেজি পরিবেশ নিশ্চিত করা হয়।</p>
+                        <div class="service-icon-wrap">
+                            @if(!empty($svc->icon))
+                                <i class="{{ $svc->icon }}"></i>
+                            @else
+                                <i class="fa-solid fa-star"></i>
+                            @endif
+                        </div>
+                        <h5>{{ $svc->title }}</h5>
+                        <p>{!! $svc->description !!}</p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <div class="service-icon-wrap"><i class="fa-solid fa-video"></i></div>
-                        <h5>লাইভ অনলাইন ক্লাস</h5>
-                        <p>দেশের যেকোনো প্রান্ত থেকে লাইভ ক্লাসে অংশ নিন নির্বিঘ্নে।</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <div class="service-icon-wrap"><i class="fa-solid fa-chalkboard-user"></i></div>
-                        <h5>প্র্যাক্টিস সেশন</h5>
-                        <p>সার্বক্ষণিক স্পিকিং প্র্যাক্টিস এবং মেন্টর সাপোর্টের সুযোগ।</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <div class="service-icon-wrap"><i class="fa-solid fa-book-open-reader"></i></div>
-                        <h5>ফ্রি স্টাডি ম্যাটেরিয়ালস</h5>
-                        <p>সম্পূর্ণ বিনামূল্যে পিডিএফ, শিট ও রেকর্ডেড লেকচার।</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <div class="service-icon-wrap"><i class="fa-solid fa-certificate"></i></div>
-                        <h5>ভেরিফাইড সার্টিফিকেট</h5>
-                        <p>কোর্স শেষে আন্তর্জাতিক মানের ডিজিটাল ও প্রিন্টেড সার্টিফিকেট।</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="service-card h-100">
-                        <div class="service-icon-wrap"><i class="fa-solid fa-infinity"></i></div>
-                        <h5>আজীবন অ্যাক্সেস</h5>
-                        <p>রেকর্ডেড ভিডিও লেসনে সারাজীবন অ্যাক্সেস — যেকোনো সময় শিখুন।</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -481,7 +496,7 @@
                 ];
                 $hasGallery = $homeGalleryImages && $homeGalleryImages->count() > 0;
             @endphp
-            <div class="row g-3">
+            <div class="row g-3 justify-content-center">
                 @if($hasGallery)
                     @foreach($homeGalleryImages as $idx => $gimg)
                     <div class="col-lg-4 col-md-6">
@@ -519,77 +534,95 @@
     </div>
 
     {{-- Video Gallery --}}
+    @php
+        $vid_fallback = [
+            ['video_link'=>'KlX7Z5OrFrw','title'=>'TechPark English — আমাদের পরিচয়',             'description'=>'TechPark English কীভাবে আপনার ইংরেজি জীবন বদলে দিতে পারে।'],
+            ['video_link'=>'WBUqpFdbBHw','title'=>'Practical Spoken & Written English — Class 03','description'=>'প্র্যাক্টিক্যাল স্পোকেন ও রিটেন ইংলিশ কোর্সের তৃতীয় ক্লাস।'],
+            ['video_link'=>'OiuVG0VVGX8','title'=>'How to Use "Others" in English Grammar',      'description'=>'"Others" শব্দের সঠিক ব্যবহার — বিস্তারিত গ্রামার বিশ্লেষণ ও উদাহরণ সহ।'],
+            ['video_link'=>'iReyATpBxKw','title'=>'Learn 10 Tech-Related English Words',         'description'=>'প্রযুক্তি বিষয়ক ১০টি গুরুত্বপূর্ণ ইংরেজি শব্দ সহজ উদাহরণ দিয়ে শিখুন।'],
+        ];
+        $videos_list = (isset($our_videos) && $our_videos->count() > 0)
+            ? $our_videos
+            : collect($vid_fallback)->map(fn($v)=>(object)$v);
+    @endphp
     <section class="py-5 bg-white">
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="section-title mb-2">আমাদের ভিডিও গ্যালারি</h2>
                 <span class="section-subtitle">ইংরেজি শেখার ক্লাস, টিপস ও শিক্ষার্থীদের অভিজ্ঞতা</span>
             </div>
-            @php
-            $videos = [
-                ['id'=>'KlX7Z5OrFrw', 'title'=>'TechPark English — আমাদের পরিচয়',                  'desc'=>'TechPark English কীভাবে আপনার ইংরেজি জীবন বদলে দিতে পারে — জানুন এই বিশেষ ভিডিওতে।'],
-                ['id'=>'WBUqpFdbBHw', 'title'=>'Practical Spoken & Written English — Class 03',     'desc'=>'প্র্যাক্টিক্যাল স্পোকেন ও রিটেন ইংলিশ কোর্সের তৃতীয় ক্লাস। রোজকার ইংরেজি সহজে শিখুন।'],
-                ['id'=>'OiuVG0VVGX8', 'title'=>'How to Use "Others" in English Grammar',           'desc'=>'"Others" শব্দের সঠিক ব্যবহার — বিস্তারিত গ্রামার বিশ্লেষণ ও উদাহরণ সহ।'],
-                ['id'=>'iReyATpBxKw', 'title'=>'Learn 10 Tech-Related English Words',              'desc'=>'প্রযুক্তি বিষয়ক ১০টি গুরুত্বপূর্ণ ইংরেজি শব্দ সহজ উদাহরণ দিয়ে শিখুন।'],
-            ];
-            @endphp
-            <div class="row g-4">
-                @foreach($videos as $video)
+            <div class="row g-4 justify-content-center">
+                @foreach($videos_list as $video)
+                @php
+                    preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $video->video_link ?? '', $vm);
+                    $vid_id = $vm[1] ?? $video->video_link;
+                @endphp
                 <div class="col-lg-6">
                     <div class="vid-card">
-                        <div class="vid-thumb-wrap" onclick="openYtModal('{{ $video['id'] }}')">
-                            <img src="https://img.youtube.com/vi/{{ $video['id'] }}/maxresdefault.jpg"
-                                 alt="{{ $video['title'] }}"
-                                 onerror="this.src='https://img.youtube.com/vi/{{ $video['id'] }}/hqdefault.jpg'">
+                        <div class="vid-thumb-wrap" onclick="openYtModal('{{ $vid_id }}')">
+                            <img src="https://img.youtube.com/vi/{{ $vid_id }}/maxresdefault.jpg"
+                                 alt="{{ $video->title }}"
+                                 onerror="this.src='https://img.youtube.com/vi/{{ $vid_id }}/hqdefault.jpg'">
                             <div class="vid-play-btn"><i class="fa-solid fa-play"></i></div>
                         </div>
                         <div class="vid-info">
-                            <h6>{{ $video['title'] }}</h6>
-                            <p>{{ $video['desc'] }}</p>
+                            <h6>{{ $video->title }}</h6>
+                            <p>{{ $video->description }}</p>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
             <div class="text-center mt-5">
-                <a href="https://www.youtube.com/@TechParkEnglish" target="_blank" rel="noopener" class="btn-tpe-fill">
-                    <i class="fa-brands fa-youtube me-2"></i> YouTube চ্যানেলে সব ভিডিও দেখুন
+                <a href="{{ route('videos') }}" class="btn-tpe-fill">
+                    <i class="fa-solid fa-play-circle me-2"></i> সব ভিডিও দেখুন
                 </a>
             </div>
         </div>
     </section>
 
     {{-- Professional Trainers --}}
+    @php
+        $trainers_list = (isset($course_instructors) && $course_instructors->count() > 0)
+            ? $course_instructors
+            : collect([
+                (object)['full_name'=>'Md. Ahsan Habib','designation'=>'Lead Trainer & Founder',  'short_description'=>'৬+ বছরের অভিজ্ঞতা — IELTS ও Spoken English বিশেষজ্ঞ।','image'=>null,'facebook'=>null,'linkedin'=>null,'instagram'=>null,'slug'=>null],
+                (object)['full_name'=>'Farhan Ahmed',   'designation'=>'Senior English Trainer',  'short_description'=>'৫ বছরের অভিজ্ঞতা — Phonetics ও Pronunciation বিশেষজ্ঞ।', 'image'=>null,'facebook'=>null,'linkedin'=>null,'instagram'=>null,'slug'=>null],
+                (object)['full_name'=>'Nusrat Jahan',   'designation'=>'English Writing Expert',  'short_description'=>'৪ বছরের অভিজ্ঞতা — Academic ও Business Writing বিশেষজ্ঞ।','image'=>null,'facebook'=>null,'linkedin'=>null,'instagram'=>null,'slug'=>null],
+                (object)['full_name'=>'Kamrul Islam',   'designation'=>'IELTS Specialist',        'short_description'=>'৬ বছরের অভিজ্ঞতা — IELTS Band 8+ অর্জনকারী প্রশিক্ষক।', 'image'=>null,'facebook'=>null,'linkedin'=>null,'instagram'=>null,'slug'=>null],
+            ]);
+    @endphp
     <section class="py-5 bg-soft">
         <div class="container py-4">
             <div class="text-center mb-5">
                 <h2 class="section-title mb-2">আমাদের প্রফেশনাল ট্রেইনার</h2>
                 <span class="section-subtitle">অভিজ্ঞ ও দক্ষ প্রশিক্ষকদের তত্ত্বাবধানে আপনার ইংরেজি শিখুন</span>
             </div>
-            @php
-            $trainers = [
-                ['name'=>'Md. Ahsan Habib',  'desig'=>'Lead Trainer & Founder',    'exp'=>'৬+ বছরের অভিজ্ঞতা — IELTS ও Spoken English বিশেষজ্ঞ।',       'img'=>'https://dummyimage.com/400x500/002147/fff&text=Trainer+1'],
-                ['name'=>'Farhan Ahmed',      'desig'=>'Senior English Trainer',    'exp'=>'৫ বছরের অভিজ্ঞতা — Phonetics ও Pronunciation বিশেষজ্ঞ।',       'img'=>'https://dummyimage.com/400x500/003b7a/fff&text=Trainer+2'],
-                ['name'=>'Nusrat Jahan',      'desig'=>'English Writing Expert',    'exp'=>'৪ বছরের অভিজ্ঞতা — Academic ও Business Writing বিশেষজ্ঞ।',     'img'=>'https://dummyimage.com/400x500/004080/fff&text=Trainer+3'],
-                ['name'=>'Kamrul Islam',      'desig'=>'IELTS Specialist',          'exp'=>'৬ বছরের অভিজ্ঞতা — IELTS Band 8+ অর্জনকারী প্রশিক্ষক।',       'img'=>'https://dummyimage.com/400x500/001a3d/fff&text=Trainer+4'],
-            ];
-            @endphp
             <div class="row g-4 justify-content-center">
-                @foreach($trainers as $trainer)
+                @foreach($trainers_list as $trainer)
+                @php
+                    $t_img = $trainer->image ? asset($trainer->image) : 'https://dummyimage.com/400x500/002147/fff&text='.urlencode(strtoupper(substr($trainer->full_name ?? 'T', 0, 1)));
+                @endphp
                 <div class="col-lg-3 col-md-6">
                     <div class="trainer-card">
                         <div class="trainer-img-wrap">
-                            <img src="{{ $trainer['img'] }}" alt="{{ $trainer['name'] }}">
+                            <img src="{{ $t_img }}" alt="{{ $trainer->full_name }}">
                             <div class="trainer-social-overlay">
-                                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                                @if(!empty($trainer->facebook))
+                                <a href="{{ $trainer->facebook }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                                @endif
+                                @if(!empty($trainer->linkedin))
+                                <a href="{{ $trainer->linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                @endif
+                                @if(!empty($trainer->instagram))
+                                <a href="{{ $trainer->instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                                @endif
                             </div>
                         </div>
                         <div class="trainer-info">
-                            <h5>{{ $trainer['name'] }}</h5>
-                            <span class="desig">{{ $trainer['desig'] }}</span>
-                            <p>{{ $trainer['exp'] }}</p>
+                            <h5>{{ $trainer->full_name }}</h5>
+                            <span class="desig">{{ $trainer->designation }}</span>
+                            <p>{{ Str::limit(strip_tags($trainer->short_description ?? ''), 100) }}</p>
                         </div>
                     </div>
                 </div>
@@ -599,24 +632,54 @@
     </section>
 
     {{-- Free Seminar --}}
+    @php
+        $fsem = $featured_seminar ?? null;
+        $fsem_title = $fsem ? $fsem->title : null;
+        $fsem_desc  = $fsem ? $fsem->description : null;
+        $fsem_date  = $fsem ? \Carbon\Carbon::parse($fsem->date_time) : null;
+        $fsem_days_left = $fsem_date ? (int)\Carbon\Carbon::now()->diffInDays($fsem_date, false) : null;
+        $fsem_is_today  = $fsem_date ? $fsem_date->isToday() : false;
+    @endphp
     <section class="seminar-hero">
         <div class="container position-relative" style="z-index:1;">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6">
-                    <span class="seminar-badge"><i class="fa-solid fa-bolt me-2"></i> সম্পূর্ণ বিনামূল্যে</span>
-                    <h2 class="fw-bold text-white mb-3" style="font-size:2.3rem; line-height:1.3;">ফ্রি সেমিনারে <br><span style="color:#fab005;">যোগ দিন আজই!</span></h2>
-                    <p class="mb-4" style="color:rgba(255,255,255,0.65); font-size:0.95rem; line-height:1.8;">আমাদের বিশেষজ্ঞ প্রশিক্ষকদের সাথে সরাসরি কথা বলুন। ইংরেজি শেখার সেরা কৌশল ও রোডম্যাপ জানুন একদম বিনামূল্যে।</p>
+                    <span class="seminar-badge">
+                        <i class="fa-solid fa-bolt me-2"></i>
+                        {{ $fsem_is_today ? 'আজকের সেমিনার' : 'সম্পূর্ণ বিনামূল্যে' }}
+                    </span>
+                    @if($fsem)
+                        <h2 class="fw-bold text-white mb-2" style="font-size:2.1rem; line-height:1.3;">{{ $fsem_title }}</h2>
+                        @if($fsem_desc)
+                        <p class="mb-3" style="color:rgba(255,255,255,0.65); font-size:0.95rem; line-height:1.8;">{!! Str::limit(strip_tags($fsem_desc), 200) !!}</p>
+                        @endif
+                        <div class="d-flex flex-wrap gap-3 mb-4" style="font-size:0.85rem; color:rgba(255,255,255,0.6);">
+                            @if($fsem_is_today)
+                                <span><i class="fa-solid fa-calendar me-1" style="color:#fab005;"></i> আজকে</span>
+                            @elseif($fsem_days_left !== null && $fsem_days_left > 0)
+                                <span><i class="fa-solid fa-calendar me-1" style="color:#fab005;"></i> {{ $fsem_days_left }} দিন বাকী</span>
+                            @endif
+                            <span><i class="fa-solid fa-clock me-1" style="color:#fab005;"></i> {{ $fsem_date->format('d M Y, h:i A') }}</span>
+                            <span><i class="fa-solid fa-location-dot me-1" style="color:#fab005;"></i> অনলাইন / অফলাইন</span>
+                        </div>
+                    @else
+                        <h2 class="fw-bold text-white mb-3" style="font-size:2.3rem; line-height:1.3;">ফ্রি সেমিনারে <br><span style="color:#fab005;">যোগ দিন আজই!</span></h2>
+                        <p class="mb-4" style="color:rgba(255,255,255,0.65); font-size:0.95rem; line-height:1.8;">আমাদের বিশেষজ্ঞ প্রশিক্ষকদের সাথে সরাসরি কথা বলুন। ইংরেজি শেখার সেরা কৌশল ও রোডম্যাপ জানুন একদম বিনামূল্যে।</p>
+                        <div class="d-flex flex-wrap gap-3 mb-4" style="font-size:0.85rem; color:rgba(255,255,255,0.6);">
+                            <span><i class="fa-solid fa-calendar me-1" style="color:#fab005;"></i> প্রতি শুক্রবার</span>
+                            <span><i class="fa-solid fa-clock me-1" style="color:#fab005;"></i> বিকাল ৩:০০ টা</span>
+                            <span><i class="fa-solid fa-location-dot me-1" style="color:#fab005;"></i> অনলাইন / অফলাইন</span>
+                        </div>
+                    @endif
                     <div class="row g-3 mb-4">
                         <div class="col-sm-6"><div class="seminar-feature"><div class="seminar-feature-icon"><i class="fa-solid fa-microphone"></i></div><div><div class="text-white fw-bold" style="font-size:0.88rem;">স্পিকিং সেশন</div><div style="color:rgba(255,255,255,0.55); font-size:0.76rem;">লাইভ প্র্যাক্টিস সেশন</div></div></div></div>
                         <div class="col-sm-6"><div class="seminar-feature"><div class="seminar-feature-icon"><i class="fa-solid fa-lightbulb"></i></div><div><div class="text-white fw-bold" style="font-size:0.88rem;">টিপস & ট্রিকস</div><div style="color:rgba(255,255,255,0.55); font-size:0.76rem;">প্রমাণিত কৌশল শিখুন</div></div></div></div>
                         <div class="col-sm-6"><div class="seminar-feature"><div class="seminar-feature-icon"><i class="fa-solid fa-circle-question"></i></div><div><div class="text-white fw-bold" style="font-size:0.88rem;">Q&A সেশন</div><div style="color:rgba(255,255,255,0.55); font-size:0.76rem;">সরাসরি প্রশ্ন করুন</div></div></div></div>
                         <div class="col-sm-6"><div class="seminar-feature"><div class="seminar-feature-icon"><i class="fa-solid fa-gift"></i></div><div><div class="text-white fw-bold" style="font-size:0.88rem;">ফ্রি উপহার</div><div style="color:rgba(255,255,255,0.55); font-size:0.76rem;">স্টাডি ম্যাটেরিয়াল পাবেন</div></div></div></div>
                     </div>
-                    <div class="d-flex flex-wrap gap-3" style="font-size:0.85rem; color:rgba(255,255,255,0.6);">
-                        <span><i class="fa-solid fa-calendar me-1" style="color:#fab005;"></i> প্রতি শুক্রবার</span>
-                        <span><i class="fa-solid fa-clock me-1" style="color:#fab005;"></i> বিকাল ৩:০০ টা</span>
-                        <span><i class="fa-solid fa-location-dot me-1" style="color:#fab005;"></i> অনলাইন / অফলাইন</span>
-                    </div>
+                    <a href="{{ route('all-seminers') }}" class="btn-tpe-fill" style="display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fa-solid fa-calendar-days"></i> আসন্ন সব সেমিনার দেখুন
+                    </a>
                 </div>
                 <div class="col-lg-6">
                     <div class="seminar-form-card">
@@ -624,13 +687,16 @@
                             <h4 class="fw-bold mb-1" style="color:#002147;">ফ্রি রেজিস্ট্রেশন করুন</h4>
                             <p class="text-muted mb-0" style="font-size:0.85rem;">মাত্র ৩০ সেকেন্ডে রেজিস্ট্রেশন সম্পন্ন করুন</p>
                         </div>
-                        <form action="#">
+                        <form id="home_seminar_form" onsubmit="registerHomeSeminar(event)">
                             @csrf
+                            @if($fsem)
+                                <input type="hidden" name="seminar_id" value="{{ $fsem->id }}">
+                            @endif
                             <div class="row g-3">
-                                <div class="col-12"><label>আপনার নাম *</label><input type="text" class="form-control" placeholder="আপনার পুরো নাম লিখুন" required></div>
-                                <div class="col-12"><label>ফোন নম্বর *</label><input type="tel" class="form-control" placeholder="01XXXXXXXXX" required></div>
-                                <div class="col-12"><label>ইমেইল (ঐচ্ছিক)</label><input type="email" class="form-control" placeholder="your@email.com"></div>
-                                <div class="col-12"><label>সেমিনার ধরন</label><select class="form-select form-control"><option value="online">অনলাইন সেমিনার</option><option value="offline">অফলাইন সেমিনার (ঢাকা)</option></select></div>
+                                <div class="col-12"><label>আপনার নাম *</label><input type="text" name="full_name" class="form-control" placeholder="আপনার পুরো নাম লিখুন" required></div>
+                                <div class="col-12"><label>ফোন নম্বর *</label><input type="tel" name="phone_number" class="form-control" placeholder="01XXXXXXXXX" required></div>
+                                <div class="col-12"><label>ইমেইল (ঐচ্ছিক)</label><input type="email" name="email" class="form-control" placeholder="your@email.com"></div>
+                                <div class="col-12"><label>ঠিকানা</label><textarea name="address" class="form-control" rows="2" placeholder="আপনার ঠিকানা লিখুন"></textarea></div>
                                 <div class="col-12 mt-2"><button type="submit" class="btn-seminar"><i class="fa-solid fa-paper-plane me-2"></i> ফ্রি রেজিস্ট্রেশন করুন</button></div>
                                 <div class="col-12 text-center"><span class="text-muted" style="font-size:0.8rem;"><i class="fa-solid fa-shield-halved text-success me-1"></i> আপনার তথ্য সম্পূর্ণ নিরাপদ</span></div>
                             </div>
@@ -641,84 +707,154 @@
         </div>
     </section>
 
-    {{-- Task 7: Success Stories — professional --}}
-    <section class="py-5 testi-section">
-        <div class="container py-4">
+    {{-- Success Stories --}}
+    <section class="py-5 marquee-section" style="background:linear-gradient(135deg,#f8fbff 0%,#fff8e6 100%);">
+        <div class="container py-2">
             <div class="text-center mb-5">
                 <h2 class="section-title mb-2">সফল শিক্ষার্থীদের গল্প</h2>
                 <span class="section-subtitle">হাজার হাজার শিক্ষার্থীর জীবন বদলে দিয়েছে TechPark English</span>
             </div>
+        </div>
 
-            {{-- Featured Testimonial --}}
-            <div class="testi-featured">
-                <blockquote>"TechPark English-এ আসার আগে আমি ইংরেজিতে একটি বাক্যও বলতে পারতাম না। মাত্র দুই মাসের রেসিডেন্সিয়াল কোর্সে আমার পুরো জীবন বদলে গেছে। এখন আমি অফিসে, ইন্টারভিউতে, সর্বত্র ইংরেজিতে স্বাচ্ছন্দ্যে কথা বলতে পারি।"</blockquote>
-                <div class="testi-featured-author">
-                    @if(isset($success_stories) && $success_stories->count() > 0)
-                        <img src="{{ $success_stories->first()->image ? asset($success_stories->first()->image) : 'https://dummyimage.com/100x100/002147/fff&text=S' }}" alt="{{ $success_stories->first()->name }}">
-                        <div>
-                            <div class="name">{{ $success_stories->first()->name }}</div>
-                            <div class="role">{{ $success_stories->first()->designation ?? 'Spoken English Graduate' }}</div>
-                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        @php
+            $has_stories = isset($success_stories) && $success_stories->count() > 0;
+            if ($has_stories) {
+                $all_stories = $success_stories->values();
+                $row1 = $all_stories->filter(fn($s, $i) => $i % 2 === 0)->values();
+                $row2 = $all_stories->filter(fn($s, $i) => $i % 2 !== 0)->values();
+                if ($row2->isEmpty()) { $row2 = $row1; }
+            }
+        @endphp
+
+        @if($has_stories)
+            {{-- Row 1: left animation --}}
+            <div class="marquee-row-wrap mb-4">
+                <div class="marquee-row">
+                    @foreach([$row1, $row1] as $set)
+                        @foreach($set as $story)
+                        @php
+                            preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $story->video_link ?? '', $mvm);
+                            $mv = $mvm[1] ?? null;
+                            $mimg = $mv ? "https://img.youtube.com/vi/{$mv}/mqdefault.jpg" : ($story->thumbnail_image ? asset($story->thumbnail_image) : 'https://dummyimage.com/300x155/002147/fff&text='.strtoupper(substr($story->title ?? 'S', 0, 1)));
+                        @endphp
+                        <div class="mq-card">
+                            @if($mv)
+                            <div class="mq-vid-thumb" onclick="openYtModal('{{ $mv }}')">
+                                <img src="{{ $mimg }}" alt="{{ $story->title }}" onerror="this.src='https://img.youtube.com/vi/{{ $mv }}/hqdefault.jpg'">
+                                <div class="mq-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            @else
+                            <div class="mq-vid-thumb" style="cursor:default;">
+                                <img src="{{ $mimg }}" alt="{{ $story->title }}">
+                            </div>
+                            @endif
+                            <div class="d-flex align-items-center gap-2 mt-1">
+                                <div>
+                                    <div class="mq-name">{{ $story->title }}</div>
+                                    <div class="mq-role">TechPark English Graduate</div>
+                                    <div class="mq-stars">
+                                        @for($si=0;$si<5;$si++)<i class="fa-solid fa-star"></i>@endfor
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    @else
-                        <img src="https://dummyimage.com/100x100/002147/fff&text=K" alt="Karim Ahmed">
-                        <div>
-                            <div class="name">Karim Ahmed</div>
-                            <div class="role">Software Engineer, Dhaka — IELTS 7.5</div>
-                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        </div>
-                    @endif
+                        @endforeach
+                    @endforeach
                 </div>
             </div>
 
-            {{-- Regular Testimonials --}}
-            <div class="row g-4">
-                @if(isset($success_stories) && $success_stories->count() > 0)
-                    @foreach($success_stories->skip(1)->take(3) as $story)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="testi-card h-100">
-                            <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                            <blockquote>"{{ Str::limit($story->description ?? 'TechPark English-এ পড়ে আমার ইংরেজিতে আত্মবিশ্বাস অনেক বেড়ে গেছে।', 160) }}"</blockquote>
-                            <div class="testi-divider"></div>
-                            <div class="testi-author">
-                                <img src="{{ $story->image ? asset($story->image) : 'https://dummyimage.com/100x100/002147/fff&text='.substr($story->name,0,1) }}" alt="{{ $story->name }}">
+            {{-- Row 2: right animation --}}
+            <div class="marquee-row-wrap">
+                <div class="marquee-row">
+                    @foreach([$row2, $row2] as $set)
+                        @foreach($set as $story)
+                        @php
+                            preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $story->video_link ?? '', $mvm2);
+                            $mv2 = $mvm2[1] ?? null;
+                            $mimg2 = $mv2 ? "https://img.youtube.com/vi/{$mv2}/mqdefault.jpg" : ($story->thumbnail_image ? asset($story->thumbnail_image) : 'https://dummyimage.com/300x155/002147/fff&text='.strtoupper(substr($story->title ?? 'S', 0, 1)));
+                        @endphp
+                        <div class="mq-card">
+                            @if($mv2)
+                            <div class="mq-vid-thumb" onclick="openYtModal('{{ $mv2 }}')">
+                                <img src="{{ $mimg2 }}" alt="{{ $story->title }}" onerror="this.src='https://img.youtube.com/vi/{{ $mv2 }}/hqdefault.jpg'">
+                                <div class="mq-play"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            @else
+                            <div class="mq-vid-thumb" style="cursor:default;">
+                                <img src="{{ $mimg2 }}" alt="{{ $story->title }}">
+                            </div>
+                            @endif
+                            <div class="d-flex align-items-center gap-2 mt-1">
                                 <div>
-                                    <div class="name">{{ $story->name }}</div>
-                                    <div class="role">{{ $story->designation ?? 'TechPark English Graduate' }}</div>
-                                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                                    <div class="mq-name">{{ $story->title }}</div>
+                                    <div class="mq-role">TechPark English Graduate</div>
+                                    <div class="mq-stars">
+                                        @for($si2=0;$si2<5;$si2++)<i class="fa-solid fa-star"></i>@endfor
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        @endforeach
                     @endforeach
-                @else
-                    @foreach([
-                        ['n'=>'Sadia Islam',   'r'=>'IELTS Band 7.0',          'q'=>'এখানে শুধু ক্লাস না, পুরো পরিবেশটাই ইংরেজি। ৩ মাসেই আমার স্পিকিং স্কিল অনেক উন্নত হয়েছে। প্রতিটি ক্লাস ছিল অত্যন্ত ইন্টারেক্টিভ।', 'i'=>'S'],
-                        ['n'=>'Rahim Uddin',   'r'=>'Business English Graduate','q'=>'ট্রেইনারদের গাইডলাইন ও ICU ক্লাস আমাকে দ্রুত উন্নতি করতে সাহায্য করেছে। এটি কেবল একটি ইংরেজি কোর্স নয়, জীবন বদলানোর সুযোগ।', 'i'=>'R'],
-                        ['n'=>'Naima Akter',   'r'=>'Spoken English Graduate',  'q'=>'TechPark English-এর ২৪/৭ ইংলিশ পরিবেশ আমাকে দ্রুত শিখতে সাহায্য করেছে। আজ আমি যেকোনো পরিস্থিতিতে ইংরেজিতে কথা বলতে পারি।', 'i'=>'N'],
-                    ] as $t)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="testi-card h-100">
-                            <div class="quote-icon"><i class="fa-solid fa-quote-left"></i></div>
-                            <blockquote>"{{ $t['q'] }}"</blockquote>
-                            <div class="testi-divider"></div>
-                            <div class="testi-author">
-                                <img src="https://dummyimage.com/100x100/002147/fff&text={{ $t['i'] }}" alt="{{ $t['n'] }}">
-                                <div>
-                                    <div class="name">{{ $t['n'] }}</div>
-                                    <div class="role">{{ $t['r'] }}</div>
-                                    <div class="testi-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                @endif
+                </div>
             </div>
+        @else
+            {{-- Fallback static marquee --}}
+            @php
+                $fb = [
+                    ['n'=>'Sadia Islam',  'r'=>'IELTS Band 7.0',           'i'=>'S'],
+                    ['n'=>'Rahim Uddin',  'r'=>'Business English Graduate', 'i'=>'R'],
+                    ['n'=>'Naima Akter',  'r'=>'Spoken English Graduate',   'i'=>'N'],
+                    ['n'=>'Karim Hossain','r'=>'IELTS Band 6.5',            'i'=>'K'],
+                    ['n'=>'Fatema Begum', 'r'=>'Spoken English Graduate',   'i'=>'F'],
+                    ['n'=>'Minhaj Ahmed', 'r'=>'Business English Graduate', 'i'=>'M'],
+                ];
+            @endphp
+            <div class="marquee-row-wrap mb-4">
+                <div class="marquee-row">
+                    @foreach([$fb, $fb] as $fbs)
+                        @foreach($fbs as $t)
+                        <div class="mq-card">
+                            <div class="mq-vid-thumb" style="cursor:default; background:#002147; display:flex; align-items:center; justify-content:center;">
+                                <span style="color:#fab005;font-size:2.5rem;font-weight:800;">{{ $t['i'] }}</span>
+                            </div>
+                            <div class="mt-1">
+                                <div class="mq-name">{{ $t['n'] }}</div>
+                                <div class="mq-role">{{ $t['r'] }}</div>
+                                <div class="mq-stars">
+                                    @for($si=0;$si<5;$si++)<i class="fa-solid fa-star"></i>@endfor
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    @endforeach
+                </div>
+            </div>
+            <div class="marquee-row-wrap">
+                <div class="marquee-row">
+                    @php $fb2 = array_reverse($fb); @endphp
+                    @foreach([$fb2, $fb2] as $fbs)
+                        @foreach($fbs as $t)
+                        <div class="mq-card">
+                            <div class="mq-vid-thumb" style="cursor:default; background:#002147; display:flex; align-items:center; justify-content:center;">
+                                <span style="color:#fab005;font-size:2.5rem;font-weight:800;">{{ $t['i'] }}</span>
+                            </div>
+                            <div class="mt-1">
+                                <div class="mq-name">{{ $t['n'] }}</div>
+                                <div class="mq-role">{{ $t['r'] }}</div>
+                                <div class="mq-stars">
+                                    @for($si=0;$si<5;$si++)<i class="fa-solid fa-star"></i>@endfor
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    @endforeach
+                </div>
+            </div>
+        @endif
 
-            <div class="text-center mt-5">
-                <a href="/about" class="btn-tpe-outline"><i class="fa-regular fa-star me-2"></i> আরও সফলতার গল্প দেখুন</a>
-            </div>
+        <div class="text-center mt-5">
+            <a href="{{ route('stories') }}" class="btn-tpe-outline"><i class="fa-regular fa-star me-2"></i> সব সফলতার গল্প দেখুন</a>
         </div>
     </section>
 
@@ -794,5 +930,31 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') { if(lb) closeLightbox(); if(yt) closeYtModal(); }
     if (lb) { if(e.key==='ArrowLeft') lightboxNav(-1); if(e.key==='ArrowRight') lightboxNav(1); }
 });
+
+// Home seminar registration
+function registerHomeSeminar(event) {
+    event.preventDefault();
+    var form = event.target;
+    var formData = new FormData(form);
+    var seminarId = formData.get('seminar_id');
+    if (!seminarId) {
+        alert('কোনো সক্রিয় সেমিনার নেই। অনুগ্রহ করে পরে চেষ্টা করুন।');
+        return;
+    }
+    fetch('/seminar-registration', {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+        body: formData
+    }).then(function(res) {
+        return res.json().then(function(data) { return { status: res.status, data: data }; });
+    }).then(function(res) {
+        if (res.status === 200) {
+            form.reset();
+            alert('রেজিস্ট্রেশন সফল হয়েছে!');
+        } else {
+            alert('ত্রুটি হয়েছে। আবার চেষ্টা করুন।');
+        }
+    });
+}
 </script>
 @endpush
