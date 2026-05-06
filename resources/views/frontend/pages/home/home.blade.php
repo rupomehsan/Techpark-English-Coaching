@@ -207,6 +207,15 @@
     .seminar-form-card label { font-size: 0.82rem; font-weight: 700; color: #444; margin-bottom: 6px; display: block; }
     .btn-seminar { background: linear-gradient(135deg, #002147, #003b7a); color: #fff; border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 1rem; width: 100%; transition: all 0.3s; cursor: pointer; }
     .btn-seminar:hover { background: linear-gradient(135deg, #fab005, #e09600); color: #fff; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(250,176,5,0.35); }
+    .seminar-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 700; text-decoration: none; transition: all 0.25s; }
+    .seminar-social-wa { background: rgba(37,211,102,0.18); border: 1px solid rgba(37,211,102,0.45); color: #25d366; }
+    .seminar-social-wa:hover { background: #25d366; color: #fff; }
+    .seminar-social-fb { background: rgba(24,119,242,0.18); border: 1px solid rgba(24,119,242,0.45); color: #1877f2; }
+    .seminar-social-fb:hover { background: #1877f2; color: #fff; }
+    .seminar-social-tg { background: rgba(0,136,204,0.18); border: 1px solid rgba(0,136,204,0.45); color: #0088cc; }
+    .seminar-social-tg:hover { background: #0088cc; color: #fff; }
+    .seminar-poster-wrap { border-radius: 18px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,0.25); }
+    .seminar-poster-wrap img { width: 100%; height: auto; display: block; }
 
     /* ===== Marquee ===== */
     .marquee-section { overflow: hidden; }
@@ -391,50 +400,7 @@
         </div>
     </section>
 
-    {{-- Why Choose Us --}}
-    @php
-        $wy_title = $why_us->title       ?? 'কেন TechPark English বেছে নেবেন?';
-        $wy_desc  = $why_us->description ?? '<p>দেশের সেরা ইংরেজি শেখার পরিবেশ, বিশেষজ্ঞ শিক্ষক এবং প্রমাণিত পদ্ধতিতে আপনার সাফল্য নিশ্চিত করা হয়।</p>';
-        $wy_video = $why_us->video_link  ?? 'KlX7Z5OrFrw';
-        preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $wy_video, $wy_vid_match);
-        $wy_vid_id = $wy_vid_match[1] ?? $wy_video;
-    @endphp
-    <section class="py-5 why-section">
-        <div class="container py-4">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-6">
-                    <h2 class="fw-bold mb-3" style="color:#002147; font-size:2rem; line-height:1.3;">{!! $wy_title !!}</h2>
-                    <div class="why-desc-content" style="font-size:0.95rem; line-height:1.8; color:#555;">
-                        {!! $wy_desc !!}
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="video-thumb-wrap" onclick="openYtModal('{{ $wy_vid_id }}')">
-                        <img src="https://img.youtube.com/vi/{{ $wy_vid_id }}/maxresdefault.jpg"
-                             alt="TechPark English Video"
-                             onerror="this.src='https://img.youtube.com/vi/{{ $wy_vid_id }}/hqdefault.jpg'">
-                        <div class="play-overlay">
-                            <div class="play-circle"><i class="fa-solid fa-play"></i></div>
-                        </div>
-                    </div>
-                    <p class="text-center text-muted small mt-3 mb-0">
-                        <i class="fa-brands fa-youtube text-danger me-1"></i>
-                        TechPark English — আমাদের ইউটিউব চ্যানেলে ভিজিট করুন
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- YouTube Modal --}}
-    <div class="yt-modal" id="ytModal" onclick="ytModalBgClose(event)">
-        <div class="yt-modal-inner">
-            <button class="yt-modal-close" onclick="closeYtModal()"><i class="fa-solid fa-xmark"></i></button>
-            <iframe id="ytIframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
-        </div>
-    </div>
-
-    {{-- Our Services --}}
+      {{-- Our Services --}}
     @php
         $svc_fallback = [
             ['icon'=>'fa-solid fa-bed',               'title'=>'আবাসন ব্যবস্থা',        'description'=>'সুবিধাজনক হোস্টেল সুবিধা সহ ২৪/৭ ইংরেজি পরিবেশ নিশ্চিত করা হয়।'],
@@ -473,6 +439,51 @@
             </div>
         </div>
     </section>
+
+
+    {{-- Why Choose Us --}}
+    @php
+        $wy_title = $why_us->title       ?? 'কেন TechPark English বেছে নেবেন?';
+        $wy_desc  = $why_us->description ?? '<p>দেশের সেরা ইংরেজি শেখার পরিবেশ, বিশেষজ্ঞ শিক্ষক এবং প্রমাণিত পদ্ধতিতে আপনার সাফল্য নিশ্চিত করা হয়।</p>';
+        $wy_video = $why_us->video_link  ?? 'KlX7Z5OrFrw';
+        preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $wy_video, $wy_vid_match);
+        $wy_vid_id = $wy_vid_match[1] ?? $wy_video;
+    @endphp
+    <section class="py-5 why-section">
+        <div class="container py-4">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-3" style="color:#002147; font-size:2rem; line-height:1.3;">{!! str_replace('TechPark English', '<span style="background:linear-gradient(135deg,#fab005,#ff6b35,#e91e63);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">TechPark English</span>', $wy_title) !!}</h2>
+                    <div class="why-desc-content" style="font-size:0.95rem; line-height:1.8; color:#555;">
+                        {!! $wy_desc !!}
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="video-thumb-wrap" onclick="openYtModal('{{ $wy_vid_id }}')">
+                        <img src="https://img.youtube.com/vi/{{ $wy_vid_id }}/maxresdefault.jpg"
+                             alt="TechPark English Video"
+                             onerror="this.src='https://img.youtube.com/vi/{{ $wy_vid_id }}/hqdefault.jpg'">
+                        <div class="play-overlay">
+                            <div class="play-circle"><i class="fa-solid fa-play"></i></div>
+                        </div>
+                    </div>
+                    <p class="text-center text-muted small mt-3 mb-0">
+                        <i class="fa-brands fa-youtube text-danger me-1"></i>
+                        TechPark English — আমাদের ইউটিউব চ্যানেলে ভিজিট করুন
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- YouTube Modal --}}
+    <div class="yt-modal" id="ytModal" onclick="ytModalBgClose(event)">
+        <div class="yt-modal-inner">
+            <button class="yt-modal-close" onclick="closeYtModal()"><i class="fa-solid fa-xmark"></i></button>
+            <iframe id="ytIframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+        </div>
+    </div>
+
 
     {{-- Task 6: Photo Gallery — dynamic from Gallery model --}}
     <section class="py-5 bg-soft">
@@ -639,6 +650,7 @@
         $fsem_date  = $fsem ? \Carbon\Carbon::parse($fsem->date_time) : null;
         $fsem_days_left = $fsem_date ? (int)\Carbon\Carbon::now()->diffInDays($fsem_date, false) : null;
         $fsem_is_today  = $fsem_date ? $fsem_date->isToday() : false;
+        $fsem_id  = $fsem ? $fsem->id : null;
     @endphp
     <section class="seminar-hero">
         <div class="container position-relative" style="z-index:1;">
@@ -677,11 +689,38 @@
                         <div class="col-sm-6"><div class="seminar-feature"><div class="seminar-feature-icon"><i class="fa-solid fa-circle-question"></i></div><div><div class="text-white fw-bold" style="font-size:0.88rem;">Q&A সেশন</div><div style="color:rgba(255,255,255,0.55); font-size:0.76rem;">সরাসরি প্রশ্ন করুন</div></div></div></div>
                         <div class="col-sm-6"><div class="seminar-feature"><div class="seminar-feature-icon"><i class="fa-solid fa-gift"></i></div><div><div class="text-white fw-bold" style="font-size:0.88rem;">ফ্রি উপহার</div><div style="color:rgba(255,255,255,0.55); font-size:0.76rem;">স্টাডি ম্যাটেরিয়াল পাবেন</div></div></div></div>
                     </div>
-                    <a href="{{ route('all-seminers') }}" class="btn-tpe-fill" style="display:inline-flex; align-items:center; gap:8px;">
+
+                    @if($fsem && ($fsem->whatsapp_group || $fsem->facebook_group || $fsem->telegram_group))
+                    <div class="d-flex flex-wrap gap-2 mt-4 align-items-center my-5">
+                        <span style="color:rgba(255,255,255,0.55); font-size:0.82rem; font-weight:600;">গ্রুপে যোগ দিন:</span>
+                        @if($fsem->whatsapp_group)
+                        <a href="{{ $fsem->whatsapp_group }}" target="_blank" rel="noopener" class="seminar-social-btn seminar-social-wa">
+                            <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                        </a>
+                        @endif
+                        @if($fsem->facebook_group)
+                        <a href="{{ $fsem->facebook_group }}" target="_blank" rel="noopener" class="seminar-social-btn seminar-social-fb">
+                            <i class="fa-brands fa-facebook-f"></i> Facebook
+                        </a>
+                        @endif
+                        @if($fsem->telegram_group)
+                        <a href="{{ $fsem->telegram_group }}" target="_blank" rel="noopener" class="seminar-social-btn seminar-social-tg">
+                            <i class="fa-brands fa-telegram"></i> Telegram
+                        </a>
+                        @endif
+                    </div>
+                    @endif
+                    @if($fsem)
+                      <a href="{{ route('seminar.details', $fsem_id) }}" class="btn-tpe-fill" >
+                            <i class="fa-solid fa-circle-info"></i> বিস্তারিত
+                        </a>
+                    @endif
+                    <a href="{{ route('all-seminers') }}" class="btn-tpe-fill mx-1" style="display:inline-flex; align-items:center; gap:8px;">
                         <i class="fa-solid fa-calendar-days"></i> আসন্ন সব সেমিনার দেখুন
                     </a>
                 </div>
                 <div class="col-lg-6">
+
                     <div class="seminar-form-card">
                         <div class="mb-4">
                             <h4 class="fw-bold mb-1" style="color:#002147;">ফ্রি রেজিস্ট্রেশন করুন</h4>

@@ -95,3 +95,6 @@ include_once base_path("app/Modules/Management/WebsiteManagement/WhyUs/Routes/Ro
 include_once base_path("app/Modules/Management/WebsiteManagement/OurService/Routes/Route.php");
 include_once base_path("app/Modules/Management/VideoManagement/OurVideoCategory/Routes/Route.php");
 include_once base_path("app/Modules/Management/VideoManagement/OurVideo/Routes/Route.php");
+include_once base_path("app/Modules/Management/LiveCourseManagement/LiveCourse/Routes/Route.php");
+include_once base_path("app/Modules/Management/LiveCourseManagement/LiveCourseBatch/Routes/Route.php");
+include_once base_path("app/Modules/Management/LiveCourseManagement/LiveCourseEnrollment/Routes/Route.php");

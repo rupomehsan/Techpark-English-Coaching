@@ -59,7 +59,29 @@
 
             <side-bar-drop-down-menus
                 :icon="`fa fa-plus`"
-                :menu_title="`CourseManagement`"
+                :menu_title="`LiveCourse`"
+                :menus="[
+                    {
+                        route_name: `AllLiveCourse`,
+                        title: `LiveCourse`,
+                        icon: `zmdi zmdi-dot-circle-alt`,
+                    },
+                    {
+                        route_name: `AllLiveCourseBatch`,
+                        title: `LiveCourseBatch`,
+                        icon: `zmdi zmdi-dot-circle-alt`,
+                    },
+                    {
+                        route_name: `AllLiveCourseEnrollment`,
+                        title: `LiveCourseEnrollment`,
+                        icon: `zmdi zmdi-dot-circle-alt`,
+                    },
+                ]"
+            />
+
+            <side-bar-drop-down-menus
+                :icon="`fa fa-plus`"
+                :menu_title="`RecordedCourse`"
                 :menus="[
                     {
                         route_name: `AllCourseCategory`,

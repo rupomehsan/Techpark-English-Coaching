@@ -3,29 +3,12 @@
 
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    {{-- @include('frontend.layouts.includes.pwa') --}}
 
     @if (!isset($seo))
-        @include('frontend.layouts.includes.meta', [
-            'seo' => (object) [
-                'title' => 'website',
-            ],
-        ])
+        @include('frontend.layouts.includes.meta', ['seo' => (object)['title' => 'TechPark English']])
     @else
         @include('frontend.layouts.includes.meta', ['seo' => (object) $seo])
     @endif
-
-    @php
-        // $website_about = \App\Models\WebsiteCoreInformation::where('status', 1)->first();
-        $website_about = 'gf';
-    @endphp
-
-    {{-- <link rel="shortcut icon" type="image/x-icon" href="{{ $meta->fabicon ?? asset(setting(key: 'fabicon')) }}"> --}}
-    {{-- <link rel="shortcut icon" type="image/x-icon" href="{{ $meta->fabicon ?? $website_about->fabicon }}"> --}}
     <link rel="stylesheet" href="{{ asset('css/plugins/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend') }}/assets/icon/fontawesome-free-6.2.0-web/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('frontend') }}/assets/styles/style.css">
@@ -100,7 +83,7 @@
         <!-- go_to_top_area end -->
     </section>
     <!-- chating_and_go_to_top_area end -->
-    
+
     <script>
         $('.owl-carousel:not(.no-global-owl)').owlCarousel({
             loop: true,

@@ -7,6 +7,9 @@ import SettingsRoutes from "../Management/Settings/setup/routes.js";
 //UserRoutes
 import UserRoutes from "../Management/UserManagement/User/setup/routes.js";
 //routes
+import LiveCourseEnrollmentRoutes from '../../../GlobalManagement/LiveCourseManagement/LiveCourseEnrollment/setup/routes.js';
+import LiveCourseBatchRoutes from '../../../GlobalManagement/LiveCourseManagement/LiveCourseBatch/setup/routes.js';
+import LiveCourseRoutes from '../../../GlobalManagement/LiveCourseManagement/LiveCourse/setup/routes.js';
 import OurVideoRoutes from '../../../GlobalManagement/VideoManagement/OurVideo/setup/routes.js';
 import OurVideoCategoryRoutes from '../../../GlobalManagement/VideoManagement/OurVideoCategory/setup/routes.js';
 import OurServiceRoutes from '../../../GlobalManagement/WebsiteManagement/OurService/setup/routes.js';
@@ -63,6 +66,9 @@ const routes = {
       name: "adminDashboard",
     },
     //management routes
+        LiveCourseEnrollmentRoutes,
+        LiveCourseBatchRoutes,
+        LiveCourseRoutes,
         OurVideoRoutes,
         OurVideoCategoryRoutes,
         OurServiceRoutes,

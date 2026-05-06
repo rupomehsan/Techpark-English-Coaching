@@ -53,16 +53,16 @@ class DataStoreValidation extends FormRequest
             'title' => 'required | sometimes',
             'description' => 'required | sometimes',
             'poster' => $imageRule,
-            'whatsapp_group' => 'required | sometimes',
-            'facebook_group' => 'required | sometimes',
-            'telegram_group' => 'required | sometimes',
+            'whatsapp_group' => 'sometimes',
+            'facebook_group' => 'sometimes',
+            'telegram_group' => 'sometimes',
             'date_time' => [
                 'required',
                 'sometimes',
                 'date',
                 'after:' . \Carbon\Carbon::now()->format('Y-m-d H:i:s'),
             ],
-            'promo_video' => 'required | sometimes',
+            'promo_video' => 'sometimes',
             'status' => ['sometimes', Rule::in(['active', 'inactive'])],
         ];
     }
