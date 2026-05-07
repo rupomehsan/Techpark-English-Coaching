@@ -51,6 +51,7 @@ export const initialState = {
     show_create_canvas: false,
     show_edit_canvas: false,
     show_details_canvas: false,
+    show_detail_modal: false,
 
     /*_______________*/
     cached: 0,

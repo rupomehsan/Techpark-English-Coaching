@@ -52,6 +52,7 @@ class DataStoreValidation extends FormRequest
             'transaction_id' => 'required | sometimes',
             'amount' => 'required | sometimes',
             'payment_details' => 'required | sometimes',
+            'payment_photo' => 'nullable | image | max:2048',
             'method' => 'required | sometimes',
             'status' => ['sometimes', Rule::in(['active', 'inactive'])],
         ];

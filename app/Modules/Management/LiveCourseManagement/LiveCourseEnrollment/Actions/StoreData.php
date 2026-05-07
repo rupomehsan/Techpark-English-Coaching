@@ -11,6 +11,14 @@ class StoreData
         try {
             $requestData = $request->validated();
 
+
+
+
+                if ($request->hasFile('payment_photo')) {
+                    $payment_photo = $request->file('payment_photo');
+                    $requestData['payment_photo'] = uploader($payment_photo, 'uploads/payment_photos');
+                }
+
             if ($data = self::$model::query()->create($requestData)) {
                 return messageResponse('Item added successfully', $data, 201);
             }

@@ -10,19 +10,19 @@
          * 
          */
 
-        'sandbox' => env('APP_DEBUG', true),
+        'sandbox' => env('SSLCZ_TESTMODE', env('APP_DEBUG', true)),
 
         /**
          * CREDENTIALS
          * --------------------------------
          * The API credentials given from SSLCommerz
-         * 
+         *
          */
 
         'store' => [
-            'id'          =>  env('SSLC_STORE_ID'),
-            'password'    =>  env('SSLC_STORE_PASSWORD'),
-            'currency'    =>  env('SSLC_STORE_CURRENCY'),
+            'id'          =>  env('SSLCZ_STORE_ID', env('SSLC_STORE_ID')),
+            'password'    =>  env('SSLCZ_STORE_PASSWORD', env('SSLC_STORE_PASSWORD')),
+            'currency'    =>  env('SSLCZ_STORE_CURRENCY', env('SSLC_STORE_CURRENCY', 'BDT')),
         ],
 
         /**

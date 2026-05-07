@@ -10,7 +10,12 @@
         "reload": "php artisan db:wipe && php artisan migrate && php artisan migrate --path=app/Modules/* && php artisan migrate --path=app/Modules/*/* && php artisan migrate --path=app/Modules/*/*/*  && php artisan migrate --path=app/Modules/*/*/*/*  && php artisan db:seed && php artisan passport:install",
         "migrate": "php artisan migrate --path=app/Modules/*/*/*",
         "deploy:project": "bash .deploy_tools/deploy_to_vps.sh",
-        "deploy:files": "bash .deploy_tools/deploy_to_vps_via_file_tracking.sh"
+        "deploy:files": "bash .deploy_tools/deploy_to_vps_via_file_tracking.sh",
+        "track": "node .deploy_tools/tracker.js",
+        "deploy:project": "bash .deploy_tools/deploy_to_vps.sh",
+        "deploy:files": "bash .deploy_tools/deploy_to_vps_via_file_tracking.sh",
+        "deploy:fix-404": "ssh -i $HOME/.ssh/id_rsa root@161.248.201.157 'cd /www/wwwroot/mydictionary.techparkit.info && bash .deploy_tools/fix_404.sh'",
+        "deploy:fix-permissions": "ssh -i $HOME/.ssh/id_rsa root@161.248.201.157 'cd /www/wwwroot/mydictionary.techparkit.info && chown -R www:www . && chmod -R 755 . && chmod -R 775 storage bootstrap/cache && echo \"✅ Permissions fixed!\"'"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",

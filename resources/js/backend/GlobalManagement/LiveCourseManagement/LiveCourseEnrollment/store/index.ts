@@ -26,6 +26,7 @@ import set_status from "./actions/set_status";
 import set_import_csv_modal from "./actions/set_import_csv_modal";
 import clear_selected from "./actions/clear_selected";
 import set_is_trashed_data from "./actions/set_is_trashed_data";
+import set_show_detail_modal from "./actions/set_show_detail_modal";
 import setup from "../setup";
 
 export const store = defineStore(setup.store_prefix, {
@@ -57,5 +58,6 @@ export const store = defineStore(setup.store_prefix, {
     clear_selected,
     reset_filter_criteria,
     set_is_trashed_data,
+    set_show_detail_modal,
   },
 });

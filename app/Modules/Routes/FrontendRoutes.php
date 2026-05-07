@@ -20,6 +20,7 @@ use App\Http\Controllers\Teacher\TeacherController;
 use App\Http\Controllers\Wishlist\WishlistController;
 use App\Http\Controllers\Course\CourseEnrollController;
 use App\Http\Controllers\Video\VideoController;
+use App\Http\Controllers\LiveCourse\LiveCourseController;
 use App\Modules\Controllers\Frontend\FrontendController;
 use App\Modules\Controllers\Frontend\Auth\AuthController as BackendAuthController;
 
@@ -64,6 +65,20 @@ Route::get('/trainers', [TeacherController::class, 'trainer_details'])->name("tr
 
 
 Route::get('/courses', [CourseController::class, 'courses'])->name("courses");
+
+// Live Course Routes
+Route::get('/live-courses', [LiveCourseController::class, 'index'])->name('live_courses');
+Route::get('/live-course/{slug}', [LiveCourseController::class, 'details'])->name('live_course_details');
+Route::get('/live-course/{slug}/enroll', [LiveCourseController::class, 'enroll'])->name('live_course_enroll');
+Route::post('/live-course/{slug}/enroll', [LiveCourseController::class, 'enroll_submit'])->name('live_course_enroll_submit');
+Route::get('/live-course/{slug}/enroll/success', [LiveCourseController::class, 'enroll_success'])->name('live_course_enroll_success');
+
+// Live Course SSLCommerz callbacks (CSRF exempt — see VerifyCsrfToken)
+Route::post('/live-course-payment/success', [LiveCourseController::class, 'ssl_success'])->name('live_course_ssl_success');
+Route::post('/live-course-payment/failure', [LiveCourseController::class, 'ssl_failure'])->name('live_course_ssl_failure');
+Route::post('/live-course-payment/cancel',  [LiveCourseController::class, 'ssl_cancel'])->name('live_course_ssl_cancel');
+Route::post('/live-course-payment/ipn',     [LiveCourseController::class, 'ssl_ipn'])->name('live_course_ssl_ipn');
+
 Route::get('/course/{slug}', [CourseController::class, 'course_details'])->name("course_details");
 
 Route::get('/blog', [BlogController::class, 'blog'])->name("blog");
@@ -87,12 +102,12 @@ Route::get('/cookies-policy', [PolicyController::class, 'cookies_policy'])->name
 Route::get('/terms-policy', [PolicyController::class, 'terms_policy'])->name("terms.policy");
 Route::get('/sitemap', [PolicyController::class, 'sitemap'])->name("sitemap.policy");
 
-// ssl commerz payment routes
+// ssl commerz payment routes (names match sslcommerz.php config defaults)
 Route::get('sslcommerz/order', [PaymentController::class, 'order'])->name('payment.order');
-Route::post('sslcommerz/success', [PaymentController::class, 'success'])->name('payment.success');
+Route::post('sslcommerz/success', [PaymentController::class, 'success'])->name('sslc.success');
 Route::post('sslcommerz/failure', [PaymentController::class, 'failure'])->name('sslc.failure');
 Route::post('sslcommerz/cancel', [PaymentController::class, 'cancel'])->name('sslc.cancel');
-Route::post('sslcommerz/ipn', [PaymentController::class, 'ipn'])->name('payment.ipn');
+Route::post('sslcommerz/ipn', [PaymentController::class, 'ipn'])->name('sslc.ipn');
 
 
 Route::get('/course/enroll/{slug}', [CourseEnrollController::class, 'course_enroll'])->name("course_enroll");

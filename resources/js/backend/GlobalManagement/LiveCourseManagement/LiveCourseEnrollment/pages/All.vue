@@ -55,6 +55,7 @@
         <quick-view />
         <filter-data />
         <import-modal />
+        <detail-modal />
 
 
     </div>
@@ -79,6 +80,7 @@ import ExportAllLoader from '../components/all_data_page/ExportAllLoader.vue';
 import QuickView from '../components/canvas/QuickView.vue';
 import FilterData from '../components/canvas/FilterData.vue';
 import ImportModal from '../components/all_data_page/ImportModal.vue';
+import DetailModal from '../components/all_data_page/DetailModal.vue';
 
 
 
@@ -146,6 +148,7 @@ export default {
         QuickView,
         FilterData,
         ImportModal,
+        DetailModal,
     },
 }
 </script>

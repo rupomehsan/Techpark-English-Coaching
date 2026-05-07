@@ -5,6 +5,19 @@ function setting($key, $multiple = false)
     try {
         $appSettings = $GLOBALS['app_settings'] ?? [];
 
+        // DB fallback: view composer hasn't run (e.g. controller redirect context)
+        if (empty($appSettings)) {
+            if ($multiple) {
+                return [];
+            }
+            return \DB::table('con_setting_title as p')
+                ->join('con_setting_title_values as v', 'p.id', '=', 'v.setting_title_id')
+                ->where('p.title', $key)
+                ->whereNull('p.deleted_at')
+                ->whereNull('v.deleted_at')
+                ->value('v.value') ?? '';
+        }
+
         // normalize collection to array
         if ($appSettings instanceof \Illuminate\Support\Collection) {
             $appSettings = $appSettings->toArray();

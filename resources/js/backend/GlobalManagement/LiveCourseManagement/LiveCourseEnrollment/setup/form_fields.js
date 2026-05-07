@@ -86,12 +86,20 @@ export default [
         ],
     },
     {
+        name: "payment_photo",
+        label: "Upload payment screenshot",
+        type: "file",
+        accept: "image/*",
+        value: "",
+    },
+    {
         name: "student_info",
         label: "Enter your student info",
         type: "textarea",
         placeholder: "Enter JSON data",
         value: "",
     },
+
     {
         name: "payment_details",
         label: "Enter your payment details",

@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
             ])
                 ->select('id', 'title')
                 ->get()->toArray();
+                // dd($app_settings);
 
             $GLOBALS['app_settings'] = $app_settings;
 
@@ -58,6 +59,6 @@ class AppServiceProvider extends ServiceProvider
             Config::set('mail.from.name', $emailConfig->mail_from_name);
         }
 
-        // dd(config('mail')); 
+        // dd(config('mail'));
     }
 }

@@ -2,6 +2,9 @@
     <span @click.prevent="active_row($event)" class="icon"></span>
     <div class="table_action_btns">
         <ul>
+            <li v-if="!is_trased_data">
+                <show-detail-modal :item="item" />
+            </li>
             <li  v-if="!is_trased_data">
                 <details-btn :item="item" />
             </li>
@@ -27,6 +30,7 @@
 import { mapWritableState } from 'pinia';
 import active_row from '../../helpers/table_active_row';
 import Details from './action_buttons/Details.vue';
+import ShowDetailModal from './action_buttons/ShowDetailModal.vue';
 import Edit from './action_buttons/Edit.vue';
 import InActive from './action_buttons/InActive.vue';
 import Destroy from './action_buttons/Destroy.vue';
@@ -41,6 +45,7 @@ export default {
         }
     },
     components: {
+        'show-detail-modal': ShowDetailModal,
         'details-btn': Details,
         'edit': Edit,
         'in-active': InActive,

@@ -11,17 +11,17 @@
        {{ (current_page - 1) * per_page + dataindex + 1 }}
       </td>
       <td v-else-if="row_item === 'image' || isImageFile(item[row_item])" class="text-wrap max-w-120">
-        <a :href="item[row_item] || '/avatar.png'" data-fancybox="gallery" :data-caption="`Image ${dataindex + 1}`">
-          <img :src="item[row_item] || '/avatar.png'" @error="handleImageError($event)"
-            style="width: 40px; height: 40px; object-fit: cover" alt="image" />
+        <a :href="imgSrc(item[row_item])" data-fancybox="gallery" :data-caption="`Image ${dataindex + 1}`">
+          <img :src="imgSrc(item[row_item])" @error="handleImageError($event)"
+            style="width: 40px; height: 40px; object-fit: cover; border-radius:4px;" alt="image" />
         </a>
       </td>
       <td v-else-if="isFileField(item[row_item])" class="text-wrap max-w-120">
         <template v-if="isImageFile(item[row_item])">
-          <a :href="item[row_item] || '/avatar.png'" data-fancybox="gallery"
+          <a :href="imgSrc(item[row_item])" data-fancybox="gallery"
             :data-caption="`${row_item} - Image ${dataindex + 1}`">
-            <img :src="item[row_item] || '/avatar.png'" @error="handleImageError($event)"
-              style="width: 60px; height: 40px; object-fit: cover" alt="image" />
+            <img :src="imgSrc(item[row_item])" @error="handleImageError($event)"
+              style="width: 60px; height: 40px; object-fit: cover; border-radius:4px;" alt="image" />
           </a>
         </template>
         <template v-else>
@@ -78,14 +78,15 @@ export default {
   },
 
   methods: {
+    imgSrc(path) {
+      if (!path) return '/avatar.png';
+      return path.startsWith('/') || path.startsWith('http') ? path : '/' + path;
+    },
+
     handleImageError(event) {
-      // When image fails to load, set src to avatar.png
       event.target.src = '/avatar.png';
-      // Also update the parent link href to avatar.png
       const parentLink = event.target.closest('a');
-      if (parentLink) {
-        parentLink.href = '/avatar.png';
-      }
+      if (parentLink) parentLink.href = '/avatar.png';
     },
 
     initFancybox() {

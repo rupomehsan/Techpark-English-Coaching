@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('payment_status', ['pending','partial','paid','refunded'])->nullable();
             $table->float('amount_paid')->nullable();
             $table->string('transaction_id', 255)->nullable();
+            $table->string('payment_photo', 255)->nullable();
             $table->float('amount')->nullable();
             $table->json('payment_details')->nullable();
             $table->string('method', 100)->nullable();

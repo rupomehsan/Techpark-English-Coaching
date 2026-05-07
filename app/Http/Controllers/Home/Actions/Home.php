@@ -18,6 +18,7 @@ use App\Modules\Management\WebsiteManagement\WhyUs\Models\Model as WhyUs;
 use App\Modules\Management\WebsiteManagement\OurService\Models\Model as OurService;
 use App\Modules\Management\VideoManagement\OurVideo\Models\Model as OurVideo;
 use App\Modules\Management\CourseManagement\CourseInstructors\Models\Model as CourseInstructor;
+use App\Modules\Management\LiveCourseManagement\LiveCourse\Models\Model as LiveCourse;
 
 
 class Home
@@ -70,6 +71,13 @@ class Home
                 ->first();
         }
 
+        // Live Courses (home section)
+        $live_courses = LiveCourse::active()
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('is_popular', 'desc')
+            ->limit(6)
+            ->get();
+
         $courses = $course['courses'];
         $course_types = $course['course_types'];
 
@@ -90,6 +98,7 @@ class Home
             'our_services' => $our_services,
             'our_videos' => $our_videos,
             'course_instructors' => $course_instructors,
+            'live_courses' => $live_courses,
         ];
 
 

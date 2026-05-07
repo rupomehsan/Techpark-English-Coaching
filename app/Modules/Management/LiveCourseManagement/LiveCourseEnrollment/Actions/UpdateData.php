@@ -13,6 +13,10 @@ class UpdateData
                 return messageResponse('Data not found...',$data, 404, 'error');
             }
             $requestData = $request->validated();
+              if ($request->hasFile('payment_photo')) {
+                    $payment_photo = $request->file('payment_photo');
+                    $requestData['payment_photo'] = uploader($payment_photo, 'uploads/payment_photos');
+                }
             $data->update($requestData);
             return messageResponse('Item updated successfully',$data, 201);
         } catch (\Exception $e) {

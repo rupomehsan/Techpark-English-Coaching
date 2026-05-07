@@ -51,7 +51,7 @@
     .stat-number { font-size: 2.6rem; font-weight: 800; line-height: 1; margin-bottom: 6px; background: linear-gradient(135deg, #fff 0%, #fab005 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .stat-label { font-size: 0.82rem; font-weight: 600; opacity: 0.75; }
 
-    /* ===== Courses ===== */
+    /* ===== Courses (old, kept for recorded section) ===== */
     .course-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.35s ease; background: #fff; overflow: hidden; }
     .course-card:hover { transform: translateY(-8px); box-shadow: 0 18px 45px rgba(0,33,71,0.13); }
     .course-card img { width: 100%; height: 200px; object-fit: cover; }
@@ -61,6 +61,52 @@
     .course-info { font-size: 0.8rem; color: #555; }
     .course-info i { color: #002147; width: 18px; text-align: center; margin-right: 4px; }
     .course-price { font-size: 1.2rem; font-weight: 800; color: #002147; }
+
+    /* ===== Live Courses Section ===== */
+    @@keyframes hm-blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    .hm-lc-section { background: linear-gradient(160deg,#f0f4fb 0%,#e8effe 100%); padding: 72px 0 80px; }
+    .hm-lc-label { display:inline-flex; align-items:center; gap:7px; background:rgba(233,30,99,0.1); border:1px solid rgba(233,30,99,0.35); color:#e91e63; font-size:0.7rem; font-weight:800; padding:6px 18px; border-radius:50px; margin-bottom:14px; letter-spacing:0.9px; text-transform:uppercase; }
+    .hm-live-dot { width:8px; height:8px; background:#e91e63; border-radius:50%; animation:hm-blink 1.2s infinite; display:inline-block; }
+    .hm-live-dot-sm { width:6px; height:6px; background:#fff; border-radius:50%; animation:hm-blink 1.2s infinite; display:inline-block; flex-shrink:0; }
+
+    /* Card */
+    .hm-lc-card { background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 4px 24px rgba(0,31,80,0.07); border:1px solid #e8eef8; transition:all 0.35s ease; display:flex; flex-direction:column; }
+    .hm-lc-card:hover { transform:translateY(-9px); box-shadow:0 22px 55px rgba(0,31,80,0.14); border-color:#d4dff5; }
+
+    /* Image */
+    .hm-lc-img-wrap { position:relative; overflow:hidden; flex-shrink:0; }
+    .hm-lc-img-wrap img { width:100%; height:210px; object-fit:cover; display:block; transition:transform 0.45s ease; }
+    .hm-lc-card:hover .hm-lc-img-wrap img { transform:scale(1.06); }
+
+    /* Discount ribbon — top right */
+    .hm-disc-ribbon { position:absolute; top:12px; right:12px; background:linear-gradient(135deg,#ff3d00,#d50000); color:#fff; font-size:0.72rem; font-weight:800; padding:5px 12px; border-radius:50px; box-shadow:0 3px 12px rgba(213,0,0,0.4); letter-spacing:0.3px; z-index:2; }
+
+    /* Type badge — top left */
+    .hm-lc-type-badge { position:absolute; top:12px; left:12px; background:rgba(233,30,99,0.88); backdrop-filter:blur(4px); color:#fff; font-size:0.63rem; font-weight:800; padding:5px 11px; border-radius:5px; letter-spacing:0.5px; display:flex; align-items:center; gap:5px; z-index:2; }
+
+    /* Popular badge — bottom left */
+    .hm-popular-badge { position:absolute; bottom:12px; left:12px; background:linear-gradient(135deg,#fab005,#e09600); color:#fff; font-size:0.67rem; font-weight:800; padding:4px 12px; border-radius:5px; display:flex; align-items:center; gap:5px; z-index:2; }
+
+    /* Body */
+    .hm-lc-body { padding:22px 22px 20px; flex:1; display:flex; flex-direction:column; }
+    .hm-lc-title { font-size:1.02rem; font-weight:800; color:#1a2540; line-height:1.42; margin-bottom:14px; }
+
+    /* Specs */
+    .hm-lc-specs { list-style:none; padding:0; margin:0 0 18px; display:flex; flex-direction:column; gap:6px; }
+    .hm-lc-specs li { font-size:0.81rem; color:#4a5a7a; display:flex; align-items:flex-start; gap:7px; }
+    .hm-lc-specs li i { color:#059669; font-size:0.72rem; margin-top:3px; flex-shrink:0; }
+
+    /* Footer */
+    .hm-lc-footer { margin-top:auto; padding-top:16px; border-top:1px solid #eef2fa; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .hm-lc-price-block { display:flex; align-items:baseline; gap:7px; }
+    .hm-lc-price { font-size:1.25rem; font-weight:900; color:#002147; line-height:1; }
+    .hm-lc-price-free { font-size:0.88rem; color:#059669; }
+    .hm-lc-old-price { font-size:0.8rem; color:#9aa8c0; text-decoration:line-through; }
+    .hm-lc-btns { display:flex; align-items:center; gap:8px; }
+    .hm-btn-outline { font-size:0.78rem; font-weight:700; color:#002147; background:#f0f4fb; border:1px solid #d4dff5; border-radius:8px; padding:8px 14px; text-decoration:none; transition:all 0.22s; white-space:nowrap; }
+    .hm-btn-outline:hover { background:#e0e8f7; border-color:#b0c4e8; color:#001830; }
+    .hm-btn-fill { font-size:0.78rem; font-weight:800; color:#fff; background:linear-gradient(135deg,#fab005,#e09600); border:none; border-radius:8px; padding:8px 16px; text-decoration:none; transition:all 0.25s; white-space:nowrap; box-shadow:0 4px 14px rgba(250,176,5,0.35); display:inline-flex; align-items:center; gap:6px; }
+    .hm-btn-fill:hover { background:linear-gradient(135deg,#e09600,#c07800); color:#fff; transform:translateY(-1px); box-shadow:0 7px 20px rgba(250,176,5,0.45); }
 
     /* ===== Why Choose Us ===== */
     .why-section { background: linear-gradient(135deg, #f0f5fb 0%, #e8f0fe 100%); }
@@ -259,6 +305,9 @@
     .testi-author .role { font-size: 0.76rem; color: #888; }
     .testi-stars { color: #fab005; font-size: 0.78rem; margin-top: 2px; }
 
+    /* ===== Live dot blink ===== */
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
     /* ===== CTA Footer ===== */
     .cta-footer { background: linear-gradient(135deg, #001830 0%, #002147 55%, #003b7a 100%); padding: 80px 0; position: relative; overflow: hidden; }
     .cta-footer::before { content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%); width:600px; height:600px; background:rgba(250,176,5,0.06); border-radius:50%; }
@@ -336,69 +385,101 @@
         </div>
     </section>
 
-    {{-- Courses Section --}}
-    <section class="py-5 bg-soft">
-        <div class="container py-3">
+
+    {{-- Live Courses Section --}}
+    @if(isset($live_courses) && $live_courses->count() > 0)
+    <section class="hm-lc-section">
+        <div class="container">
             <div class="text-center mb-5">
+                <div class="hm-lc-label">
+                    <span class="hm-live-dot"></span> লাইভ কোর্স
+                </div>
                 <h2 class="section-title">আমাদের কোর্স সমূহ</h2>
                 <span class="section-subtitle">রেসিডেন্সিয়াল ও অনলাইন — দুই মাধ্যমেই শিখুন</span>
             </div>
             <div class="row g-4 justify-content-center">
-                @if(isset($courses) && count($courses) > 0)
-                    @foreach($courses->take(3) as $course)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="course-card h-100">
-                            <img src="{{ $course->image ? asset($course->image) : 'https://dummyimage.com/600x400/00377a/fff&text=Course' }}" alt="{{ $course->title }}">
-                            <div class="card-body">
-                                <span class="course-badge">RESIDENTIAL / ONLINE</span>
-                                <h3 class="course-title">{{ $course->title ?? 'জিরো টু স্পোকেন ইংলিশ' }}</h3>
-                                <div class="course-info mb-4">
-                                    <p class="mb-2"><i class="fa-regular fa-clock"></i> <strong>মূল কোর্স:</strong> {{ $course->duration ?? '২ মাস' }}</p>
-                                    <p class="mb-2"><i class="fa-solid fa-calendar-days"></i> <strong>ক্লাস:</strong> সপ্তাহে ৫ দিন</p>
-                                    <p class="mb-0"><i class="fa-solid fa-list-ol"></i> <strong>মোট ক্লাস:</strong> 82</p>
+                @foreach($live_courses->take(6) as $lc)
+                @php
+                    $hm_disc = ($lc->regular_price > 0 && $lc->regular_price > $lc->sale_price && $lc->sale_price > 0)
+                        ? round(($lc->regular_price - $lc->sale_price) / $lc->regular_price * 100) : 0;
+                @endphp
+                <div class="col-lg-4 col-md-6">
+                    <div class="hm-lc-card h-100">
+
+                        {{-- Image --}}
+                        <div class="hm-lc-img-wrap">
+                            <img src="{{ $lc->thumbnail ? asset($lc->thumbnail) : 'https://dummyimage.com/600x400/003b7a/fff&text=Live+Course' }}"
+                                 alt="{{ $lc->title }}"
+                                 onerror="this.src='https://dummyimage.com/600x400/003b7a/fff&text=Live'">
+                            {{-- Discount ribbon --}}
+                            @if($hm_disc > 0)
+                            <div class="hm-disc-ribbon">{{ $hm_disc }}% ছাড়</div>
+                            @endif
+                            {{-- Live type badge --}}
+                            <div class="hm-lc-type-badge">
+                                <span class="hm-live-dot-sm"></span>
+                                {{ strtoupper($lc->live_course_type ?? 'LIVE') }}
+                            </div>
+                            @if($lc->is_popular)
+                            <div class="hm-popular-badge"><i class="fa-solid fa-fire-flame-curved"></i> জনপ্রিয়</div>
+                            @endif
+                        </div>
+
+                        {{-- Body --}}
+                        <div class="hm-lc-body">
+                            <h3 class="hm-lc-title">{{ $lc->title }}</h3>
+
+                            @php $cs = is_array($lc->course_specification) ? $lc->course_specification : json_decode($lc->course_specification, true); @endphp
+                            @if($cs && count($cs) > 0)
+                            <ul class="hm-lc-specs">
+                                @foreach(array_slice($cs, 0, 3) as $spec)
+                                <li>
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    {{ is_array($spec) ? ($spec['title'] ?? $spec['text'] ?? '') : $spec }}
+                                </li>
+                                @endforeach
+                            </ul>
+                            @endif
+
+                            {{-- Price + Buttons --}}
+                            <div class="hm-lc-footer">
+                                <div class="hm-lc-price-block">
+                                    @if($lc->sale_price)
+                                        <div class="hm-lc-price">৳{{ number_format($lc->sale_price) }}</div>
+                                        @if($lc->regular_price && $lc->regular_price > $lc->sale_price)
+                                        <div class="hm-lc-old-price">৳{{ number_format($lc->regular_price) }}</div>
+                                        @endif
+                                    @elseif($lc->regular_price)
+                                        <div class="hm-lc-price">৳{{ number_format($lc->regular_price) }}</div>
+                                    @else
+                                        <div class="hm-lc-price hm-lc-price-free">যোগাযোগ করুন</div>
+                                    @endif
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center border-top pt-3">
-                                    <div class="course-price">৳{{ number_format($course->fee ?? 25000) }} <small class="text-decoration-line-through text-muted" style="font-size:0.8rem;">৳{{ number_format(($course->fee ?? 25000) + 5000) }}</small></div>
-                                    <div class="d-flex gap-2">
-                                        <a href="/course/{{ $course->slug ?? '' }}" class="btn-tpe-outline" style="padding:6px 14px; font-size:0.78rem; border-width:1.5px;">Details</a>
-                                        <a href="/course/enroll/{{ $course->slug ?? '' }}" class="btn-tpe-fill" style="padding:6px 14px; font-size:0.78rem;">Enroll</a>
-                                    </div>
+                                <div class="hm-lc-btns">
+                                    <a href="{{ route('live_course_details', $lc->slug) }}" class="hm-btn-outline">
+                                        বিস্তারিত
+                                    </a>
+                                    <a href="{{ route('live_course_enroll', $lc->slug) }}" class="hm-btn-fill">
+                                        <i class="fa-solid fa-pen-to-square"></i> ভর্তি হন
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @endforeach
-                @else
-                    @for($i=1; $i<=3; $i++)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="course-card h-100">
-                            <img src="https://dummyimage.com/600x400/00377a/fff&text=Course+{{ $i }}" alt="Course {{ $i }}">
-                            <div class="card-body">
-                                <span class="course-badge">ZERO TO SPOKEN ENGLISH</span>
-                                <h3 class="course-title">জিরো টু স্পোকেন ইংলিশ (আবাসিক)</h3>
-                                <div class="course-info mb-4">
-                                    <p class="mb-2"><i class="fa-regular fa-clock"></i> <strong>মূল কোর্স:</strong> ২ মাস (৮ সপ্তাহ)</p>
-                                    <p class="mb-2"><i class="fa-solid fa-calendar-days"></i> <strong>ক্লাস:</strong> সপ্তাহে ৫ দিন</p>
-                                    <p class="mb-0"><i class="fa-solid fa-list-ol"></i> <strong>মোট ক্লাস:</strong> ৪২</p>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center border-top pt-3">
-                                    <div class="course-price">৳25,000 <small class="text-decoration-line-through text-muted" style="font-size:0.78rem;">৳30,000</small></div>
-                                    <div class="d-flex gap-2">
-                                        <a href="#" class="btn-tpe-outline" style="padding:6px 14px; font-size:0.78rem; border-width:1.5px;">Details</a>
-                                        <a href="#" class="btn-tpe-fill" style="padding:6px 14px; font-size:0.78rem;">Enroll</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endfor
-                @endif
+                </div>
+                @endforeach
             </div>
             <div class="text-center mt-5">
-                <a href="/courses" class="btn-tpe-fill"><i class="fa-solid fa-arrow-right-long me-2"></i> সকল কোর্স দেখুন</a>
+                <a href="{{ route('live_courses') }}" class="btn-tpe-fill">
+                    <i class="fa-solid fa-circle me-2" style="color:#ff4d6d;font-size:0.6rem;animation:blink 1.2s infinite;"></i>
+                    আমাদের সব কোর্স দেখুন
+                </a>
             </div>
         </div>
     </section>
+    @endif
+
+
 
       {{-- Our Services --}}
     @php
@@ -485,6 +566,75 @@
     </div>
 
 
+           {{-- Recorded  Courses Section --}}
+    <section class="py-5 bg-soft">
+        <div class="container py-3">
+            <div class="text-center mb-5">
+
+                 <h2 class="section-title">আমাদের অনলাইন রেকর্ডেড কোর্সসমূহ</h2>
+                <span class="section-subtitle">সরাসরি লাইভ ক্লাসে অংশ নিন — অভিজ্ঞ প্রশিক্ষকদের সাথে শিখুন</span>
+
+            </div>
+            <div class="row g-4 justify-content-center">
+                @if(isset($courses) && count($courses) > 0)
+                    @foreach($courses->take(3) as $course)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="course-card h-100">
+                            <img src="{{ $course->image ? asset($course->image) : 'https://dummyimage.com/600x400/00377a/fff&text=Course' }}" alt="{{ $course->title }}">
+                            <div class="card-body">
+                                <span class="course-badge">RESIDENTIAL / ONLINE</span>
+                                <h3 class="course-title">{{ $course->title ?? 'জিরো টু স্পোকেন ইংলিশ' }}</h3>
+                                <div class="course-info mb-4">
+                                    <p class="mb-2"><i class="fa-regular fa-clock"></i> <strong>মূল কোর্স:</strong> {{ $course->duration ?? '২ মাস' }}</p>
+                                    <p class="mb-2"><i class="fa-solid fa-calendar-days"></i> <strong>ক্লাস:</strong> সপ্তাহে ৫ দিন</p>
+                                    <p class="mb-0"><i class="fa-solid fa-list-ol"></i> <strong>মোট ক্লাস:</strong> 82</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                                    <div class="course-price">৳{{ number_format($course->fee ?? 25000) }} <small class="text-decoration-line-through text-muted" style="font-size:0.8rem;">৳{{ number_format(($course->fee ?? 25000) + 5000) }}</small></div>
+                                    <div class="d-flex gap-2">
+                                        <a href="/course/{{ $course->slug ?? '' }}" class="btn-tpe-outline" style="padding:6px 14px; font-size:0.78rem; border-width:1.5px;">Details</a>
+                                        <a href="/course/enroll/{{ $course->slug ?? '' }}" class="btn-tpe-fill" style="padding:6px 14px; font-size:0.78rem;">Enroll</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                @else
+                    @for($i=1; $i<=3; $i++)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="course-card h-100">
+                            <img src="https://dummyimage.com/600x400/00377a/fff&text=Course+{{ $i }}" alt="Course {{ $i }}">
+                            <div class="card-body">
+                                <span class="course-badge">ZERO TO SPOKEN ENGLISH</span>
+                                <h3 class="course-title">জিরো টু স্পোকেন ইংলিশ (আবাসিক)</h3>
+                                <div class="course-info mb-4">
+                                    <p class="mb-2"><i class="fa-regular fa-clock"></i> <strong>মূল কোর্স:</strong> ২ মাস (৮ সপ্তাহ)</p>
+                                    <p class="mb-2"><i class="fa-solid fa-calendar-days"></i> <strong>ক্লাস:</strong> সপ্তাহে ৫ দিন</p>
+                                    <p class="mb-0"><i class="fa-solid fa-list-ol"></i> <strong>মোট ক্লাস:</strong> ৪২</p>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                                    <div class="course-price">৳25,000 <small class="text-decoration-line-through text-muted" style="font-size:0.78rem;">৳30,000</small></div>
+                                    <div class="d-flex gap-2">
+                                        <a href="#" class="btn-tpe-outline" style="padding:6px 14px; font-size:0.78rem; border-width:1.5px;">Details</a>
+                                        <a href="#" class="btn-tpe-fill" style="padding:6px 14px; font-size:0.78rem;">Enroll</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endfor
+                @endif
+            </div>
+            <div class="text-center mt-5">
+                <a href="/courses" class="btn-tpe-fill"><i class="fa-solid fa-arrow-right-long me-2"></i> আমাদের অনলাইন রেকর্ডেড সকল কোর্স দেখুন</a>
+            </div>
+        </div>
+    </section>
+
+
+
+
     {{-- Task 6: Photo Gallery — dynamic from Gallery model --}}
     <section class="py-5 bg-soft">
         <div class="container py-4">
@@ -533,6 +683,7 @@
             </div>
         </div>
     </section>
+
 
     {{-- Lightbox --}}
     <div class="lightbox" id="lightbox" onclick="lightboxBgClose(event)">
@@ -592,6 +743,8 @@
         </div>
     </section>
 
+
+
     {{-- Professional Trainers --}}
     @php
         $trainers_list = (isset($course_instructors) && $course_instructors->count() > 0)
@@ -641,6 +794,8 @@
             </div>
         </div>
     </section>
+
+
 
     {{-- Free Seminar --}}
     @php

@@ -511,9 +511,11 @@
                             <div class="nav-area_all" onclick="active_menu_ber.classList.toggle('activee_class')"></div>
                             <li><a href="/" {{ request()->is('/') ? 'class=active_button' : '' }}><i class="fa-solid fa-house d-lg-none" style="width:16px;opacity:.6;"></i> Home</a></li>
                             <li><a href="/about" {{ request()->is('about') ? 'class=active_button' : '' }}><i class="fa-solid fa-circle-info d-lg-none" style="width:16px;opacity:.6;"></i> About</a></li>
-                            <li><a href="/courses" {{ request()->is('courses*') ? 'class=active_button' : '' }}><i class="fa-solid fa-book-open d-lg-none" style="width:16px;opacity:.6;"></i> Courses</a></li>
+                            <li><a href="/live-courses" {{ request()->is('live-courses') ? 'class=active_button' : '' }}><i class="fa-solid fa-book-open d-lg-none" style="width:16px;opacity:.6;"></i>Our Courses</a></li>
                             <li><a href="/gallery" {{ request()->is('gallery') ? 'class=active_button' : '' }}><i class="fa-solid fa-images d-lg-none" style="width:16px;opacity:.6;"></i> Gallery</a></li>
-                            <li><a href="{{ route('videos') }}" {{ request()->is('videos*') ? 'class=active_button' : '' }}><i class="fa-solid fa-play-circle d-lg-none" style="width:16px;opacity:.6;"></i> Video</a></li>
+                            <li><a href="{{ route('videos') }}" {{ request()->is('videos*') ? 'class=active_button' : '' }}><i class="fa-solid fa-play-circle d-lg-none" style="width:16px;opacity:.6;"></i> Videos</a></li>
+                            <li><a href="/courses" {{ request()->is('courses*') ? 'class=active_button' : '' }}><i class="fa-solid fa-book d-lg-none" style="width:16px;opacity:.6;"></i> Recorded Courses</a></li>
+                            <li><a href="/blog" {{ request()->is('blog*') ? 'class=active_button' : '' }}><i class="fa-solid fa-blog d-lg-none" style="width:16px;opacity:.6;"></i> Blogs</a></li>
                             <li><a href="/contact" {{ request()->is('contact') ? 'class=active_button' : '' }}><i class="fa-solid fa-envelope d-lg-none" style="width:16px;opacity:.6;"></i> Contact</a></li>
                         </ul>
                     </nav>
