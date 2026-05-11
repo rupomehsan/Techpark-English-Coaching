@@ -55,6 +55,7 @@ import QuizQuestionTopicRoutes from '../../../GlobalManagement/QuizManagement/Qu
 import CourseRoutes from '../../../GlobalManagement/CourseManagement/Course/setup/routes.js';
 import CourseDetailsManagementRoutes from '../Management/CourseManagement/CourseDetailsManagement/Routes/routes.js';
 import CourseBatchRoutes from '../../../GlobalManagement/CourseManagement/CourseBatch/setup/routes.js';
+import ConfigurationRoutes from '../../../GlobalManagement/Configuration/routes.js';
 
 const routes = {
   path: "",
@@ -113,7 +114,8 @@ const routes = {
         QuizQuestionTopicRoutes,
         CourseBatchRoutes,
         CourseRoutes,
-       
+        ...ConfigurationRoutes,
+
         // Course Details Management (New Pinia-based system)
         ...CourseDetailsManagementRoutes,
 

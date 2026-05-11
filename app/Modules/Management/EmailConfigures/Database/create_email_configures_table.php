@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password', 255)->nullable();
             $table->string('mail_from_name', 255)->nullable();
             $table->string('mail_from_email', 255)->nullable();
-            $table->tinyInteger('encryption')->default(0);
+            $table->enum('encryption', ['tls', 'ssl'])->nullable();
 
             $table->bigInteger('creator')->unsigned()->nullable();
             $table->string('slug', 50)->nullable();

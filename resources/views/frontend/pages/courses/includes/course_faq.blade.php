@@ -1,48 +1,41 @@
-<!-- general question area start-->
-@if (count($data->course_faqs) > 0)
-    <div class="general_question_part">
-        <div class="container">
-            <div class="general_questions">
-                <div class="general_question_details">
-                    <div class="general_question_head">
-                        <div class="general_question_heading_title">General Questions</div>
-                        <div class="general_question_heading_brief">
-                            You can search here if you have any questions.
-                        </div>
-                    </div>
-                    <ul class="general_question_all" style="width: 600px;">
-                        @foreach ($data->course_faqs as $faq)
-                            <div class="general_question">
-                                <li class="">
-                                    <div class="general_question_title_and_icon">
-                                        <div class="general_question_title">
-                                            {{ $faq->title }}
-                                        </div>
-                                        <div class="general_question_acordion_icon">
-                                            <i class="fa-solid fa-chevron-down"></i>
-                                        </div>
-                                    </div>
-                                    <div class="general_question_content">
-                                        {{ $faq->description }}
-                                    </div>
-                                </li>
-                            </div>
-                        @endforeach
-                    </ul>
+@if(count($data->course_faqs) > 0)
+<section class="faq-section">
+    <div class="container">
+        <div class="text-center mb-4">
+            <span class="faq-eyebrow"><i class="fa-solid fa-circle-question me-1"></i> FAQ</span>
+            <h2 class="faq-heading">সাধারণ জিজ্ঞাসা</h2>
+            <p class="faq-sub">কোর্স সম্পর্কে যেকোনো প্রশ্নের উত্তর এখানে খুঁজে নিন।</p>
+        </div>
+        <div class="faq-list">
+            @foreach($data->course_faqs as $faq)
+            <div class="faq-item {{ $loop->first ? 'active' : '' }}">
+                <div class="faq-q">
+                    <div class="faq-q-num">{{ $loop->iteration }}</div>
+                    <div class="faq-q-text">{{ $faq->title }}</div>
+                    <div class="faq-chevron"><i class="fa-solid fa-chevron-down"></i></div>
+                </div>
+                <div class="faq-a" @if($loop->first) style="display:block;" @endif>
+                    {{ $faq->description }}
                 </div>
             </div>
+            @endforeach
         </div>
     </div>
-@endif
-
+</section>
 
 <script>
-    [...document.querySelectorAll(".general_question_acordion_icon"), ].forEach((element) => {
-        element.onclick = function(e) {
-            e.currentTarget.parentNode.parentNode.classList.toggle(
-                "active"
-            );
-            // console.log(e.currentTarget.parentNode.classList);
-        };
+document.querySelectorAll('.faq-q').forEach(function(q) {
+    q.addEventListener('click', function() {
+        const item = this.closest('.faq-item');
+        const isOpen = item.classList.toggle('active');
+        const answer = item.querySelector('.faq-a');
+        const chevron = item.querySelector('.faq-chevron i');
+        if (answer) answer.style.display = isOpen ? 'block' : 'none';
+        if (chevron) chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
     });
+});
+// Init first item chevron
+const firstChevron = document.querySelector('.faq-item.active .faq-chevron i');
+if (firstChevron) firstChevron.style.transform = 'rotate(180deg)';
 </script>
+@endif

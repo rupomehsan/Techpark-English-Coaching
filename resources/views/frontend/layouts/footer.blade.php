@@ -53,11 +53,32 @@
 .footer-map-wrap { border-radius: 10px; overflow: hidden; margin-top: 14px; border: 1px solid rgba(255,255,255,0.06); }
 .footer-map-wrap iframe { width: 100%; height: 130px; border: 0; display: block; filter: brightness(0.8) saturate(0.8); }
 
-.footer-divider { border-top: 1px solid rgba(255,255,255,0.06); margin-top: 50px; }
-.footer-bottom { padding: 18px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-.footer-copyright { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
-.footer-bottom-links { display: flex; gap: 16px; flex-wrap: wrap; }
-.footer-bottom-links a { color: rgba(255,255,255,0.4); font-size: 0.75rem; text-decoration: none; transition: color 0.2s; }
+.footer-divider { border: none; margin-top: 50px; }
+.footer-bottom {
+    background: rgba(0,0,0,0.25);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 16px 0;
+}
+.footer-copyright {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.78rem;
+    display: flex; align-items: center; gap: 8px;
+}
+.footer-copyright i { color: #fab005; font-size: 0.7rem; }
+.footer-copyright .copy-year {
+    background: rgba(250,176,5,0.12);
+    border: 1px solid rgba(250,176,5,0.2);
+    color: #fab005; font-size: 0.7rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px;
+}
+.footer-bottom-links { display: flex; gap: 0; flex-wrap: wrap; }
+.footer-bottom-links a {
+    color: rgba(255,255,255,0.38); font-size: 0.74rem;
+    text-decoration: none; transition: color 0.2s;
+    padding: 4px 12px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+.footer-bottom-links a:last-child { border-right: none; }
 .footer-bottom-links a:hover { color: #fab005; }
 
 @media(max-width:767px) {
@@ -167,7 +188,7 @@
                 <div class="footer-contact-item">
                     <div class="footer-contact-icon"><i class="fa-solid fa-map-pin"></i></div>
                     <div class="footer-contact-text">
-                        <p>{{ setting('address_bangla') }}</p>
+                        <p>{{ setting('address_bangla') ?: 'বাড়ি ৩১, লেন ০১, ব্লক বি, সেকশন ০৬, মিরপুর, ঢাকা, বাংলাদেশ (প্রশিকা মোড়ের পাশে)' }}</p>
                     </div>
                 </div>
                 <div class="footer-map-wrap">
@@ -180,13 +201,19 @@
 
     {{-- Bottom bar --}}
     <div class="footer-divider">
-        <div class="container footer-bottom">
-            <p class="footer-copyright mb-0">{{ setting('copy_right') }}</p>
+        <div class="footer-bottom"><div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <p class="footer-copyright mb-0">
+                <i class="fa-regular fa-copyright"></i>
+                <span class="copy-year">2019–{{ date('Y') }}</span>
+                @php $site_name_cr = setting('site_name') ?: 'TechPark English'; @endphp
+                {{ $site_name_cr }}. সর্বস্বত্ব সংরক্ষিত।
+            </p>
             <div class="footer-bottom-links">
-                <a href="{{ route('privacy.policy') }}">Privacy</a>
-                <a href="{{ route('terms.policy') }}">Terms</a>
-                <a href="{{ route('sitemap.policy') }}">Sitemap</a>
+                <a href="{{ route('privacy.policy') }}">প্রাইভেসি পলিসি</a>
+                <a href="{{ route('terms.policy') }}">টার্মস</a>
+                <a href="{{ route('refund.policy') }}">রিফান্ড</a>
+                <a href="{{ route('sitemap.policy') }}">সাইটম্যাপ</a>
             </div>
-        </div>
+        </div></div>
     </div>
 </footer>

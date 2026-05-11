@@ -1,169 +1,150 @@
-<!-- class module start -->
+{{-- Course Curriculum --}}
 <div class="class_module">
     <div class="class_module_details">
-        @if (isset($data) && is_object($data) && isset($data->milestones) && count($data->milestones) > 0)
-            @foreach ($data->milestones()->orderBy('milestone_no', 'asc')->get() as $milestone)
+        @if(isset($data) && is_object($data) && isset($data->milestones) && count($data->milestones) > 0)
+            @foreach($data->milestones()->orderBy('milestone_no', 'asc')->get() as $milestone)
+                @php
+                    $moduleCount = $milestone->modules()->where('status', 'active')->count();
+                @endphp
                 <ul class="class_module_features">
-                    <li class="milestone-item my-3">
-                        <div class="class_module_title">
-                            <div class="class_module_title_and_number">
-                                <div class="class_module_number">
-                                    Milestone <span class="number"> {{ $milestone->milestone_no ?? $loop->iteration }} </span>
+                    <li class="milestone-item">
+
+                        {{-- Milestone Header --}}
+                        <div class="milestone-header">
+                            <div class="milestone-left">
+                                <div class="milestone-num-badge">
+                                    <span class="m-label">M</span>
+                                    <span class="m-num">{{ $milestone->milestone_no ?? $loop->iteration }}</span>
                                 </div>
-                                <div class="class_module_title_details">
-                                    <div class="title">{{ $milestone->title }}</div>
-                
-                                    <ul class="details">
-                                        <li>
-                                            {{ isset($milestone->modules) ? $milestone->modules()->where('status', 'active')->count() : 0 }}
-                                            Modules
-                                        </li>
-                                    </ul>
+                                <div class="milestone-info">
+                                    <div class="m-title">{{ $milestone->title }}</div>
+                                    <div class="m-meta">
+                                        <span><i class="fa-solid fa-cubes me-1"></i>{{ $moduleCount }} Modules</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="class_milestone_acordion_icon">
+                            <div class="milestone-chevron">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
+
+                        {{-- Milestone Content --}}
                         <div class="milestone-content">
-                            @foreach ($milestone->modules as $module)
-                                <ul class="class_module_features mx-3">
+                            @foreach($milestone->modules as $module)
+                                @php
+                                    $liveCount     = $module->classes()->where('type', 'live')->count();
+                                    $recordedCount = $module->classes()->where('type', 'recorded')->count();
+                                    $quizCount     = $module->quizes()->count();
+                                @endphp
+                                <ul class="class_module_features">
                                     <li class="module-item">
-                                        <div class="class_module_title">
-                                            <div class="class_module_title_and_number">
-                                                <div class="class_module_number">
-                                                    Module <span class="number"> {{ $module->module_no }} </span>
-                                                </div>
-                                                <div class="class_module_title_details">
-                                                    <div class="title">{{ $module->title }}</div>
-                                                    <ul class="details">
-                                                        <li>
-                                                            {{ $module->classes()->where('type', 'live')->count() }}
-                                                            Live Classes
-                                                        </li>
-                                                        ।
-                                                        <li>
-                                                            {{ $module->classes()->where('type', 'recorded')->count() }}
-                                                            Recorded Classes
-                                                        </li>
-                                                        ।
-                                                        <li>
-                                                            {{ $module->quizes()->count() }}
-                                                            Quizzes
-                                                        </li>
-                                                    </ul>
+
+                                        {{-- Module Header --}}
+                                        <div class="module-header">
+                                            <div class="module-left">
+                                                <span class="module-num-pill">Module {{ $module->module_no }}</span>
+                                                <div class="module-info">
+                                                    <div class="mod-title">{{ $module->title }}</div>
+                                                    <div class="mod-stats">
+                                                        @if($liveCount > 0)
+                                                            <span class="mod-stat-pill mod-stat-live"><i class="fa-solid fa-circle-dot me-1"></i>{{ $liveCount }} Live</span>
+                                                        @endif
+                                                        @if($recordedCount > 0)
+                                                            <span class="mod-stat-pill mod-stat-recorded"><i class="fa-solid fa-play me-1"></i>{{ $recordedCount }} Recorded</span>
+                                                        @endif
+                                                        @if($quizCount > 0)
+                                                            <span class="mod-stat-pill mod-stat-quiz"><i class="fa-solid fa-pen-nib me-1"></i>{{ $quizCount }} Quiz</span>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="class_module_acordion_icon">
+                                            <div class="module-chevron">
                                                 <i class="fa-solid fa-chevron-down"></i>
                                             </div>
                                         </div>
+
+                                        {{-- Module Classes --}}
                                         <div class="class_module_feature_content">
-                                            <ul>
-                                                @foreach ($module->classes as $class)
-                                                    <li>
-                                                        <div class="class_module_class_no">Class {{ $class->class_no }}
-                                                        </div>
-                                                        <div class="live_class_and_topic">
-                                                            <div class="live_class_icon">
-                                                                @if ($class->type == 'live')
-                                                                    <i class="fa-solid fa-video-camera"></i>
+                                            <div class="module-classes-wrap">
+                                                @foreach($module->classes as $class)
+                                                    @php $typeClass = $class->type === 'live' ? 'type-live' : 'type-recorded'; @endphp
+                                                    <div class="module-class-group">
+                                                        <div class="class-group-label">Class {{ $class->class_no }}</div>
+                                                        <div class="class-row {{ $typeClass }}">
+                                                            <div class="class-type-dot"></div>
+                                                            <div class="class-type-icon">
+                                                                @if($class->type === 'live')
+                                                                    <i class="fa-solid fa-video"></i>
                                                                 @else
-                                                                    <i class="fa-solid fa-play-circle"></i>
+                                                                    <i class="fa-solid fa-circle-play"></i>
                                                                 @endif
                                                             </div>
-                                                            <div class="class_module_live_class">
-                                                                @if ($class->type == 'live')
-                                                                    Live Class:
-                                                                @else
-                                                                    Recorded Class:
-                                                                @endif
+                                                            <div class="class-body">
+                                                                <span class="class-label-tag">{{ $class->type === 'live' ? 'Live Class' : 'Recorded' }}</span>
+                                                                <div class="class-title">{{ $class->title }}</div>
                                                             </div>
-                                                            <div class="class_module_topic">{{ $class->title }}</div>
                                                         </div>
 
-                                                        @if ($class->quizes && $class->quizes->count() > 0)
-                                                            @foreach ($class->quizes as $quiz)
-                                                                <div class="quiz_and_mcq">
-                                                                    <div class="quiz_icon">
-                                                                        <i class="fa-solid fa-file-lines"></i>
-                                                                    </div>
-                                                                    <div class="quiz">Quiz:</div>
-                                                                    <div class="mcq">
-                                                                        {{ $quiz->quiz->title ?? '' }}
-                                                                    </div>
+                                                        @if($class->quizes && $class->quizes->count() > 0)
+                                                            @foreach($class->quizes as $quiz)
+                                                                <div class="quiz-row">
+                                                                    <div class="quiz-icon"><i class="fa-solid fa-file-pen"></i></div>
+                                                                    <span class="quiz-label">Quiz</span>
+                                                                    <span class="quiz-title">{{ $quiz->quiz->title ?? '' }}</span>
                                                                 </div>
                                                             @endforeach
                                                         @endif
-                                                    </li>
+                                                    </div>
                                                 @endforeach
-                                            </ul>
+                                            </div>
                                         </div>
+
                                     </li>
                                 </ul>
                             @endforeach
                         </div>
+
                     </li>
                 </ul>
             @endforeach
         @endif
-
-
-
     </div>
 </div>
-<script>
-    // Handle milestone accordion
-    document.querySelectorAll(".class_milestone_acordion_icon").forEach((el) => {
-        el.onclick = function(e) {
-            e.preventDefault();
-            const milestoneItem = e.currentTarget.closest('.milestone-item');
-            if (!milestoneItem) return;
 
-            const isExpanded = milestoneItem.classList.toggle('active');
-            if (isExpanded) {
-                // When opening a milestone, auto-open all child modules
-                milestoneItem.querySelectorAll('.module-item').forEach((mod) => {
+<script>
+    document.querySelectorAll(".milestone-header").forEach(function(header) {
+        header.addEventListener("click", function() {
+            const item = this.closest('.milestone-item');
+            const isOpen = item.classList.toggle('active');
+            if (isOpen) {
+                item.querySelectorAll('.module-item').forEach(function(mod) {
                     mod.classList.add('active');
-                    const modContent = mod.querySelector('.class_module_feature_content');
-                    if (modContent) modContent.style.display = 'block';
-                    const modIcon = mod.querySelector('.class_module_acordion_icon i');
-                    if (modIcon) modIcon.style.transform = 'rotate(180deg)';
+                    const content = mod.querySelector('.class_module_feature_content');
+                    if (content) content.style.display = 'block';
+                    const icon = mod.querySelector('.module-chevron i');
+                    if (icon) icon.style.transform = 'rotate(180deg)';
                 });
             } else {
-                // If collapsing the milestone, ensure all descendant modules are collapsed and reset
-                milestoneItem.querySelectorAll('.module-item.active').forEach((mod) => {
+                item.querySelectorAll('.module-item').forEach(function(mod) {
                     mod.classList.remove('active');
-                    const modContent = mod.querySelector('.class_module_feature_content');
-                    if (modContent) modContent.style.display = 'none';
-                    const modIcon = mod.querySelector('.class_module_acordion_icon i');
-                    if (modIcon) modIcon.style.transform = '';
+                    const content = mod.querySelector('.class_module_feature_content');
+                    if (content) content.style.display = 'none';
+                    const icon = mod.querySelector('.module-chevron i');
+                    if (icon) icon.style.transform = '';
                 });
             }
-        };
+        });
     });
 
-    // Handle module accordion
-    document.querySelectorAll(".class_module_acordion_icon").forEach((el) => {
-        el.onclick = function(e) {
-            e.preventDefault();
-            const moduleItem = e.currentTarget.closest('.module-item');
-            if (!moduleItem) return;
-
-            const content = moduleItem.querySelector('.class_module_feature_content');
-            const icon = e.currentTarget.querySelector('i');
-            const isExpanded = moduleItem.classList.toggle('active');
-
-            // Explicitly toggle display to avoid CSS specificity conflicts
-            if (content) {
-                content.style.display = isExpanded ? 'block' : 'none';
-            }
-
-            // Rotate icon for visual feedback
-            if (icon) {
-                icon.style.transform = isExpanded ? 'rotate(180deg)' : '';
-            }
-        };
+    document.querySelectorAll(".module-header").forEach(function(header) {
+        header.addEventListener("click", function(e) {
+            e.stopPropagation();
+            const item = this.closest('.module-item');
+            const isOpen = item.classList.toggle('active');
+            const content = item.querySelector('.class_module_feature_content');
+            const icon = item.querySelector('.module-chevron i');
+            if (content) content.style.display = isOpen ? 'block' : 'none';
+            if (icon) icon.style.transform = isOpen ? 'rotate(180deg)' : '';
+        });
     });
 </script>
-<!-- /class module end -->

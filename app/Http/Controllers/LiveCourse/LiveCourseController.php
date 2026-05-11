@@ -20,7 +20,11 @@ class LiveCourseController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('frontend.pages.live_courses.index', compact('live_courses'));
+        $enrolled_live_ids = auth()->check()
+            ? LiveCourseEnrollment::where('student_id', auth()->id())->pluck('live_course_id')->toArray()
+            : [];
+
+        return view('frontend.pages.live_courses.index', compact('live_courses', 'enrolled_live_ids'));
     }
 
     public function details($slug)
@@ -38,7 +42,12 @@ class LiveCourseController extends Controller
             ->limit(3)
             ->get();
 
-        return view('frontend.pages.live_courses.details', compact('course', 'batches', 'other_courses'));
+        $is_enrolled = auth()->check()
+            && LiveCourseEnrollment::where('student_id', auth()->id())
+                ->where('live_course_id', $course->id)
+                ->exists();
+
+        return view('frontend.pages.live_courses.details', compact('course', 'batches', 'other_courses', 'is_enrolled'));
     }
 
     public function enroll($slug)
@@ -50,26 +59,65 @@ class LiveCourseController extends Controller
             ->orderBy('course_start_date', 'asc')
             ->get();
 
-        return view('frontend.pages.live_courses.enroll', compact('course', 'batches'));
+        $authUser     = null;
+        $authName     = '';
+        $authPhone    = '';
+        $authAddress  = '';
+
+        if (auth()->check()) {
+            $authUser    = auth()->user()->load('address');
+            $authName    = trim($authUser->first_name . ' ' . $authUser->last_name);
+            $rawPhone    = $authUser->address->phone_number ?? '';
+            $decoded     = json_decode($rawPhone, true);
+            $authPhone   = is_array($decoded) ? ($decoded[0] ?? '') : ($rawPhone ?: '');
+            $authAddress = $authUser->address->address ?? '';
+        }
+
+        return view('frontend.pages.live_courses.enroll', compact(
+            'course', 'batches', 'authUser', 'authName', 'authPhone', 'authAddress'
+        ));
     }
 
     public function enroll_submit(Request $request, $slug)
     {
-        $request->validate([
+        $isLoggedIn = auth()->check();
+
+        $rules = [
             'batch_id'      => 'required|integer',
-            'name'          => 'required|string|max:200',
-            'phone'         => 'required|string|max:20',
-            'address'       => 'required|string|max:500',
-            'gender'        => 'required|in:পুরুষ,মহিলা,অন্যান্য',
             'payment_type'  => 'required|in:online,offline',
             'payment_photo' => 'nullable|image|max:2048',
-        ]);
+        ];
+
+        if (!$isLoggedIn) {
+            $rules['name']    = 'required|string|max:200';
+            $rules['phone']   = 'required|string|max:20';
+            $rules['address'] = 'required|string|max:500';
+            $rules['gender']  = 'required|in:পুরুষ,মহিলা,অন্যান্য';
+        }
+
+        $request->validate($rules);
 
         $course = LiveCourse::active()->where('slug', $slug)->firstOrFail();
         $batch  = LiveCourseBatch::active()
                     ->where('id', $request->batch_id)
                     ->where('live_course_id', $course->id)
                     ->firstOrFail();
+
+        // Resolve student info
+        if ($isLoggedIn) {
+            $user      = auth()->user()->load('address');
+            $stuName   = trim($user->first_name . ' ' . $user->last_name);
+            $rawPhone  = $user->address->phone_number ?? '';
+            $decoded   = json_decode($rawPhone, true);
+            $stuPhone  = is_array($decoded) ? ($decoded[0] ?? '') : ($rawPhone ?: '');
+            $stuAddr   = $user->address->address ?? '';
+            $stuGender = 'পুরুষ';
+        } else {
+            $stuName   = $request->name;
+            $stuPhone  = $request->phone;
+            $stuAddr   = $request->address;
+            $stuGender = $request->gender;
+        }
 
         $amount = (float)($course->sale_price ?: $course->regular_price ?: 0);
 
@@ -78,14 +126,14 @@ class LiveCourseController extends Controller
             $photo_path = uploader($request->file('payment_photo'), 'uploads/payment_photos');
         }
 
-        $enrollment = LiveCourseEnrollment::create([
+        $enrollData = [
             'live_course_id' => $course->id,
             'batch_id'       => $batch->id,
             'student_info'   => [
-                'name'    => $request->name,
-                'phone'   => $request->phone,
-                'address' => $request->address,
-                'gender'  => $request->gender,
+                'name'    => $stuName,
+                'phone'   => $stuPhone,
+                'address' => $stuAddr,
+                'gender'  => $stuGender,
             ],
             'amount'         => $amount,
             'amount_paid'    => 0,
@@ -94,7 +142,13 @@ class LiveCourseController extends Controller
             'transaction_id' => $request->transaction_id ?: null,
             'payment_photo'  => $photo_path,
             'enrolled_at'    => now(),
-        ]);
+        ];
+
+        if ($isLoggedIn) {
+            $enrollData['student_id'] = auth()->id();
+        }
+
+        $enrollment = LiveCourseEnrollment::create($enrollData);
 
         if ($request->payment_type === 'online') {
             $sslc = new SSLCommerz();
@@ -102,10 +156,10 @@ class LiveCourseController extends Controller
                 ->trxid(time() . Str::random(5))
                 ->product('Live Course — ' . $course->title)
                 ->customer(
-                    $request->name,
-                    auth()->user()->email ?? ($request->phone . '@guest.com'),
-                    $request->phone,
-                    $request->address
+                    $stuName,
+                    auth()->user()->email ?? ($stuPhone . '@guest.com'),
+                    $stuPhone,
+                    $stuAddr
                 );
 
             $sslc->value_a = $enrollment->slug;
@@ -132,10 +186,10 @@ class LiveCourseController extends Controller
         $msg = 'ভর্তির আবেদন:' . "\n"
              . 'কোর্স: ' . $course->title . "\n"
              . 'ব্যাচ: ' . $batch->batch_number . ($batch->shift_name ? ' (' . $batch->shift_name . ')' : '') . "\n"
-             . 'নাম: ' . $request->name . "\n"
-             . 'মোবাইল: ' . $request->phone . "\n"
-             . 'ঠিকানা: ' . $request->address . "\n"
-             . 'লিঙ্গ: ' . $request->gender;
+             . 'নাম: ' . $stuName . "\n"
+             . 'মোবাইল: ' . $stuPhone . "\n"
+             . 'ঠিকানা: ' . $stuAddr . "\n"
+             . 'লিঙ্গ: ' . $stuGender;
 
         if ($request->transaction_id) {
             $msg .= "\nট্রানজেকশন আইডি: " . $request->transaction_id;
@@ -145,13 +199,23 @@ class LiveCourseController extends Controller
             'lce_success' => [
                 'course_title' => $course->title,
                 'batch_label'  => 'ব্যাচঃ ' . $batch->batch_number . ($batch->shift_name ? ' (' . $batch->shift_name . ')' : ''),
-                'name'         => $request->name,
+                'name'         => $stuName,
                 'wa_url'       => 'https://api.whatsapp.com/send/?phone=' . $wa_number . '&text=' . urlencode($msg) . '&type=phone_number&app_absent=0',
                 'paid_online'  => false,
             ],
         ]);
 
         return redirect()->route('live_course_enroll_success', $course->slug);
+    }
+
+    public function myLiveCourses()
+    {
+        $enrollments = LiveCourseEnrollment::where('student_id', auth()->id())
+            ->with(['live_course_id', 'batch_id'])
+            ->latest('enrolled_at')
+            ->get();
+
+        return view('frontend.pages.live_courses.my_live_courses', compact('enrollments'));
     }
 
     public function enroll_success($slug)

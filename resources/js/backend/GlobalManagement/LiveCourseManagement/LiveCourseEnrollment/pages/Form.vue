@@ -62,6 +62,7 @@
                                 :data_list="form_field.data_list"
                                 :is_visible="form_field.is_visible"
                                 :row_col_class="form_field.row_col_class"
+                                :step="form_field.step"
                             />
                         </template>
                     </div>

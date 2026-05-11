@@ -19,6 +19,7 @@ use App\Modules\Management\WebsiteManagement\OurService\Models\Model as OurServi
 use App\Modules\Management\VideoManagement\OurVideo\Models\Model as OurVideo;
 use App\Modules\Management\CourseManagement\CourseInstructors\Models\Model as CourseInstructor;
 use App\Modules\Management\LiveCourseManagement\LiveCourse\Models\Model as LiveCourse;
+use App\Modules\Management\LiveCourseManagement\LiveCourseEnrollment\Models\Model as LiveCourseEnrollment;
 
 
 class Home
@@ -78,6 +79,14 @@ class Home
             ->limit(6)
             ->get();
 
+        $enrolled_live_ids = auth()->check()
+            ? LiveCourseEnrollment::where('student_id', auth()->id())->pluck('live_course_id')->toArray()
+            : [];
+
+        $enrolled_course_ids = auth()->check()
+            ? \App\Modules\Management\CourseManagement\CourseBatchStudent\Models\Model::where('student_id', auth()->id())->pluck('course_id')->toArray()
+            : [];
+
         $courses = $course['courses'];
         $course_types = $course['course_types'];
 
@@ -98,7 +107,9 @@ class Home
             'our_services' => $our_services,
             'our_videos' => $our_videos,
             'course_instructors' => $course_instructors,
-            'live_courses' => $live_courses,
+            'live_courses'        => $live_courses,
+            'enrolled_live_ids'   => $enrolled_live_ids,
+            'enrolled_course_ids' => $enrolled_course_ids,
         ];
 
 

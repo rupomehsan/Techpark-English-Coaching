@@ -152,7 +152,7 @@
                                             >
                                             <div class="col-lg-9">
                                                 <input
-                                                    name="phone_number"
+                                                    name="phone_numbers"
                                                     class="form-control"
                                                     type="text"
                                                     placeholder="Enter phone number"
@@ -236,9 +236,11 @@
                                                     :src="`${get_setting_value(
                                                         'image',
                                                     )}`"
-                                                    height="100"
-                                                    width="100"
-                                                    alt=""
+                                                    style="
+                                                        width: 300px;
+                                                        height: 100px;
+                                                        object-fit: contain;
+                                                    "
                                                 />
                                             </div>
                                         </div>

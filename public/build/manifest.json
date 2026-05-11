@@ -1,5 +1,5 @@
 {
-  "_pinia-6d9978c2.js": {
+  "_pinia-d42e99ee.js": {
     "assets": [
       "assets/fa-brands-400-c411f119.woff2",
       "assets/fa-brands-400-bc844b5b.ttf",
@@ -13,15 +13,15 @@
     "css": [
       "assets/pinia-47e0bdbe.css"
     ],
-    "file": "assets/pinia-6d9978c2.js"
+    "file": "assets/pinia-d42e99ee.js"
   },
-  "_routes-d5055a2e.js": {
+  "_routes-3778abcd.js": {
     "css": [
       "assets/routes-61d4b174.css"
     ],
-    "file": "assets/routes-d5055a2e.js",
+    "file": "assets/routes-3778abcd.js",
     "imports": [
-      "_pinia-6d9978c2.js"
+      "_pinia-d42e99ee.js"
     ]
   },
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.ttf": {
@@ -68,26 +68,26 @@
     "css": [
       "assets/app-f723577e.css"
     ],
-    "file": "assets/app-261255eb.js",
+    "file": "assets/app-aaddf119.js",
     "imports": [
-      "_routes-d5055a2e.js",
-      "_pinia-6d9978c2.js"
+      "_routes-3778abcd.js",
+      "_pinia-d42e99ee.js"
     ],
     "isEntry": true,
     "src": "resources/js/backend/Views/Admin/app.js"
   },
   "resources/js/backend/Views/SuperAdmin/app.css": {
-    "file": "assets/app-c6901188.css",
+    "file": "assets/app-021bbca3.css",
     "src": "resources/js/backend/Views/SuperAdmin/app.css"
   },
   "resources/js/backend/Views/SuperAdmin/app.js": {
     "css": [
-      "assets/app-c6901188.css"
+      "assets/app-021bbca3.css"
     ],
-    "file": "assets/app-66226249.js",
+    "file": "assets/app-f8130a71.js",
     "imports": [
-      "_routes-d5055a2e.js",
-      "_pinia-6d9978c2.js"
+      "_routes-3778abcd.js",
+      "_pinia-d42e99ee.js"
     ],
     "isEntry": true,
     "src": "resources/js/backend/Views/SuperAdmin/app.js"
@@ -100,9 +100,9 @@
     "css": [
       "assets/app-e956ca09.css"
     ],
-    "file": "assets/app-ec0b744e.js",
+    "file": "assets/app-bf1e0387.js",
     "imports": [
-      "_pinia-6d9978c2.js"
+      "_pinia-d42e99ee.js"
     ],
     "isEntry": true,
     "src": "resources/js/frontend/app.js"

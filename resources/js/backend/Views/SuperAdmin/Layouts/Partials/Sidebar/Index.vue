@@ -46,125 +46,126 @@
             />
             <!-- Management start -->
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
+                :icon="`fa-solid fa-users`"
                 :menu_title="`User Management`"
                 :menus="[
                     {
                         route_name: `AllUser`,
-                        title: `User`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Users`,
+                        icon: `zmdi zmdi-account`,
                     },
                 ]"
             />
 
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`LiveCourse`"
+                :icon="`fa-solid fa-chalkboard-user`"
+                :menu_title="`Live Course`"
                 :menus="[
                     {
                         route_name: `AllLiveCourse`,
-                        title: `LiveCourse`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Live Courses`,
+                        icon: `zmdi zmdi-tv-play`,
                     },
                     {
                         route_name: `AllLiveCourseBatch`,
-                        title: `LiveCourseBatch`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Batches`,
+                        icon: `zmdi zmdi-group`,
                     },
                     {
                         route_name: `AllLiveCourseEnrollment`,
-                        title: `LiveCourseEnrollment`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Enrollments`,
+                        icon: `zmdi zmdi-assignment-check`,
                     },
                 ]"
             />
 
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`RecordedCourse`"
+                :icon="`fa-solid fa-video`"
+                :menu_title="`Recorded Course`"
                 :menus="[
                     {
                         route_name: `AllCourseCategory`,
-                        title: `CourseCategory`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Course Category`,
+                        icon: `zmdi zmdi-folder`,
                     },
                     {
                         route_name: `AllCourses`,
                         title: `All Courses`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-library`,
                     },
-                    // {
-                    //   route_name: `AllCourse`,
-                    //   title: `Course`,
-                    //   icon: `zmdi zmdi-dot-circle-alt`,
-                    // },
                     {
                         route_name: `AllCourseInstructors`,
-                        title: `CourseInstructors`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Instructors`,
+                        icon: `zmdi zmdi-account-o`,
+                    },
+                    {
+                        route_name: `AllEnrollInformation`,
+                        title: `Enrollments`,
+                        icon: `zmdi zmdi-assignment-check`,
                     },
                 ]"
             />
+
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`QuizManagement`"
+                :icon="`fa-solid fa-clipboard-question`"
+                :menu_title="`Quiz Management`"
                 :menus="[
                     {
                         route_name: `AllQuizQuestionTopic`,
-                        title: `Quiz Topic`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Quiz Topics`,
+                        icon: `zmdi zmdi-label`,
                     },
                     {
                         route_name: `AllQuizQuestion`,
-                        title: `Quiz Question`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Questions`,
+                        icon: `zmdi zmdi-help`,
                     },
                     {
                         route_name: `AllQuiz`,
                         title: `All Quiz`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-assignment`,
                     },
                     {
                         route_name: `AllQuizSubmissionResult`,
-                        title: `Quiz Submission Result`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Submission Results`,
+                        icon: `zmdi zmdi-chart`,
                     },
                 ]"
             />
+
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
+                :icon="`fa-solid fa-globe`"
                 :menu_title="`Website Management`"
                 :menus="[
                     {
                         route_name: `AllWebsiteBanner`,
-                        title: `Website Banner`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
-                    },
-                    {
-                        route_name: `AllAtAGlance`,
-                        title: `AtAGlance`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
-                    },
-                    {
-                        route_name: `CreateWhyUs`,
-                        title: `WhyUs`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Banner`,
+                        icon: `zmdi zmdi-image`,
                     },
                     {
                         route_name: `AllSubBanner`,
                         title: `Sub Banner`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-photo`,
                     },
-
+                    {
+                        route_name: `AllAtAGlance`,
+                        title: `At a Glance`,
+                        icon: `zmdi zmdi-chart`,
+                    },
+                    {
+                        route_name: `CreateWhyUs`,
+                        title: `Why Us`,
+                        icon: `zmdi zmdi-star`,
+                    },
                     {
                         route_name: `AllOurService`,
-                        title: `OurService`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Our Service`,
+                        icon: `zmdi zmdi-wrench`,
                     },
                     {
                         route_name: `AllOurSpeciality`,
                         title: `Our Speciality`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-badge`,
                     },
                     {
                         route: {
@@ -172,17 +173,17 @@
                             params: { id: 'our-trainers' },
                         },
                         title: `Our Trainer`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-account-o`,
                     },
                     {
                         route_name: `AllWebsiteBrand`,
-                        title: `Website Brand`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Brands`,
+                        icon: `zmdi zmdi-badge-check`,
                     },
                     {
                         route_name: `AllSuccssStories`,
-                        title: `Succss Stories`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Success Stories`,
+                        icon: `zmdi zmdi-star-circle`,
                     },
                     {
                         route: {
@@ -190,7 +191,7 @@
                             params: { id: 'about-us' },
                         },
                         title: `About Us`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-info`,
                     },
                     {
                         route: {
@@ -198,7 +199,7 @@
                             params: { id: 'our-moto' },
                         },
                         title: `Our Moto`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-quote`,
                     },
                     {
                         route: {
@@ -206,7 +207,7 @@
                             params: { id: 'our-mission' },
                         },
                         title: `Our Mission`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-flag`,
                     },
                     {
                         route: {
@@ -214,167 +215,174 @@
                             params: { id: 'our-vision' },
                         },
                         title: `Our Vision`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        icon: `zmdi zmdi-eye`,
                     },
                     {
                         route: {
                             name: `EditOurTeam`,
                             params: { id: 'our-team' },
                         },
-                        title: `OurTeam`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Our Team`,
+                        icon: `zmdi zmdi-accounts`,
                     },
                     {
                         route_name: `AllFaq`,
-                        title: `Faqs`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `FAQs`,
+                        icon: `zmdi zmdi-help-outline`,
                     },
                     {
                         route: {
                             name: `EditPrivacyPolicy`,
                             params: { id: 'privacy-policy' },
                         },
-                        title: `PrivacyPolicy`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Privacy Policy`,
+                        icon: `zmdi zmdi-lock`,
                     },
                     {
                         route: {
                             name: `EditRefundPolicy`,
                             params: { id: 'refund-policy' },
                         },
-                        title: `RefundPolicy`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Refund Policy`,
+                        icon: `zmdi zmdi-money`,
                     },
                     {
                         route: {
                             name: `EditCookiePolicy`,
                             params: { id: 'cookie-policy' },
                         },
-                        title: `CookiePolicy`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Cookie Policy`,
+                        icon: `zmdi zmdi-settings`,
                     },
                     {
                         route: {
                             name: `EditTermConditionPolicy`,
                             params: { id: 'term-condition-policy' },
                         },
-                        title: `TermConditionPolicy`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Terms & Conditions`,
+                        icon: `zmdi zmdi-file-text`,
                     },
                 ]"
             />
+
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`BlogManagement`"
+                :icon="`fa-solid fa-blog`"
+                :menu_title="`Blog Management`"
                 :menus="[
                     {
                         route_name: `AllBlogCategory`,
-                        title: `BlogCategory`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Blog Category`,
+                        icon: `zmdi zmdi-folder`,
                     },
                     {
                         route_name: `AllBlog`,
-                        title: `Blog`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `All Blogs`,
+                        icon: `zmdi zmdi-edit`,
                     },
                     {
                         route_name: `AllBlogWriter`,
-                        title: `BlogWriter`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Blog Writers`,
+                        icon: `zmdi zmdi-account-edit`,
                     },
                     {
                         route_name: `AllBlogTag`,
-                        title: `BlogTag`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Blog Tags`,
+                        icon: `zmdi zmdi-label`,
                     },
                 ]"
             />
+
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`GalleryManagement`"
+                :icon="`fa-solid fa-images`"
+                :menu_title="`Gallery`"
                 :menus="[
                     {
                         route_name: `AllGalleryCategory`,
-                        title: `GalleryCategory`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Gallery Category`,
+                        icon: `zmdi zmdi-folder`,
                     },
                     {
                         route_name: `AllGallery`,
-                        title: `Gallery`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `All Gallery`,
+                        icon: `zmdi zmdi-image`,
                     },
                 ]"
             />
+
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`VideoManagement`"
+                :icon="`fa-solid fa-film`"
+                :menu_title="`Video Management`"
                 :menus="[
                     {
                         route_name: `AllOurVideoCategory`,
-                        title: `OurVideoCategory`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Video Category`,
+                        icon: `zmdi zmdi-folder`,
                     },
                     {
                         route_name: `AllOurVideo`,
-                        title: `OurVideo`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Our Videos`,
+                        icon: `zmdi zmdi-play-circle`,
                     },
                 ]"
             />
-            <side-bar-single-menu
-                :icon="`fa fa-plus`"
-                :menu_title="`EnrollInformation`"
-                :route_name="`AllEnrollInformation`"
-            />
-            <side-bar-single-menu
-                :icon="`fa fa-plus`"
-                :menu_title="`PaymentGateways`"
-                :route_name="`AllPaymentGateways`"
-            />
-            <side-bar-single-menu
-                :icon="`fa fa-plus`"
-                :menu_title="`EmailConfigures`"
-                :route_name="`AllEmailConfigures`"
-            />
+
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`SeminerManagement`"
+                :icon="`fa-solid fa-gear`"
+                :menu_title="`Configuration`"
+                :menus="[
+                    {
+                        route_name: `ConfigPaymentGateway`,
+                        title: `Payment Gateway`,
+                        icon: `zmdi zmdi-card`,
+                    },
+                    {
+                        route_name: `ConfigEmail`,
+                        title: `Email Config`,
+                        icon: `zmdi zmdi-email`,
+                    },
+                ]"
+            />
+
+            <side-bar-drop-down-menus
+                :icon="`fa-solid fa-calendar-days`"
+                :menu_title="`Seminar Management`"
                 :menus="[
                     {
                         route_name: `AllSeminer`,
-                        title: `Seminer`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Seminars`,
+                        icon: `zmdi zmdi-calendar-note`,
                     },
                     {
                         route_name: `AllSeminerParticipant`,
-                        title: `SeminerParticipant`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Participants`,
+                        icon: `zmdi zmdi-accounts`,
                     },
                     {
                         route_name: `AllSeminerSubscribers`,
-                        title: `SeminerSubscribers`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Subscribers`,
+                        icon: `zmdi zmdi-email`,
                     },
                     {
                         route_name: `AllSeminerReviews`,
-                        title: `SeminerReviews`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Reviews`,
+                        icon: `zmdi zmdi-star`,
                     },
                 ]"
             />
+
             <side-bar-drop-down-menus
-                :icon="`fa fa-plus`"
-                :menu_title="`CommunicationManagement`"
+                :icon="`fa-solid fa-comments`"
+                :menu_title="`Communication`"
                 :menus="[
                     {
                         route_name: `AllContactMessage`,
-                        title: `ContactMessage`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Contact Messages`,
+                        icon: `zmdi zmdi-comment-text`,
                     },
                     {
                         route_name: `AllSubscriber`,
-                        title: `Subscriber`,
-                        icon: `zmdi zmdi-dot-circle-alt`,
+                        title: `Subscribers`,
+                        icon: `zmdi zmdi-email`,
                     },
                 ]"
             />

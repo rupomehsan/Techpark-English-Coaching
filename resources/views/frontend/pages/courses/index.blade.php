@@ -107,6 +107,10 @@
                         $courseBatch = $cdata['batch'] ?? null;
                         $tz = $cdata['tz'] ?? 'UTC';
                         $admEnd = $courseBatch->admission_end_date ?? null;
+                        $isEnrolled = auth()->check()
+                            ? \App\Modules\Management\EnrollInformation\Models\Model::where('student_id', auth()->id())
+                                ->where('course_id', $course->id)->exists()
+                            : false;
                         $remainingTime = '';
                         if ($admEnd) {
                             $admEndParsed = Carbon\Carbon::parse($admEnd, $tz);
@@ -124,26 +128,30 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="crs-card">
                             <div class="crs-img-wrap">
-                                <img src="{{ $course->image ?? 'https://dummyimage.com/600x400/002147/fff&text=Course' }}"
-                                     alt="{{ $course->title }}" loading="lazy">
+                                @php $crs_fallback = 'https://dummyimage.com/600x340/002147/fab005&text='.urlencode($course->title ?? 'Course'); @endphp
+                                <img src="{{ $course->image ? asset($course->image) : $crs_fallback }}"
+                                     alt="{{ $course->title }}" loading="lazy"
+                                     onerror="this.onerror=null;this.src='{{ $crs_fallback }}'">
                                 <div class="crs-img-overlay">
                                     <span class="crs-badge crs-badge-blue">TechPark English</span>
                                     @if($courseBatch && $courseBatch->show_percentage_on_cards === 'yes')
                                         <span class="crs-badge crs-badge-gold">{{ $courseBatch->booked_percent ?? 0 }}% Booked</span>
                                     @endif
                                 </div>
-                                <div class="crs-countdown">
-                                    <span class="timer">
-                                        <i class="fa-solid fa-clock"></i>
-                                        {{ $remainingTime ? $remainingTime.' left' : '0 Days left' }}
-                                    </span>
-                                </div>
                             </div>
                             <div class="crs-body">
                                 <h3 class="crs-title">{{ $course->title }}</h3>
                                 <ul class="crs-meta">
-                                    <li><i class="fa-solid fa-calendar-days"></i> সপ্তাহে ৫ দিন ক্লাস</li>
-                                    <li><i class="fa-solid fa-users"></i> ব্যাচ সাইজ: সীমিত আসন</li>
+                                    @if($courseBatch?->class_days)
+                                        <li><i class="fa-solid fa-calendar-days"></i> {{ $courseBatch->class_days }}</li>
+                                    @endif
+                                    @if($courseBatch?->class_start_time && $courseBatch?->class_end_time)
+                                        <li><i class="fa-regular fa-clock"></i> {{ \Carbon\Carbon::parse($courseBatch->class_start_time)->format('g:i A') }} – {{ \Carbon\Carbon::parse($courseBatch->class_end_time)->format('g:i A') }}</li>
+                                    @endif
+                                    @if($courseBatch?->batch_student_limit)
+                                        @php $remaining = ($courseBatch->batch_student_limit - ($courseBatch->seat_booked ?? 0)); @endphp
+                                        <li><i class="fa-solid fa-users"></i> আসন: {{ $remaining > 0 ? $remaining.' টি বাকি' : 'সীমিত আসন' }}</li>
+                                    @endif
                                     <li><i class="fa-solid fa-certificate"></i> কোর্স শেষে সার্টিফিকেট</li>
                                 </ul>
                                 <div class="crs-footer">
@@ -155,11 +163,24 @@
                                     </div>
                                     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
                                         <a href="{{ route('course_details', $course->slug) }}" class="btn-crs">
-                                            View <i class="fa-solid fa-eye"></i>
+                                            <i class="fa-solid fa-circle-info"></i> বিস্তারিত
                                         </a>
-                                        <a href="{{ route('course_enroll', $course->slug) }}" class="btn-crs btn-crs-enroll">
-                                            Enroll <i class="fa-solid fa-pen-to-square"></i>
+                                        @if($isEnrolled)
+                                        <span class="btn-crs btn-crs-enroll" style="opacity:0.65;cursor:not-allowed;pointer-events:none;">
+                                            <i class="fa-solid fa-circle-check"></i> ভর্তি হয়েছেন
+                                        </span>
+                                        @elseif(auth()->check())
+                                        <form method="POST" action="{{ route('course.checkout', $course->slug) }}" style="display:contents;">
+                                            @csrf
+                                            <button type="submit" class="btn-crs btn-crs-enroll" style="border:none;cursor:pointer;">
+                                                <i class="fa-solid fa-pen-to-square"></i> ভর্তি হন
+                                            </button>
+                                        </form>
+                                        @else
+                                        <a href="{{ route('login') }}" class="btn-crs btn-crs-enroll">
+                                            <i class="fa-solid fa-pen-to-square"></i> ভর্তি হন
                                         </a>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

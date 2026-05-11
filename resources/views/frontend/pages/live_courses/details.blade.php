@@ -150,9 +150,15 @@
                 @if($course->description)
                 <p class="lcd-hero-desc">{!! $course->description !!}</p>
                 @endif
+                @if($is_enrolled)
+                <span class="btn-enroll-hero" style="cursor:default;background:linear-gradient(135deg,#059669,#047857);box-shadow:none;">
+                    <i class="fa-solid fa-circle-check"></i> ইতিমধ্যে ভর্তি হয়েছেন
+                </span>
+                @else
                 <a href="{{ route('live_course_enroll', $course->slug) }}" class="btn-enroll-hero">
                     এখনই ভর্তি হন <i class="fa-solid fa-arrow-right"></i>
                 </a>
+                @endif
             </div>
 
             {{-- Right: YouTube --}}
@@ -306,18 +312,24 @@
                                 <div class="lcd-price-main" style="font-size:1.2rem; color:#059669;">মূল্য জানতে যোগাযোগ করুন</div>
                                 @endif
                             </div>
-                            @if($course->installment_months)
+                            {{-- @if($course->installment_months)
                             <p class="text-muted mb-0 mt-1" style="font-size:0.78rem;">
                                 <i class="fa-solid fa-credit-card me-1"></i>
                                 {{ $course->installment_months }} মাসে কিস্তিতে পরিশোধ করুন
                             </p>
-                            @endif
+                            @endif --}}
                         </div>
 
                         {{-- CTA Buttons --}}
+                        @if($is_enrolled)
+                        <span class="btn-enroll mb-3" style="cursor:default;background:linear-gradient(135deg,#059669,#047857);box-shadow:none;">
+                            <i class="fa-solid fa-circle-check me-2"></i> ইতিমধ্যে ভর্তি হয়েছেন
+                        </span>
+                        @else
                         <a href="{{ route('live_course_enroll', $course->slug) }}" class="btn-enroll mb-3">
                             <i class="fa-solid fa-file-pen me-2"></i> এখনই ভর্তি হন
                         </a>
+                        @endif
                         <a href="https://api.whatsapp.com/send/?phone={{ $wa_number }}&text={{ urlencode('আমি '.$course->title.' কোর্সে ভর্তি হতে চাই।') }}&type=phone_number&app_absent=0"
                            target="_blank" class="btn-wa mb-3">
                             <i class="fa-brands fa-whatsapp me-2"></i> WhatsApp-এ যোগাযোগ করুন
@@ -338,9 +350,9 @@
                             @if($batches->count() > 0)
                             <li><i class="fa-solid fa-layer-group"></i> সক্রিয় ব্যাচ: <strong>{{ $batches->count() }}টি</strong></li>
                             @endif
-                            @if($course->installment_months)
+                            {{-- @if($course->installment_months)
                             <li><i class="fa-solid fa-credit-card"></i> কিস্তি সুবিধা: <strong>{{ $course->installment_months }} মাস</strong></li>
-                            @endif
+                            @endif --}}
                             <li><i class="fa-solid fa-certificate"></i> সার্টিফিকেট প্রদান করা হয়</li>
                             <li><i class="fa-solid fa-video"></i> লাইভ ইন্টারেক্টিভ ক্লাস</li>
                         </ul>

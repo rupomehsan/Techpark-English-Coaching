@@ -3,6 +3,7 @@ export default [
         name: "enrolled_at",
         label: "Enter your enrolled at",
         type: "datetime-local",
+        step: "1",
         value: "",
     },
 

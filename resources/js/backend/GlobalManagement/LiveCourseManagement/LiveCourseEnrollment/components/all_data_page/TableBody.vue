@@ -10,6 +10,15 @@
       <td v-if="row_item == 'id'">
        {{ (current_page - 1) * per_page + dataindex + 1 }}
       </td>
+      <td v-else-if="row_item === 'student_info'" class="text-wrap max-w-120">
+        <span v-if="item.student_id && typeof item.student_id === 'object' && item.student_id.first_name">
+          {{ item.student_id.first_name }} {{ item.student_id.last_name }}
+        </span>
+        <span v-else-if="item.student_info && item.student_info.name">
+          {{ item.student_info.name }}
+        </span>
+        <span v-else>—</span>
+      </td>
       <td v-else-if="row_item === 'image' || isImageFile(item[row_item])" class="text-wrap max-w-120">
         <a :href="imgSrc(item[row_item])" data-fancybox="gallery" :data-caption="`Image ${dataindex + 1}`">
           <img :src="imgSrc(item[row_item])" @error="handleImageError($event)"

@@ -79,23 +79,14 @@ export default {
       this.selected = [];
       if (v) {
         await this.fetch_batches_by_course(v);
+        // Re-apply value after batches loaded so pre-selected batch shows
+        this.apply_value(this.value);
       } else {
         store().all = {};
       }
     }, { immediate: false });
     this.$watch("value", function (v) {
-      if (Array.isArray(v) && v.length && typeof v[0] === 'object') {
-        this.selected = v;
-      } else if (Array.isArray(v) && this.all && Array.isArray(this.all.data)) {
-        this.selected = this.all.data.filter(item => v.includes(item.id));
-      } else if (typeof v === 'object' && v !== null && v.id) {
-        this.selected = [v];
-      } else if ((typeof v === 'string' || typeof v === 'number') && this.all && Array.isArray(this.all.data)) {
-        const item = this.all.data.find(item => item.id == v);
-        this.selected = item ? [item] : [];
-      } else {
-        this.selected = [];
-      }
+      this.apply_value(v);
     }, { immediate: true });
     if (this.live_course_id) {
       this.fetch_batches_by_course(this.live_course_id);
@@ -108,6 +99,21 @@ export default {
   }),
   methods: {
     ...mapActions(store, ["get_all", "set_paginate", "set_page", "set_filter_criteria"]),
+    apply_value: function (v) {
+      const data = store().all?.data;
+      if (Array.isArray(v) && v.length && typeof v[0] === 'object') {
+        this.selected = v;
+      } else if (Array.isArray(v) && Array.isArray(data)) {
+        this.selected = data.filter(item => v.includes(item.id));
+      } else if (typeof v === 'object' && v !== null && v.id) {
+        this.selected = [v];
+      } else if ((typeof v === 'string' || typeof v === 'number') && v && Array.isArray(data)) {
+        const item = data.find(item => item.id == v);
+        this.selected = item ? [item] : [];
+      } else {
+        this.selected = [];
+      }
+    },
     fetch_batches_by_course: async function (live_course_id) {
       if (!live_course_id || typeof live_course_id === 'object') return;
       try {

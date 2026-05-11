@@ -25,6 +25,7 @@
                     :name="name"
                     :id="name"
                     :value="value"
+                    :step="step || undefined"
                     @change="errorReset"
                 />
             </div>
@@ -130,6 +131,11 @@ export default {
         onchangeAction: {
             required: false,
             type: String,
+            default: null,
+        },
+        step: {
+            required: false,
+            type: [String, Number],
             default: null,
         },
     },

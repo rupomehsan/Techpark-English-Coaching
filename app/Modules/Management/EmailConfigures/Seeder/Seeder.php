@@ -17,16 +17,17 @@ class Seeder extends SeederClass
         $faker = Faker::create();
         self::$model::truncate();
 
-        for ($i = 1; $i <= 100; $i++) {
-            self::$model::create([                'host' => $faker->text(255),
-                'port' => $faker->randomNumber,
-                'email' => $faker->text(255),
-                'username' => $faker->text(255),
-                'password' => $faker->text(255),
-                'mail_from_name' => $faker->text(255),
-                'mail_from_email' => $faker->text(255),
-                'encryption' => $faker->boolean,
+
+            self::$model::create([
+                'host' => "smtp.gmail.com",
+                'port' => "587",
+                'email' => "rupomehsan34@gmail.com",
+                'username' => "rupomehsan34@gmail.com",
+                'password' => "obxPMLnYKiuRtO6nSA350g==",
+                'mail_from_name' => "Techpark English",
+                'mail_from_email' => "rupomehsan34@gmail.com",
+                'encryption' => "tls",
             ]);
-        }
+
     }
 }

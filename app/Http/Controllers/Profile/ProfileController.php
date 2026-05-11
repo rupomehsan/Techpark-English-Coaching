@@ -126,4 +126,27 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
+    public function changePassword()
+    {
+        return view('frontend.pages.profile.change_password');
+    }
+
+    public function changePasswordUpdate(Request $request)
+    {
+        $request->validate([
+            'current_password'  => 'required',
+            'password'          => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = auth()->user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        $user->update(['password' => Hash::make($request->password)]);
+
+        return redirect()->back()->with('success', 'Password changed successfully!');
+    }
 }

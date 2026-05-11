@@ -1,193 +1,187 @@
-@php
-    $meta = [
-        // "meta" => [],
-        'seo' => [
-            'title' => 'My Course',
-            'image' => asset('seo.jpg'),
-        ],
-    ];
-@endphp
+@php $meta = ['seo' => ['title' => 'My Courses — TechPark English', 'image' => asset('seo.jpg')]]; @endphp
 @extends('frontend.layouts.layout', $meta)
+
+@push('styles')
+<style>
+:root { --navy:#001e3c; --navy2:#002d5c; --gold:#fab005; --bg:#f0f4f9; --card:#fff; --border:#e4ecf5; --radius:16px; --shadow:0 4px 24px rgba(0,30,60,0.07); }
+.lms-wrap { background:var(--bg); min-height:80vh; padding:0 0 60px; }
+
+/* Hero bar */
+.lms-hero { background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#003b7a 100%); padding:40px 0 32px; }
+.lms-hero h1 { font-size:clamp(1.4rem,3vw,2rem); font-weight:800; color:#fff; margin-bottom:6px; }
+.lms-hero p { color:rgba(255,255,255,0.6); font-size:0.88rem; }
+
+/* Stat cards */
+.lms-stats { display:flex; gap:14px; flex-wrap:wrap; margin-top:0; margin-bottom:24px; }
+.lms-stat { flex:1; min-width:140px; background:var(--card); border-radius:14px; border:1px solid var(--border); box-shadow:var(--shadow); padding:18px 20px; display:flex; align-items:center; gap:14px; }
+.lms-stat-ico { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+.lms-stat-num { font-size:1.6rem; font-weight:800; color:var(--navy); line-height:1; }
+.lms-stat-lbl { font-size:0.7rem; font-weight:600; color:#6b7a90; text-transform:uppercase; letter-spacing:0.5px; margin-top:2px; }
+
+/* Section head */
+.lms-section-head { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+.lms-section-head h2 { font-size:1rem; font-weight:800; color:var(--navy); margin:0; }
+.lms-section-head .cnt { background:rgba(0,30,60,0.08); color:var(--navy); font-size:0.7rem; font-weight:700; padding:2px 10px; border-radius:50px; }
+
+/* Course card */
+.lms-course-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:18px; margin-bottom:36px; }
+.lms-ccard { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; transition:all 0.3s; }
+.lms-ccard:hover { transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,30,60,0.12); border-color:transparent; }
+.lms-ccard-img { position:relative; height:170px; overflow:hidden; }
+.lms-ccard-img img { width:100%; height:100%; object-fit:cover; transition:transform 0.45s; }
+.lms-ccard:hover .lms-ccard-img img { transform:scale(1.05); }
+.lms-ccard-status { position:absolute; top:10px; left:10px; font-size:0.62rem; font-weight:700; padding:3px 10px; border-radius:50px; letter-spacing:0.4px; text-transform:uppercase; }
+.status-progress { background:rgba(250,176,5,0.9); color:#fff; }
+.status-complete { background:rgba(0,166,81,0.9); color:#fff; }
+.lms-ccard-pct { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.65); color:#fff; font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:50px; }
+.lms-ccard-body { padding:18px; flex:1; display:flex; flex-direction:column; }
+.lms-ccard-batch { font-size:0.68rem; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; }
+.lms-ccard-title { font-weight:700; color:var(--navy); font-size:0.92rem; line-height:1.4; margin-bottom:12px; }
+.lms-progress-wrap { margin-bottom:14px; }
+.lms-progress-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.lms-progress-lbl { font-size:0.68rem; font-weight:600; color:#6b7a90; }
+.lms-progress-val { font-size:0.68rem; font-weight:800; color:var(--navy); }
+.lms-progress-bar { height:6px; background:#e8edf5; border-radius:50px; overflow:hidden; }
+.lms-progress-fill { height:100%; border-radius:50px; transition:width 0.8s ease; }
+.fill-progress { background:linear-gradient(90deg,var(--gold),#e09600); }
+.fill-complete { background:linear-gradient(90deg,#00a651,#00c85a); }
+.lms-ccard-btn { display:flex; align-items:center; justify-content:center; gap:7px; padding:10px 16px; border-radius:50px; font-weight:700; font-size:0.8rem; text-decoration:none; transition:all 0.25s; margin-top:auto; }
+.btn-continue { background:linear-gradient(135deg,var(--navy),var(--navy2)); color:#fff; }
+.btn-continue:hover { background:linear-gradient(135deg,var(--gold),#e09600); color:#fff; box-shadow:0 6px 18px rgba(250,176,5,0.35); }
+.btn-cert { background:linear-gradient(135deg,#00a651,#007a3d); color:#fff; }
+.btn-cert:hover { box-shadow:0 6px 18px rgba(0,166,81,0.35); color:#fff; }
+
+/* Empty state */
+.lms-empty { text-align:center; padding:60px 20px; background:var(--card); border-radius:var(--radius); border:1px solid var(--border); }
+.lms-empty i { font-size:3rem; color:#d1dce9; margin-bottom:16px; }
+</style>
+@endpush
+
 @section('contents')
-    <div class="my_courses_area">
-        <div class="container">
-            <div class="my_courses">
-                <div class="my_courses_title">My Courses</div>
-                <div class="my_all_courses">
-                    <div class="contunued_course">
-                        <div class="contunued_courses_icon"><i class="fa-regular fa-circle-right"></i></div>
-                        <div class="contunued_courses_info">
-                            <div class="contunued_courses_title">All Course</div>
-                            <div class="contunued_courses_total">{{ $user_course->count() }}</div>
-                        </div>
-                    </div>
-                    <div class="complete_course">
-                        <div class="complete_courses_icon"><i class="fa-regular fa-circle-check"></i></div>
-                        <div class="complete_courses_info">
-                            <div class="complete_courses_title">Course Complete</div>
-                            <div class="complete_courses_total">{{ $complete_courses->count() }}</div>
-                        </div>
-                    </div>
-                    <div class="incomplete_course">
-                        <div class="incomplete_courses_icon"><i class="fa-regular fa-circle-xmark"></i></div>
-                        <div class="incomplete_courses_info">
-                            <div class="incomplete_courses_title">Incomplete Course</div>
-                            <div class="incomplete_courses_total">{{ $incomplete_courses->count() }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @if ($incomplete_courses->count() > 0)
-                <div class="my_contunued_courses">
-                    <div class="my_contunued_courses_title">Incomplete Courses</div>
-                    <div class="contunued_courses_border"></div>
-                    <div class="my_contunued_all_courses">
-
-                        @foreach ($incomplete_courses as $item)
-                            <div class="c_card graphic_designer">
-                                <!-- card_img start -->
-                                <a href="{{ route('mycourse_details', $item->course->slug) . '?batch_id=' . $item->batch->id }}"
-                                    class="card_img_area">
-                                    <div class="card_img">
-                                        <img src="{{ assetHelper(optional($item->course)->image) }}"
-                                            alt="{{ $item->course->title }}" loading="lazy">
-                                    </div>
-                                </a>
-                                <!-- card_img end -->
-
-                                <!-- card_title_area start -->
-                                <div class="card_title_area">
-                                    <!-- card_title start -->
-                                    <a href="{{ route('mycourse_details', $item->course->slug) . '?batch_id=' . $item->batch->id }}"
-                                        class="card_title">
-                                        <p class="title_text">{{ $item->course->title }}</p>
-                                    </a>
-                                    <br>
-                                    <div class="card_title">
-                                        <p class="batch_text">Batch: {{ $item->batch->batch_name }}</p>
-                                    </div>
-
-                                    <!-- card_title end -->
-
-                                    <!-- day_and_boking_area start -->
-                                    <div class="day_and_boking_area">
-                                        <div class="day_area">
-                                            <span class="day_tex">
-                                                Completed:
-                                            </span>
-                                        </div>
-                                        <div
-                                            class="boking_area d-flex justify-content-center align-items-center pt-0 fw-bolder">
-                                            <span class="boking_text">
-                                                {{ $item->course_percent }} %
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <!-- day_and_boking_area end -->
-
-                                    <!-- amount_and_button_area start -->
-                                    <div class="amount_and_button_area">
-
-                                        <!-- button_area start -->
-                                        <a href="{{ route('mycourse_details', $item->course->slug) . '?batch_id=' . $item->batch->id }}"
-                                            class="text-center button_all">
-                                            <span class="btn-text">Course Details</span>
-                                            <span class="btn_icon">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                        </a>
-                                        <!-- button_area end-->
-                                    </div>
-                                    <!-- amount_and_button_area end -->
-                                </div>
-                                <!-- card_title_area end -->
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-            
-            @if ($complete_courses->count() > 0)
-                <div class="my_contunued_courses">
-                    <div class="my_contunued_courses_title">Completed Courses</div>
-                    <div class="contunued_courses_border"></div>
-                    <div class="my_contunued_all_courses">
-                        @foreach ($complete_courses as $comp_item)
-                            <div class="c_card graphic_designer">
-                                <!-- card_img start -->
-                                <a href="#" class="card_img_area">
-                                    <div class="card_img">
-                                        <img src="{{ assetHelper(optional($comp_item->course)->image) }}"
-                                            alt="{{ $comp_item->course->title }}" loading="lazy">
-                                    </div>
-                                </a>
-                                <!-- card_img end -->
-
-                                <!-- card_title_area start -->
-                                <div class="card_title_area">
-                                    <!-- card_title start -->
-                                    <a href="{{ route('mycourse_details', $comp_item->course->slug) . '?batch_id=' . $comp_item->batch->id }}"
-                                        class="card_title">
-                                        <p class="title_text">{{ $comp_item->course->title }}</p>
-                                    </a>
-                                    <!-- card_title end -->
-                                    <div class="card_title">
-                                        <p class="batch_text">Batch: {{ $comp_item->batch->batch_name }}</p>
-                                    </div>
-                                    <!-- day_and_boking_area start -->
-                                    <div class="day_and_boking_area">
-                                        <div class="day_area">
-                                            <span class="day_tex">
-                                                Completed:
-                                            </span>
-                                        </div>
-                                        <div
-                                            class="boking_area d-flex justify-content-center align-items-center pt-0 fw-bolder">
-                                            <span class="boking_text">
-                                                {{ $comp_item->course_percent }} %
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <!-- day_and_boking_area end -->
-
-                                    <!-- amount_and_button_area start -->
-                                    <div class="amount_and_button_area">
-                                        <!-- all_amount area start -->
-                                        {{-- <div class="all_amount">
-                                            <div class="previous_amount_area">
-                                                <p class="previous_amount">
-                                                    <span class="taka"> ৳ </span>
-                                                    <span class="taka">২০,০০০</span>
-                                                </p>
-                                            </div>
-                                            <div class="current_amount_area">
-                                                <p class="current_amount">
-                                                    <span class="taka"> ৳ </span>
-                                                    <span class="taka"> ১০,০০০</span>
-                                                </p>
-                                            </div>
-                                        </div> --}}
-                                        <!-- all_amount area end -->
-
-                                        <!-- button_area start -->
-                                        <a href="{{ route('mycourse_details', $comp_item->course->slug) }}"
-                                            class="button_all text-center">
-                                            <span class="btn-text">View Course Certificate</span>
-                                            <span class="btn_icon">
-                                                <i class="fa-solid fa-arrow-right"></i>
-                                            </span>
-                                        </a>
-                                        <!-- button_area end-->
-                                    </div>
-                                    <!-- amount_and_button_area end -->
-                                </div>
-                                <!-- card_title_area end -->
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
+<div class="lms-wrap">
+    {{-- Hero --}}
+    <div class="lms-hero">
+        <div class="container position-relative" style="z-index:1;">
+            <h1><i class="fa-solid fa-book-open me-2" style="color:var(--gold);"></i>আমার কোর্সসমূহ</h1>
+            <p>আপনার সকল এনরোল্ড কোর্স এখানে পাবেন।</p>
         </div>
     </div>
+
+    <div class="container">
+        <div class="row g-4 pt-4">
+            <div class="col-lg-3">
+                @include('frontend.components.student_sidebar')
+            </div>
+            <div class="col-lg-9">
+        {{-- Stats --}}
+        <div class="lms-stats">
+            <div class="lms-stat">
+                <div class="lms-stat-ico" style="background:#eef5ff; color:var(--navy2);"><i class="fa-solid fa-layer-group"></i></div>
+                <div>
+                    <div class="lms-stat-num">{{ $user_course->count() }}</div>
+                    <div class="lms-stat-lbl">Total Courses</div>
+                </div>
+            </div>
+            <div class="lms-stat">
+                <div class="lms-stat-ico" style="background:#fff9e6; color:#c07800;"><i class="fa-solid fa-spinner"></i></div>
+                <div>
+                    <div class="lms-stat-num">{{ $incomplete_courses->count() }}</div>
+                    <div class="lms-stat-lbl">In Progress</div>
+                </div>
+            </div>
+            <div class="lms-stat">
+                <div class="lms-stat-ico" style="background:#e8fff2; color:#00a651;"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                    <div class="lms-stat-num">{{ $complete_courses->count() }}</div>
+                    <div class="lms-stat-lbl">Completed</div>
+                </div>
+            </div>
+        </div>
+
+        {{-- In Progress --}}
+        @if($incomplete_courses->count() > 0)
+        <div class="lms-section-head">
+            <i class="fa-solid fa-play" style="color:var(--gold);"></i>
+            <h2>চলমান কোর্স</h2>
+            <span class="cnt">{{ $incomplete_courses->count() }}</span>
+        </div>
+        <div class="lms-course-grid">
+            @foreach($incomplete_courses as $item)
+            @php $url = route('mycourse_details', $item->course->slug) . '?batch_id=' . $item->batch->id; @endphp
+            <div class="lms-ccard">
+                <div class="lms-ccard-img">
+                    <a href="{{ $url }}"><img src="{{ assetHelper(optional($item->course)->image) }}" alt="{{ $item->course->title }}" loading="lazy"></a>
+                    <span class="lms-ccard-status status-progress">In Progress</span>
+                    <span class="lms-ccard-pct">{{ $item->course_percent }}%</span>
+                </div>
+                <div class="lms-ccard-body">
+                    <div class="lms-ccard-batch"><i class="fa-solid fa-layer-group me-1"></i>{{ $item->batch->batch_name }}</div>
+                    <div class="lms-ccard-title">{{ $item->course->title }}</div>
+                    <div class="lms-progress-wrap">
+                        <div class="lms-progress-row">
+                            <span class="lms-progress-lbl">Progress</span>
+                            <span class="lms-progress-val">{{ $item->course_percent }}%</span>
+                        </div>
+                        <div class="lms-progress-bar">
+                            <div class="lms-progress-fill fill-progress" style="width:{{ $item->course_percent }}%"></div>
+                        </div>
+                    </div>
+                    <a href="{{ $url }}" class="lms-ccard-btn btn-continue">
+                        <i class="fa-solid fa-play"></i> Continue Learning
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        {{-- Completed --}}
+        @if($complete_courses->count() > 0)
+        <div class="lms-section-head">
+            <i class="fa-solid fa-trophy" style="color:#00a651;"></i>
+            <h2>সম্পন্ন কোর্স</h2>
+            <span class="cnt">{{ $complete_courses->count() }}</span>
+        </div>
+        <div class="lms-course-grid">
+            @foreach($complete_courses as $item)
+            @php $url = route('mycourse_details', $item->course->slug) . '?batch_id=' . $item->batch->id; @endphp
+            <div class="lms-ccard">
+                <div class="lms-ccard-img">
+                    <a href="{{ $url }}"><img src="{{ assetHelper(optional($item->course)->image) }}" alt="{{ $item->course->title }}" loading="lazy"></a>
+                    <span class="lms-ccard-status status-complete">Completed</span>
+                    <span class="lms-ccard-pct">100%</span>
+                </div>
+                <div class="lms-ccard-body">
+                    <div class="lms-ccard-batch"><i class="fa-solid fa-layer-group me-1"></i>{{ $item->batch->batch_name }}</div>
+                    <div class="lms-ccard-title">{{ $item->course->title }}</div>
+                    <div class="lms-progress-wrap">
+                        <div class="lms-progress-row">
+                            <span class="lms-progress-lbl">Progress</span>
+                            <span class="lms-progress-val" style="color:#00a651;">100%</span>
+                        </div>
+                        <div class="lms-progress-bar">
+                            <div class="lms-progress-fill fill-complete" style="width:100%"></div>
+                        </div>
+                    </div>
+                    <a href="{{ $url }}" class="lms-ccard-btn btn-cert">
+                        <i class="fa-solid fa-certificate"></i> View Certificate
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        @if($user_course->count() === 0)
+        <div class="lms-empty">
+            <i class="fa-solid fa-book-open d-block"></i>
+            <h4 class="fw-bold" style="color:var(--navy);">কোনো কোর্স নেই</h4>
+            <p class="text-muted mb-4">আপনি এখনো কোনো কোর্সে এনরোল্ড হননি।</p>
+            <a href="{{ route('courses') }}" style="background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:12px 28px;border-radius:50px;font-weight:700;text-decoration:none;font-size:0.88rem;">কোর্স দেখুন</a>
+        </div>
+        @endif
+            </div>{{-- /col-lg-9 --}}
+        </div>{{-- /row --}}
+    </div>
+</div>
 @endsection

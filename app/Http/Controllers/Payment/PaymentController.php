@@ -120,35 +120,55 @@ class PaymentController extends Controller
                 // ✅ If everything runs fine
                 DB::commit();
 
-                return redirect('my-course/' . $course_slug)->with('success', 'You are enrolled!');
+                        return redirect()->route('payment.success', $course_slug);
             } catch (\Exception $e) {
-                // ❌ If something fails, rollback
                 DB::rollBack();
-                return redirect()->back()->with('error', 'Payment succeeded but order creation failed: ' . $e->getMessage());
+                Log::error('Course payment DB failure: ' . $e->getMessage());
+                return redirect()->route('course_details', $course_slug)
+                    ->with('error', 'Payment received but enrollment failed. Contact support with TRX: ' . $trx_id);
             }
         }
 
-        return redirect()->back()->with('error', 'Payment validation failed.');
+        return redirect()->route('course_details', $request->value_a ?? '')
+            ->with('error', 'Payment validation failed. Please try again.');
+    }
+
+    public function payment_success(Request $request, $slug)
+    {
+        $course = Course::active()->where('slug', $slug)->first();
+        if (!$course) return redirect()->route('myCourse');
+        return view('frontend.pages.courses.payment_success', compact('course'));
     }
 
     public function failure(Request $request)
     {
-        $auth = auth()->user();
         $course_slug = $request->value_a;
-
-        if (!$auth) {
-            $this->cancel($request);
-            return redirect('/login');
-        }
-
-        return redirect('course/enroll/' . $course_slug)->with('error', 'Payment failed! Please try again.');
+        return redirect()->route('course_details', $course_slug)
+            ->with('error', 'Payment failed. Please try again or contact support.');
     }
 
     public function cancel(Request $request)
     {
         $course_slug = $request->value_a;
+        return redirect()->route('course_details', $course_slug)
+            ->with('warning', 'Payment was cancelled.');
+    }
 
-        return redirect('course/enroll/' . $course_slug)->with('error', 'Order Canceled! Please try again.');
+    public function ipn(Request $request)
+    {
+        if (!$request->input('tran_id')) {
+            return response('Invalid', 400);
+        }
+
+        $tran_id  = $request->input('tran_id');
+        $validate = SSLCommerz::validate_payment($request);
+
+        if ($validate) {
+            DB::table('orders')->where('trx_id', $tran_id)->update(['payment_status' => 1]);
+            DB::table('enroll_informations')->where('trx_id', $tran_id)->update(['payment_status' => 'paid']);
+        }
+
+        return response('OK', 200);
     }
 
     public function refund($bankID)

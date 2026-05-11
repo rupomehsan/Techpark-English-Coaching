@@ -82,62 +82,66 @@
             @endif
         </div>
         <div class="admit_course">
-            <div class="d-flex justify-content-between align-items-center gap-2">
-                <div style="flex-grow: 1;">
-                    @if ($check_enrolled)
-                        <a href="{{ url('my-course', $data->slug) }}" class="admit_course_title_and_icon">
-                            <div class="admit_course_title">View Course</div>
-                            <div class="admit_course_icon"><i class="fa-solid fa-angle-right"></i></div>
-                        </a>
-                    @elseif ($is_admission_open || $is_admission_closed)
-                        <div class="admit_course_title_and_icon" style="cursor: not-allowed; opacity: 0.5;">
-                            <div class="admit_course_title">Enrollment Closed</div>
-                            <div class="admit_course_icon"><i class="fa-solid fa-angle-right"></i></div>
+            <div class="d-flex align-items-center gap-2">
+                {{-- Enroll / View button --}}
+                <div style="flex-grow:1;">
+                    @if($check_enrolled)
+                        <div class="admit_course_title_and_icon" style="opacity:0.7;cursor:not-allowed;background:linear-gradient(135deg,#00a651,#007a3d);">
+                            <div class="admit_course_title"><i class="fa-solid fa-circle-check me-1"></i>Enrolled</div>
+                            <div class="admit_course_icon"><i class="fa-solid fa-check"></i></div>
                         </div>
+                        <a href="{{ route('mycourse_details', $data->slug) }}" style="display:block;text-align:center;font-size:0.78rem;color:var(--gold);font-weight:700;text-decoration:none;margin-top:6px;">
+                            <i class="fa-solid fa-play me-1"></i>Go to Course
+                        </a>
+                    @elseif(Auth::check())
+                        <form method="POST" action="{{ route('course.checkout', $data->slug) }}" style="display:contents;">
+                            @csrf
+                            <button type="submit" class="admit_course_title_and_icon" style="border:none; width:100%; cursor:pointer;">
+                                <div class="admit_course_title">Enroll in Course</div>
+                                <div class="admit_course_icon"><i class="fa-solid fa-lock-open"></i></div>
+                            </button>
+                        </form>
                     @else
-                        <a href="{{ route('course_enroll', $data->slug) }}" class="admit_course_title_and_icon">
-                            <div class="admit_course_title">Enroll in Course</div>
-                            <div class="admit_course_icon"><i class="fa-solid fa-angle-right"></i></div>
+                        <a href="{{ route('login') }}?redirect={{ urlencode(route('course_details', $data->slug)) }}"
+                           class="admit_course_title_and_icon">
+                            <div class="admit_course_title">Login to Enroll</div>
+                            <div class="admit_course_icon"><i class="fa-solid fa-right-to-bracket"></i></div>
                         </a>
                     @endif
                 </div>
-                <div>
-                    @if (Auth::check())
-                        @if ($data->is_in_wishlist)
-                            {{-- Remove from wishlist --}}
-                            <form id="wishlist-remove-{{ $data->id }}"
-                                action="{{ route('wishlist.remove', $data->id) }}" method="POST"
-                                style="display:none;">
-                                @csrf
-                            </form>
-                            <a href="javascript:void(0)"
-                                onclick="document.getElementById('wishlist-remove-{{ $data->id }}').submit();"
-                                class="admit_course_title_and_icon">
-                                <div class="admit_course_icon wishlist-icon" style="font-size: 1.2em; ">
-                                    <i class="fa-solid fa-heart"></i>
-                                </div>
-                            </a>
-                        @else
-                            <form id="wishlist-add-{{ $data->id }}"
-                                action="{{ route('wishlist.add', $data->id) }}" method="POST" style="display:none;">
-                                @csrf
-                            </form>
-                            <a href="javascript:void(0)"
-                                onclick="document.getElementById('wishlist-add-{{ $data->id }}').submit();"
-                                class="admit_course_title_and_icon ">
-                                <div class="admit_course_icon wishlist-icon" style="font-size: 1.2em;">
-                                    <i class="fa-regular fa-heart"></i>
-                                </div>
-                            </a>
-                        @endif
+
+                {{-- Wishlist button --}}
+                @if(Auth::check())
+                    @if($data->is_in_wishlist)
+                        <form id="wl-remove-{{ $data->id }}" action="{{ route('wishlist.remove', $data->id) }}" method="POST" style="display:none;">@csrf</form>
+                        <button type="button" onclick="document.getElementById('wl-remove-{{ $data->id }}').submit();" class="wl-btn wl-btn-active" title="Wishlist থেকে সরান">
+                            <i class="fa-solid fa-heart"></i>
+                        </button>
                     @else
-                        <a href="{{ route('login') }}" class="admit_course_title_and_icon">
-                            <div class="admit_course_icon wishlist-icon" style="font-size: 1.2em;"><i
-                                    class="fa-regular fa-heart"></i></div>
-                        </a>
+                        <form id="wl-add-{{ $data->id }}" action="{{ route('wishlist.add', $data->id) }}" method="POST" style="display:none;">@csrf</form>
+                        <button type="button" onclick="document.getElementById('wl-add-{{ $data->id }}').submit();" class="wl-btn" title="Wishlist এ যোগ করুন">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
                     @endif
-                </div>
+                @else
+                    <a href="{{ route('login') }}" class="wl-btn" title="Wishlist এ যোগ করুন">
+                        <i class="fa-regular fa-heart"></i>
+                    </a>
+                @endif
             </div>
+
+            <style>
+            .wl-btn {
+                width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+                background: #f0f4f8; border: 1.5px solid #dce4f0;
+                color: #6b7a90; font-size: 0.82rem;
+                display: inline-flex; align-items: center; justify-content: center;
+                cursor: pointer; text-decoration: none;
+                transition: all 0.25s ease;
+            }
+            .wl-btn:hover { background: #ffe4e4; border-color: #ffaaaa; color: #e63946; }
+            .wl-btn.wl-btn-active { background: #ffe4e4; border-color: #ffaaaa; color: #e63946; }
+            </style>
 
 
             {{-- Batch Info Card --}}
@@ -207,39 +211,50 @@
         </div>
     </div>
 
-    <div class="course_needed">
-        <div class="course_needed_title">Requirements to take this course</div>
-        @if ($data->course_essential_requirements)
-            @foreach ($data->course_essential_requirements as $course_essential)
-                <div class="course_needed_internet">
-                    <i class="fa-regular fa-circle-dot"></i>
-                    {{ $course_essential->title }}
+    {{-- Requirements --}}
+    @if($data->course_essential_requirements && count($data->course_essential_requirements) > 0)
+    <div style="padding:0 16px 16px;">
+        <div style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:#6b7a90; margin-bottom:10px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-circle-exclamation" style="color:#fab005;"></i> কোর্স করার পূর্বশর্ত
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+            @foreach($data->course_essential_requirements as $req)
+            <div style="display:flex; align-items:flex-start; gap:9px; background:#f7faff; border:1px solid #e4ecf5; border-radius:8px; padding:9px 12px;">
+                <div style="width:20px; height:20px; border-radius:50%; background:rgba(250,176,5,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px;">
+                    <i class="fa-solid fa-check" style="font-size:0.55rem; color:#c07800;"></i>
                 </div>
-            @endforeach
-        @endif
-        <div class="course_hotline_and_schedule">
-            <div class="course_hotline" style="display: unset; padding: 20px;">
-                <div class="course_hotline_title">
-                    Call us for any assistance:
-                </div>
-                @php
-                    $phone_numbers = setting('phone_numbers', true);
-                    // If $phone_numbers is an array with 'setting_values', extract that
-                    if (is_array($phone_numbers) && isset($phone_numbers[0]['setting_values'])) {
-                        $phone_numbers = $phone_numbers[0]['setting_values'];
-                    }
-                @endphp
-                @foreach ($phone_numbers as $item)
-                    @php
-                        $phone_number = is_array($item) ? $item['value'] ?? '' : $item;
-                    @endphp
-                    <div class="d-flex mt-2 gap-2 align-items-center justify-content-center">
-                        <i class="fa-solid fa-phone"></i>
-                        <a class="course_hotline_number" href="tel:{{ $phone_number }}"> {{ $phone_number }} </a>
-                    </div>
-                @endforeach
+                <span style="font-size:0.82rem; color:#2d3a4a; font-weight:500; line-height:1.4;">{{ $req->title }}</span>
             </div>
-            <div class="course_schedule">(10 AM to 8 PM)</div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    {{-- Hotline --}}
+    @php
+        $phone_numbers = setting('phone_numbers', true);
+        if (is_array($phone_numbers) && isset($phone_numbers[0]['setting_values'])) {
+            $phone_numbers = $phone_numbers[0]['setting_values'];
+        }
+    @endphp
+    <div style="margin:0 16px 16px; border-radius:14px; overflow:hidden; border:1px solid #dce8f5;">
+        <div style="background:linear-gradient(135deg,#001e3c,#002d5c); padding:16px 18px; text-align:center;">
+            <div style="display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; background:rgba(250,176,5,0.15); border:1px solid rgba(250,176,5,0.35); margin-bottom:10px;">
+                <i class="fa-solid fa-headset" style="color:#fab005; font-size:1rem;"></i>
+            </div>
+            <div style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:rgba(255,255,255,0.5); margin-bottom:10px;">যেকোনো সহায়তায় কল করুন</div>
+            @foreach($phone_numbers as $item)
+                @php $phone_number = is_array($item) ? $item['value'] ?? '' : $item; @endphp
+                <a href="tel:{{ $phone_number }}" style="display:flex; align-items:center; justify-content:center; gap:8px; background:rgba(250,176,5,0.12); border:1px solid rgba(250,176,5,0.3); border-radius:50px; padding:9px 18px; text-decoration:none; margin-bottom:7px; transition:all 0.25s;"
+                   onmouseover="this.style.background='rgba(250,176,5,0.22)'" onmouseout="this.style.background='rgba(250,176,5,0.12)'">
+                    <i class="fa-solid fa-phone" style="color:#fab005; font-size:0.8rem;"></i>
+                    <span style="color:#fab005; font-weight:700; font-size:0.9rem; letter-spacing:0.3px;">{{ $phone_number }}</span>
+                </a>
+            @endforeach
+        </div>
+        <div style="background:#fffbf0; padding:10px 18px; display:flex; align-items:center; justify-content:center; gap:7px; border-top:1px solid #fef3cd;">
+            <i class="fa-regular fa-clock" style="color:#c07800; font-size:0.78rem;"></i>
+            <span style="font-size:0.75rem; font-weight:600; color:#c07800;">সকাল ১০টা থেকে রাত ৮টা</span>
         </div>
     </div>
 </div>

@@ -27,6 +27,7 @@
                     >
                         <div class="label">
                             {{ item.name || item.title }}
+                            -{{ item.sale_price }} TK
                         </div>
                         <div @click.prevent="remove_item(item)" class="remove">
                             <i class="fa fa-close"></i>

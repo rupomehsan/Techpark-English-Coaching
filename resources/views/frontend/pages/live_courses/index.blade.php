@@ -133,7 +133,7 @@
                     <div class="card-body">
                         <span class="course-badge" style="background:linear-gradient(135deg,#e91e63,#c2185b);">
                             <span class="live-dot"></span>
-                            {{ strtoupper($lc->live_course_type ?? 'LIVE') }}
+                            {{ $type_labels[$lc->live_course_type ?? ''] ?? 'Live' }}
                         </span>
                         <h3 class="course-title mt-2">{{ $lc->title }}</h3>
                         @php $cs = is_array($lc->course_specification) ? $lc->course_specification : json_decode($lc->course_specification, true); @endphp
@@ -162,9 +162,15 @@
                             </div>
                             <div class="lc-btn-group">
                                 <a href="{{ route('live_course_details', $lc->slug) }}" class="btn-tpe-outline">বিস্তারিত</a>
+                                @if(in_array($lc->id, $enrolled_live_ids ?? []))
+                                <span class="btn-tpe-fill" style="padding:8px 14px;font-size:0.78rem;cursor:default;background:linear-gradient(135deg,#059669,#047857);box-shadow:none;opacity:0.85;">
+                                    <i class="fa-solid fa-circle-check"></i> ভর্তি হয়েছেন
+                                </span>
+                                @else
                                 <a href="{{ route('live_course_enroll', $lc->slug) }}" class="btn-tpe-fill" style="padding:8px 14px; font-size:0.78rem;">
                                     <i class="fa-solid fa-pen-to-square"></i> ভর্তি হন
                                 </a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -187,20 +193,25 @@
 
 @push('scripts')
 <script>
+function applyFilter(filter) {
+    document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
+    var activeTab = document.querySelector('.filter-tab[data-filter="' + filter + '"]');
+    if (activeTab) activeTab.classList.add('active');
+    else document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+
+    document.querySelectorAll('.course-col').forEach(function(col) {
+        col.classList.toggle('hidden', filter !== 'all' && col.dataset.type !== filter);
+    });
+}
+
 document.querySelectorAll('.filter-tab').forEach(function(tab) {
     tab.addEventListener('click', function() {
-        document.querySelectorAll('.filter-tab').forEach(function(t) { t.classList.remove('active'); });
-        this.classList.add('active');
-
-        var filter = this.dataset.filter;
-        document.querySelectorAll('.course-col').forEach(function(col) {
-            if (filter === 'all' || col.dataset.type === filter) {
-                col.classList.remove('hidden');
-            } else {
-                col.classList.add('hidden');
-            }
-        });
+        applyFilter(this.dataset.filter);
     });
 });
+
+// sync with URL ?type= param
+var urlType = new URLSearchParams(window.location.search).get('type');
+if (urlType) applyFilter(urlType);
 </script>
 @endpush

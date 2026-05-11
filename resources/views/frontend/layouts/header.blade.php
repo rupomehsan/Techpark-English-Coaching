@@ -5,7 +5,6 @@
     color: rgba(255,255,255,0.7);
     font-size: 0.8rem;
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .topbar-inner {
     display: flex;
@@ -62,14 +61,24 @@
 .tb-social.ig:hover  { background: linear-gradient(135deg, #f09433,#e6683c,#dc2743,#cc2366,#bc1888); border-color: transparent; }
 .tb-social.wa:hover  { background: #25d366; border-color: #25d366; }
 .tb-social.li:hover  { background: #0a66c2; border-color: #0a66c2; }
+.tb-social.tw:hover  { background: #000; border-color: #000; }
 
 /* ===== Sticky Wrapper ===== */
 #stickyHeaderWrap {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 1000;
     width: 100%;
+}
+#stickyHeaderWrap.is-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    animation: slideDown 0.35s ease forwards;
+}
+@keyframes slideDown {
+    from { transform: translateY(-100%); opacity: 0.6; }
+    to   { transform: translateY(0);    opacity: 1; }
 }
 .topbar {
     transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
@@ -93,14 +102,23 @@
 .header_area.scrolled {
     box-shadow: 0 4px 30px rgba(0,33,71,0.14) !important;
 }
+#stickyHeaderWrap.is-sticky .header_area {
+    box-shadow: 0 4px 30px rgba(0,33,71,0.18) !important;
+}
 
 /* Logo */
 .logo_area a img {
-    height: 48px !important;
+    height: 56px !important;
     width: auto !important;
-    transition: transform 0.3s ease !important;
+    max-width: 220px !important;
+    object-fit: contain !important;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: bicubic;
+    transition: transform 0.3s ease, opacity 0.2s !important;
+    display: block !important;
 }
-.logo_area a:hover img { transform: scale(1.04) !important; }
+.logo_area a:hover img { transform: scale(1.03) !important; opacity: 0.9 !important; }
 
 /* Nav links — modern underline slide effect */
 .header_area .header_area_content .nav_and_login_area .full_nav_are .nav-area ul li a {
@@ -196,6 +214,104 @@
     background: #f0f5ff !important;
     color: #002147 !important;
     padding-left: 24px !important;
+}
+
+/* ===== Nav Dropdown (Recorded Courses) ===== */
+.nav-dropdown { position: relative; }
+.nav-dropdown > a { display: flex !important; align-items: center; gap: 4px; }
+.nav-dropdown > a .nav-dd-arrow { font-size: 0.6rem; transition: transform 0.25s; }
+.nav-dropdown:hover > a .nav-dd-arrow { transform: rotate(180deg); }
+
+.nav-dd-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(0,33,71,0.08);
+    box-shadow: 0 10px 40px rgba(0,33,71,0.14);
+    min-width: 210px;
+    overflow: visible;
+    z-index: 9999;
+    padding: 16px 0 6px;
+}
+.nav-dropdown:hover .nav-dd-menu { display: block; }
+
+/* Invisible bridge fills gap between link and menu so hover never breaks */
+.nav-dd-menu::after {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 0;
+    right: 0;
+    height: 14px;
+}
+
+/* Arrow pointer on menu */
+.nav-dd-menu::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    filter: drop-shadow(0 -1px 1px rgba(0,33,71,0.07));
+    z-index: 1;
+}
+
+.nav-dd-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 18px;
+    font-size: 0.83rem !important;
+    color: #2c3e50 !important;
+    text-decoration: none;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    transition: background 0.18s, color 0.18s, padding-left 0.18s;
+    border-left: 3px solid transparent;
+}
+.nav-dd-item:hover {
+    background: #f0f5ff;
+    color: #002147 !important;
+    padding-left: 22px;
+    border-left-color: #002147;
+}
+.nav-dd-item i { color: #002147; font-size: 0.75rem; flex-shrink: 0; }
+.nav-dd-divider { height: 1px; background: #f0f4fb; margin: 4px 0; }
+.nav-dd-item.active { background: #f0f5ff; color: #002147 !important; border-left-color: #fab005; padding-left: 22px; }
+
+/* Mobile: show as expanded list */
+@media (max-width: 991.98px) {
+    .nav-dropdown { position: static !important; }
+    .nav-dropdown > a .nav-dd-arrow { display: none; }
+    .nav-dd-menu {
+        display: block !important;
+        position: static !important;
+        transform: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: rgba(255,255,255,0.04) !important;
+        padding: 0 !important;
+        min-width: unset !important;
+    }
+    .nav-dd-menu::before { display: none; }
+    .nav-dd-item {
+        color: rgba(255,255,255,0.65) !important;
+        padding: 10px 32px !important;
+        font-size: 0.82rem !important;
+        border-left: none !important;
+    }
+    .nav-dd-item:hover { background: rgba(250,176,5,0.08) !important; color: #fab005 !important; }
+    .nav-dd-item i { color: rgba(255,255,255,0.4) !important; }
+    .nav-dd-divider { background: rgba(255,255,255,0.06) !important; }
 }
 
 /* Mobile hamburger */
@@ -434,38 +550,88 @@
 }
 </style>
 
+@php
+    $nav_course_categories = \App\Modules\Management\CourseManagement\CourseCategory\Models\Model::where('status', 'active')->orderBy('id', 'asc')->get();
+    $nav_live_types = \App\Modules\Management\LiveCourseManagement\LiveCourse\Models\Model::where('status', 'active')
+        ->select('live_course_type')->distinct()->pluck('live_course_type');
+    $nav_live_type_labels = ['online' => 'Online', 'non_residential' => 'Non-Residential', 'residential' => 'Residential'];
+@endphp
+@php
+    $tb_phone     = setting('phone_numbers');
+    $tb_email     = setting('email');
+    $tb_facebook  = setting('facebook');
+    $tb_youtube   = setting('youtube');
+    $tb_instagram = setting('instagram');
+    $tb_linkedin  = setting('linkedin');
+    $tb_twitter   = setting('twitter');
+
+    // Build WhatsApp URL with welcome message
+    $tb_whatsapp_raw = setting('whatsapp');
+    $tb_whatsapp     = null;
+    if ($tb_whatsapp_raw) {
+        $wa_digits = preg_replace('/\D/', '', $tb_whatsapp_raw);
+        // Normalize to BD international format (880...)
+        if (strlen($wa_digits) <= 11 && str_starts_with($wa_digits, '0')) {
+            $wa_digits = '880' . ltrim($wa_digits, '0');
+        } elseif (!str_starts_with($wa_digits, '880') && strlen($wa_digits) <= 10) {
+            $wa_digits = '880' . $wa_digits;
+        }
+        $site_name = setting('site_name') ?: 'TechPark English';
+        $wa_msg    = 'আসসালামু আলাইকুম! ' . $site_name . '-এ আপনাকে স্বাগতম। আমি কীভাবে আপনাকে সাহায্য করতে পারি?';
+        $tb_whatsapp = 'https://api.whatsapp.com/send/?phone=' . $wa_digits . '&text=' . rawurlencode($wa_msg) . '&type=phone_number&app_absent=0';
+    }
+@endphp
 <div id="stickyHeaderWrap">
-<!-- ===== Task 3: Top Bar (contact left, social right) ===== -->
+<!-- ===== Top Bar (contact left, social right) ===== -->
 <div class="topbar" id="topBar">
     <div class="container">
         <div class="topbar-inner">
             <div class="topbar-left">
-                <a href="tel:01335119223">
+                @if($tb_phone)
+                <a href="tel:{{ preg_replace('/\D/', '', $tb_phone) }}">
                     <i class="fa-solid fa-phone-volume"></i>
-                    <span>01335-119223</span>
+                    <span>{{ $tb_phone }}</span>
                 </a>
-                <a href="mailto:info@techparkenglish.org">
+                @endif
+                @if($tb_email)
+                <a href="mailto:{{ $tb_email }}">
                     <i class="fa-solid fa-envelope"></i>
-                    <span>info@techparkenglish.org</span>
+                    <span>{{ $tb_email }}</span>
                 </a>
+                @endif
             </div>
             <div class="topbar-right">
                 <span class="topbar-follow">Follow:</span>
-                <a href="https://www.facebook.com/TechParkEnglishFB/" target="_blank" rel="noopener" class="tb-social fb" aria-label="Facebook">
+                @if($tb_facebook)
+                <a href="{{ $tb_facebook }}" target="_blank" rel="noopener" class="tb-social fb" aria-label="Facebook">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a href="https://www.youtube.com/@TechParkEnglish" target="_blank" rel="noopener" class="tb-social yt" aria-label="YouTube">
+                @endif
+                @if($tb_youtube)
+                <a href="{{ $tb_youtube }}" target="_blank" rel="noopener" class="tb-social yt" aria-label="YouTube">
                     <i class="fab fa-youtube"></i>
                 </a>
-                <a href="https://www.instagram.com/techparkenglish/" target="_blank" rel="noopener" class="tb-social ig" aria-label="Instagram">
+                @endif
+                @if($tb_instagram)
+                <a href="{{ $tb_instagram }}" target="_blank" rel="noopener" class="tb-social ig" aria-label="Instagram">
                     <i class="fab fa-instagram"></i>
                 </a>
-                <a href="#" class="tb-social wa" aria-label="WhatsApp">
+                @endif
+                @if($tb_whatsapp)
+                <a href="{{ $tb_whatsapp }}" target="_blank" rel="noopener" class="tb-social wa" aria-label="WhatsApp">
                     <i class="fab fa-whatsapp"></i>
                 </a>
-                <a href="https://www.linkedin.com/company/techparkenglish" target="_blank" rel="noopener" class="tb-social li" aria-label="LinkedIn">
+                @endif
+                @if($tb_linkedin)
+                <a href="{{ $tb_linkedin }}" target="_blank" rel="noopener" class="tb-social li" aria-label="LinkedIn">
                     <i class="fab fa-linkedin-in"></i>
                 </a>
+                @endif
+                @if($tb_twitter)
+                <a href="{{ $tb_twitter }}" target="_blank" rel="noopener" class="tb-social tw" aria-label="Twitter/X">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                @endif
             </div>
         </div>
     </div>
@@ -479,7 +645,7 @@
             <!-- Logo -->
             <div class="logo_area">
                 <a href="/">
-                    <img class="rounded" src="{{ assetHelper(setting('image')) }}" alt="TechPark English" loading="lazy">
+                    <img src="{{ assetHelper(setting('image')) }}" alt="TechPark English" loading="eager">
                 </a>
             </div>
 
@@ -511,10 +677,40 @@
                             <div class="nav-area_all" onclick="active_menu_ber.classList.toggle('activee_class')"></div>
                             <li><a href="/" {{ request()->is('/') ? 'class=active_button' : '' }}><i class="fa-solid fa-house d-lg-none" style="width:16px;opacity:.6;"></i> Home</a></li>
                             <li><a href="/about" {{ request()->is('about') ? 'class=active_button' : '' }}><i class="fa-solid fa-circle-info d-lg-none" style="width:16px;opacity:.6;"></i> About</a></li>
-                            <li><a href="/live-courses" {{ request()->is('live-courses') ? 'class=active_button' : '' }}><i class="fa-solid fa-book-open d-lg-none" style="width:16px;opacity:.6;"></i>Our Courses</a></li>
+                            <li class="nav-dropdown">
+                                <a href="/live-courses" {{ request()->is('live-courses*') ? 'class=active_button' : '' }}>
+                                    <i class="fa-solid fa-book-open d-lg-none" style="width:16px;opacity:.6;"></i>
+                                    Our Courses
+                                    <i class="fa-solid fa-chevron-down nav-dd-arrow d-none d-lg-inline"></i>
+                                </a>
+                                @if($nav_live_types->count() > 0)
+                                <div class="nav-dd-menu">
+                                    @foreach($nav_live_types as $type)
+                                    <a href="/live-courses?type={{ $type }}" class="nav-dd-item {{ request('type') == $type ? 'active' : '' }}">
+                                        <i class="fa-solid fa-circle-dot"></i> {{ $nav_live_type_labels[$type] ?? $type }}
+                                    </a>
+                                    @endforeach
+                                </div>
+                                @endif
+                            </li>
                             <li><a href="/gallery" {{ request()->is('gallery') ? 'class=active_button' : '' }}><i class="fa-solid fa-images d-lg-none" style="width:16px;opacity:.6;"></i> Gallery</a></li>
                             <li><a href="{{ route('videos') }}" {{ request()->is('videos*') ? 'class=active_button' : '' }}><i class="fa-solid fa-play-circle d-lg-none" style="width:16px;opacity:.6;"></i> Videos</a></li>
-                            <li><a href="/courses" {{ request()->is('courses*') ? 'class=active_button' : '' }}><i class="fa-solid fa-book d-lg-none" style="width:16px;opacity:.6;"></i> Recorded Courses</a></li>
+                            <li class="nav-dropdown">
+                                <a href="/courses" {{ request()->is('courses*') ? 'class=active_button' : '' }}>
+                                    <i class="fa-solid fa-book d-lg-none" style="width:16px;opacity:.6;"></i>
+                                    Recorded Courses
+                                    <i class="fa-solid fa-chevron-down nav-dd-arrow d-none d-lg-inline"></i>
+                                </a>
+                                @if($nav_course_categories->count() > 0)
+                                <div class="nav-dd-menu">
+                                    @foreach($nav_course_categories as $cat)
+                                    <a href="/courses?slug={{ $cat->slug }}" class="nav-dd-item {{ request()->is('courses*') && request('slug') == $cat->slug ? 'active' : '' }}">
+                                        <i class="fa-solid fa-circle-dot"></i> {{ $cat->title }}
+                                    </a>
+                                    @endforeach
+                                </div>
+                                @endif
+                            </li>
                             <li><a href="/blog" {{ request()->is('blog*') ? 'class=active_button' : '' }}><i class="fa-solid fa-blog d-lg-none" style="width:16px;opacity:.6;"></i> Blogs</a></li>
                             <li><a href="/contact" {{ request()->is('contact') ? 'class=active_button' : '' }}><i class="fa-solid fa-envelope d-lg-none" style="width:16px;opacity:.6;"></i> Contact</a></li>
                         </ul>
@@ -540,7 +736,10 @@
                                         <i class="fa-regular fa-user me-2" style="color:#002147;"></i> My Profile
                                     </a>
                                     <a class="dropdown-single-item" href="{{ route('myCourse') }}">
-                                        <i class="fa-solid fa-book me-2" style="color:#002147;"></i> My Courses
+                                        <i class="fa-solid fa-circle-play me-2" style="color:#002147;"></i> Online Courses
+                                    </a>
+                                    <a class="dropdown-single-item" href="{{ route('myLiveCourses') }}">
+                                        <i class="fa-solid fa-chalkboard-user me-2" style="color:#e91e63;"></i> Live Courses
                                     </a>
                                     <a class="dropdown-single-item" href="{{ route('wishlist.view') }}">
                                         <i class="fa-regular fa-heart me-2" style="color:#002147;"></i> My Wishlist
@@ -561,10 +760,21 @@
                     <!-- Sidebar footer with social links (mobile only) -->
                     <div class="sidebar-footer d-lg-none">
                         <div class="sidebar-footer-socials">
-                            <a href="https://www.facebook.com/TechParkEnglishFB/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="https://www.youtube.com/@TechParkEnglish" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                            <a href="https://www.instagram.com/techparkenglish/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                            @if($tb_facebook)
+                            <a href="{{ $tb_facebook }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            @endif
+                            @if($tb_youtube)
+                            <a href="{{ $tb_youtube }}" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                            @endif
+                            @if($tb_instagram)
+                            <a href="{{ $tb_instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                            @endif
+                            @if($tb_whatsapp)
+                            <a href="{{ $tb_whatsapp }}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                            @endif
+                            @if($tb_linkedin)
+                            <a href="{{ $tb_linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            @endif
                         </div>
                     </div>
 
@@ -615,12 +825,33 @@ window.onclick = function(event) {
         }
     }
 };
-// Sticky shadow + hide topbar on scroll
-window.addEventListener('scroll', function() {
-    var h  = document.getElementById('mainHeader');
-    var tb = document.getElementById('topBar');
-    var scrolled = window.scrollY > 60;
-    if (h)  h.classList.toggle('scrolled', window.scrollY > 10);
-    if (tb) tb.classList.toggle('topbar-hidden', scrolled);
-});
+// Sticky navbar: fix on scroll, slide-in animation, hide topbar
+(function() {
+    var wrap      = document.getElementById('stickyHeaderWrap');
+    var h         = document.getElementById('mainHeader');
+    var tb        = document.getElementById('topBar');
+    var threshold = 80;
+    var placeholder = document.createElement('div');
+    placeholder.id = 'stickyPlaceholder';
+    placeholder.style.display = 'none';
+
+    if (wrap) wrap.parentNode.insertBefore(placeholder, wrap);
+
+    window.addEventListener('scroll', function() {
+        if (!wrap) return;
+        var scrolled = window.scrollY > threshold;
+
+        if (scrolled && !wrap.classList.contains('is-sticky')) {
+            placeholder.style.height  = wrap.offsetHeight + 'px';
+            placeholder.style.display = 'block';
+            wrap.classList.add('is-sticky');
+        } else if (!scrolled && wrap.classList.contains('is-sticky')) {
+            wrap.classList.remove('is-sticky');
+            placeholder.style.display = 'none';
+        }
+
+        if (h)  h.classList.toggle('scrolled', window.scrollY > 10);
+        if (tb) tb.classList.toggle('topbar-hidden', scrolled);
+    }, { passive: true });
+})();
 </script>

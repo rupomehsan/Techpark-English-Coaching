@@ -152,7 +152,7 @@
                         <div class="video-body">
                             <div class="video-title">{{ $video->title }}</div>
                             @if($video->description)
-                                <div class="video-desc">{{ $video->description }}</div>
+                                <div class="video-desc">{{ strip_tags($video->description) }}</div>
                             @endif
                         </div>
                     </div>
@@ -190,7 +190,7 @@
                         <div class="video-body">
                             <div class="video-title">{{ $video->title }}</div>
                             @if($video->description)
-                                <div class="video-desc">{{ $video->description }}</div>
+                                <div class="video-desc">{{ strip_tags($video->description) }}</div>
                             @endif
                         </div>
                     </div>

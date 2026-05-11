@@ -50,6 +50,13 @@ Route::post('/login', [AuthController::class, 'login_submit'])->name('login_sumb
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register-sumbit', [AuthController::class, 'register_sumbit'])->name('register_sumbit');
 
+Route::get('/forgot-password',  [AuthController::class, 'forgotPassword'])->name('forgot.password');
+Route::post('/forgot-password', [AuthController::class, 'forgotPasswordSubmit'])->name('forgot.password.submit');
+Route::get('/verify-otp',       [AuthController::class, 'verifyOtp'])->name('verify.otp');
+Route::post('/verify-otp',      [AuthController::class, 'verifyOtpSubmit'])->name('verify.otp.submit');
+Route::get('/reset-password',   [AuthController::class, 'resetPasswordForm'])->name('reset.password.form');
+Route::post('/reset-password',  [AuthController::class, 'resetPasswordSubmit'])->name('reset.password.submit');
+
 Route::post('logout', [AuthController::class, 'logout_submit'])->name('logout');
 
 // Website Routes
@@ -102,22 +109,27 @@ Route::get('/cookies-policy', [PolicyController::class, 'cookies_policy'])->name
 Route::get('/terms-policy', [PolicyController::class, 'terms_policy'])->name("terms.policy");
 Route::get('/sitemap', [PolicyController::class, 'sitemap'])->name("sitemap.policy");
 
-// ssl commerz payment routes (names match sslcommerz.php config defaults)
-Route::get('sslcommerz/order', [PaymentController::class, 'order'])->name('payment.order');
+// SSL Commerz callbacks (CSRF exempt — see VerifyCsrfToken)
 Route::post('sslcommerz/success', [PaymentController::class, 'success'])->name('sslc.success');
 Route::post('sslcommerz/failure', [PaymentController::class, 'failure'])->name('sslc.failure');
-Route::post('sslcommerz/cancel', [PaymentController::class, 'cancel'])->name('sslc.cancel');
-Route::post('sslcommerz/ipn', [PaymentController::class, 'ipn'])->name('sslc.ipn');
+Route::post('sslcommerz/cancel',  [PaymentController::class, 'cancel'])->name('sslc.cancel');
+Route::post('sslcommerz/ipn',     [PaymentController::class, 'ipn'])->name('sslc.ipn');
 
+// Payment success page (GET, shown after redirect)
+Route::get('payment/success/{slug}', [PaymentController::class, 'payment_success'])->name('payment.success');
 
+// Legacy enroll route — redirects to course detail
 Route::get('/course/enroll/{slug}', [CourseEnrollController::class, 'course_enroll'])->name("course_enroll");
-Route::post('/course/enroll/submit/{slug}', [CourseEnrollController::class, 'course_enroll_submit'])->name("course_enroll_submit");
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
+
+    // Course checkout — directly initiates SSL payment
+    Route::post('/course/checkout/{slug}', [CourseEnrollController::class, 'checkout'])->name('course.checkout');
 
     // User Course Routes
     Route::get('/my-course', [CourseController::class, 'myCourse'])->name("myCourse");
     Route::get('/my-course/{slug}', [CourseController::class, 'myCourseDetails'])->name("mycourse_details");
+    Route::get('/my-live-courses', [LiveCourseController::class, 'myLiveCourses'])->name("myLiveCourses");
     Route::get('/quiz/{quiz_id}', [QuizGivenController::class, 'showQuiz'])->name('quiz.show');
     Route::post('/quiz/submit', [QuizGivenController::class, 'submitQuiz'])->name('quiz.submit');
     Route::post('/course_completion', [QuizGivenController::class, 'course_completion'])->name('course_completion');
@@ -130,6 +142,8 @@ Route::middleware(['auth'])->group(function () {
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
     Route::post('/profile', [ProfileController::class, 'profileUpdate'])->name('update_profile');
+    Route::get('/change-password', [ProfileController::class, 'changePassword'])->name('change.password');
+    Route::post('/change-password', [ProfileController::class, 'changePasswordUpdate'])->name('change.password.update');
 
 
     // Wishlist Routes

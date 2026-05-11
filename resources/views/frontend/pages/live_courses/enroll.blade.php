@@ -210,13 +210,20 @@
         <form action="{{ route('live_course_enroll_submit', $course->slug) }}" method="POST" enctype="multipart/form-data" id="enrollForm" onsubmit="return false;">
             @csrf
 
-            {{-- Hidden fields populated by JS from step 1 inputs --}}
-            <input type="hidden" name="batch_id"     id="h_batch_id">
-            <input type="hidden" name="name"         id="h_name">
-            <input type="hidden" name="phone"        id="h_phone">
-            <input type="hidden" name="address"      id="h_address">
-            <input type="hidden" name="gender"       id="h_gender" value="পুরুষ">
-            <input type="hidden" name="payment_type" id="h_payment_type" value="offline">
+            {{-- Hidden fields --}}
+            <input type="hidden" name="batch_id"       id="h_batch_id">
+            @auth
+            <input type="hidden" name="name"           id="h_name"    value="{{ $authName }}">
+            <input type="hidden" name="phone"          id="h_phone"   value="{{ $authPhone }}">
+            <input type="hidden" name="address"        id="h_address" value="{{ $authAddress }}">
+            <input type="hidden" name="gender"         id="h_gender"  value="পুরুষ">
+            @else
+            <input type="hidden" name="name"           id="h_name">
+            <input type="hidden" name="phone"          id="h_phone">
+            <input type="hidden" name="address"        id="h_address">
+            <input type="hidden" name="gender"         id="h_gender"  value="পুরুষ">
+            @endauth
+            <input type="hidden" name="payment_type"   id="h_payment_type"   value="offline">
             <input type="hidden" name="transaction_id" id="h_transaction_id">
 
             {{-- ═══════ STEP 1: Student & Batch ═══════ --}}
@@ -311,6 +318,28 @@
                     <h3>শিক্ষার্থীর তথ্য</h3>
                 </div>
                 <div class="enroll-body">
+                @auth
+                    {{-- Logged-in: show read-only card --}}
+                    <div style="background:#f0f5ff; border:1.5px solid #c8d9f0; border-radius:14px; padding:18px 22px; display:flex; align-items:center; gap:16px;">
+                        <div style="width:44px;height:44px;border-radius:50%;background:#002147;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fa-solid fa-user" style="color:#fab005;font-size:1.1rem;"></i>
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-weight:800;color:#002147;font-size:1rem;">{{ $authName }}</div>
+                            <div style="font-size:0.83rem;color:#6b7280;margin-top:3px;">
+                                @if($authPhone)<span><i class="fa-solid fa-phone" style="color:#002147;font-size:.75rem;"></i> {{ $authPhone }}</span>@endif
+                                @if($authAddress)<span style="margin-left:14px;"><i class="fa-solid fa-location-dot" style="color:#002147;font-size:.75rem;"></i> {{ Str::limit($authAddress, 60) }}</span>@endif
+                            </div>
+                        </div>
+                        <div style="background:#dcfce7;color:#16a34a;font-size:0.75rem;font-weight:700;padding:4px 12px;border-radius:20px;flex-shrink:0;">
+                            <i class="fa-solid fa-circle-check"></i> লগইন করা আছেন
+                        </div>
+                    </div>
+                    {{-- Dummy inputs so goToStep2 refs don't break --}}
+                    <input type="text" id="f_name"    style="display:none;" value="{{ $authName }}">
+                    <input type="text" id="f_phone"   style="display:none;" value="{{ $authPhone }}">
+                    <input type="text" id="f_address" style="display:none;" value="{{ $authAddress }}">
+                @else
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label class="form-label-custom">শিক্ষার্থীর নাম <span>*</span></label>
@@ -339,6 +368,7 @@
                             </div>
                         </div>
                     </div>
+                @endauth
                 </div>
 
                 <div class="enroll-footer">
@@ -539,26 +569,36 @@ function selectPayType(type) {
 }
 
 /* ── step 1 → 2 ── */
+var IS_LOGGED_IN = {{ auth()->check() ? 'true' : 'false' }};
+
 function goToStep2() {
-    var name    = document.getElementById('f_name').value.trim();
-    var phone   = document.getElementById('f_phone').value.trim();
-    var address = document.getElementById('f_address').value.trim();
-
-    if (!name)    { alert('অনুগ্রহ করে আপনার নাম লিখুন।');       document.getElementById('f_name').focus();    return; }
-    if (!phone)   { alert('অনুগ্রহ করে মোবাইল নম্বর লিখুন।');   document.getElementById('f_phone').focus();   return; }
-    if (!address) { alert('অনুগ্রহ করে ঠিকানা লিখুন।');          document.getElementById('f_address').focus(); return; }
-
     var sel = document.querySelector('.batch-card.selected');
     if (!sel) { alert('অনুগ্রহ করে একটি ব্যাচ নির্বাচন করুন।'); return; }
 
-    /* populate hidden fields */
-    document.getElementById('h_batch_id').value = sel.dataset.batchId;
-    document.getElementById('h_name').value     = name;
-    document.getElementById('h_phone').value    = phone;
-    document.getElementById('h_address').value  = address;
-    document.getElementById('h_gender').value   = document.querySelector('[name=gender_vis]:checked').value;
+    var name, phone, address;
 
-    /* populate order summary */
+    if (IS_LOGGED_IN) {
+        name    = document.getElementById('h_name').value;
+        phone   = document.getElementById('h_phone').value;
+        address = document.getElementById('h_address').value;
+    } else {
+        name    = document.getElementById('f_name').value.trim();
+        phone   = document.getElementById('f_phone').value.trim();
+        address = document.getElementById('f_address').value.trim();
+
+        if (!name)    { alert('অনুগ্রহ করে আপনার নাম লিখুন।');      document.getElementById('f_name').focus();    return; }
+        if (!phone)   { alert('অনুগ্রহ করে মোবাইল নম্বর লিখুন।');  document.getElementById('f_phone').focus();   return; }
+        if (!address) { alert('অনুগ্রহ করে ঠিকানা লিখুন।');         document.getElementById('f_address').focus(); return; }
+
+        document.getElementById('h_name').value    = name;
+        document.getElementById('h_phone').value   = phone;
+        document.getElementById('h_address').value = address;
+        var genderEl = document.querySelector('[name=gender_vis]:checked');
+        if (genderEl) document.getElementById('h_gender').value = genderEl.value;
+    }
+
+    /* populate batch hidden + order summary */
+    document.getElementById('h_batch_id').value = sel.dataset.batchId;
     var batchLabel = 'ব্যাচঃ ' + sel.dataset.batchNumber + (sel.dataset.shift ? ' (' + sel.dataset.shift + ')' : '');
     document.getElementById('ord_batch').textContent = batchLabel;
     document.getElementById('ord_name').textContent  = name;

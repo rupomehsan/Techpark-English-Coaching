@@ -34,6 +34,17 @@
     {{-- <script src="{{ asset('main.js') }}" defer></script> --}}
 
     @stack('styles')
+
+    @php $ga_id = setting('ga_measurement_id'); @endphp
+    @if($ga_id)
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ $ga_id }}');
+    </script>
+    @endif
 </head>
 
 <body id="top">

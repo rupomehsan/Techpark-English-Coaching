@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Policy;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use  App\Modules\Management\WebsiteManagement\CookiePolicy\Models\Model as CookiePolicy;
-use  App\Modules\Management\WebsiteManagement\RefundPolicy\Models\Model as RefundPolicy;
-use  App\Modules\Management\WebsiteManagement\TermConditionPolicy\Models\Model as TermConditionPolicy;
-use  App\Modules\Management\WebsiteManagement\PrivacyPolicy\Models\Model as PrivacyPolicy;
+use App\Modules\Management\WebsiteManagement\CookiePolicy\Models\Model as CookiePolicy;
+use App\Modules\Management\WebsiteManagement\RefundPolicy\Models\Model as RefundPolicy;
+use App\Modules\Management\WebsiteManagement\TermConditionPolicy\Models\Model as TermConditionPolicy;
+use App\Modules\Management\WebsiteManagement\PrivacyPolicy\Models\Model as PrivacyPolicy;
+use App\Modules\Management\CourseManagement\Course\Models\Model as Course;
+use App\Modules\Management\CourseManagement\CourseCategory\Models\Model as CourseCategory;
+use App\Modules\Management\LiveCourseManagement\LiveCourse\Models\Model as LiveCourse;
+use App\Modules\Management\BlogManagement\Blog\Models\Model as Blog;
+use App\Modules\Management\BlogManagement\BlogCategory\Models\Model as BlogCategory;
+use App\Modules\Management\SeminerManagement\Seminer\Models\Model as Seminar;
 
 class PolicyController extends Controller
 {
@@ -37,6 +43,15 @@ class PolicyController extends Controller
 
     public function sitemap()
     {
-        return view('frontend.pages.extra.sitemap');
+        $courses         = Course::where('status', 'active')->get(['id', 'title', 'slug']);
+        $course_cats     = CourseCategory::where('status', 'active')->get(['id', 'title', 'slug']);
+        $live_courses    = LiveCourse::where('status', 'active')->get(['id', 'title', 'slug']);
+        $blogs           = Blog::where('status', 'active')->latest()->get(['id', 'title', 'slug']);
+        $blog_cats       = BlogCategory::get(['id', 'title', 'slug']);
+        $seminars        = Seminar::latest()->get(['id', 'title']);
+
+        return view('frontend.pages.extra.sitemap', compact(
+            'courses', 'course_cats', 'live_courses', 'blogs', 'blog_cats', 'seminars'
+        ));
     }
 }
