@@ -113,21 +113,23 @@
                                 <!-- amount_and_button_area start -->
                                 <div class="amount_and_button_area">
                                     <!-- all_amount area start -->
+                                    @php
+                                        $c_orig = $course->regular_price ?? 0;
+                                        $c_disc = $course->sales_price ?? 0;
+                                    @endphp
                                     <div class="all_amount">
+                                        @if($c_orig > 0)
                                         <div class="previous_amount_area">
                                             <p class="previous_amount">
                                                 <span class="taka"> ৳ </span>
-                                                <span class="taka">
-                                                    {{ number_format($courseBatch->course_price ?? 0, 0, '.', ',') }}
-                                                </span>
+                                                <span class="taka">{{ number_format($c_orig, 0, '.', ',') }}</span>
                                             </p>
                                         </div>
+                                        @endif
                                         <div class="current_amount_area">
                                             <p class="current_amount">
                                                 <span class="taka"> ৳ </span>
-                                                <span class="taka">
-                                                    {{ number_format($courseBatch->after_discount_price ?? 0, 0, '.', ',') }}
-                                                </span>
+                                                <span class="taka">{{ number_format($c_disc > 0 && $c_disc < $c_orig ? $c_disc : $c_orig, 0, '.', ',') }}</span>
                                             </p>
                                         </div>
                                     </div>

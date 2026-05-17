@@ -102,6 +102,14 @@ Route::post('/seminar-review-reply/{id}', [SeminerController::class, 'review_rep
 
 Route::get('/stories', [HomeController::class, 'stories'])->name("stories");
 
+// WhatsApp Group
+Route::get('/whatsapp-group/{slug?}', function ($slug = null) {
+    $course = $slug
+        ? \App\Modules\Management\LiveCourseManagement\LiveCourse\Models\Model::active()->where('slug', $slug)->first()
+        : null;
+    return view('frontend.pages.extra.whatsapp_group', compact('course'));
+})->name('whatsapp.group');
+
 // Policy Routes
 Route::get('/privacy-policy', [PolicyController::class, 'privacy_policy'])->name("privacy.policy");
 Route::get('/refund-policy', [PolicyController::class, 'refund_policy'])->name("refund.policy");

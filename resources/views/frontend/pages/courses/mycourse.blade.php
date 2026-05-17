@@ -107,7 +107,7 @@
         </div>
         <div class="lms-course-grid">
             @foreach($incomplete_courses as $item)
-            @php $url = route('mycourse_details', $item->course->slug) . '?batch_id=' . $item->batch->id; @endphp
+            @php $url = route('mycourse_details', $item->course->slug) . ($item->batch ? '?batch_id=' . $item->batch->id : ''); @endphp
             <div class="lms-ccard">
                 <div class="lms-ccard-img">
                     <a href="{{ $url }}"><img src="{{ assetHelper(optional($item->course)->image) }}" alt="{{ $item->course->title }}" loading="lazy"></a>
@@ -115,7 +115,7 @@
                     <span class="lms-ccard-pct">{{ $item->course_percent }}%</span>
                 </div>
                 <div class="lms-ccard-body">
-                    <div class="lms-ccard-batch"><i class="fa-solid fa-layer-group me-1"></i>{{ $item->batch->batch_name }}</div>
+                    <div class="lms-ccard-batch"><i class="fa-solid fa-layer-group me-1"></i>{{ optional($item->batch)->batch_name }}</div>
                     <div class="lms-ccard-title">{{ $item->course->title }}</div>
                     <div class="lms-progress-wrap">
                         <div class="lms-progress-row">
@@ -144,7 +144,7 @@
         </div>
         <div class="lms-course-grid">
             @foreach($complete_courses as $item)
-            @php $url = route('mycourse_details', $item->course->slug) . '?batch_id=' . $item->batch->id; @endphp
+            @php $url = route('mycourse_details', $item->course->slug) . ($item->batch ? '?batch_id=' . $item->batch->id : ''); @endphp
             <div class="lms-ccard">
                 <div class="lms-ccard-img">
                     <a href="{{ $url }}"><img src="{{ assetHelper(optional($item->course)->image) }}" alt="{{ $item->course->title }}" loading="lazy"></a>
@@ -152,7 +152,7 @@
                     <span class="lms-ccard-pct">100%</span>
                 </div>
                 <div class="lms-ccard-body">
-                    <div class="lms-ccard-batch"><i class="fa-solid fa-layer-group me-1"></i>{{ $item->batch->batch_name }}</div>
+                    <div class="lms-ccard-batch"><i class="fa-solid fa-layer-group me-1"></i>{{ optional($item->batch)->batch_name }}</div>
                     <div class="lms-ccard-title">{{ $item->course->title }}</div>
                     <div class="lms-progress-wrap">
                         <div class="lms-progress-row">

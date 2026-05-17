@@ -5,35 +5,47 @@
             <div class="navs">
                 <ul>
                     <li>
-                        <router-link :to="{ name: 'AllCourses' }" class="nav-item">
+                        <router-link
+                            :to="{ name: 'AllCourses' }"
+                            class="nav-item"
+                        >
                             <i class="far fa-circle mr-1"></i>
                             <div>All Course</div>
                         </router-link>
                     </li>
-                    
+
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseDetails', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseDetails',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>Course Overview</div>
                         </router-link>
                     </li>
-                    
-                    <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseBatch', params: { id: currentCourse.slug } }" 
+
+                    <!-- <li v-if="currentCourse">
+                        <router-link
+                            :to="{
+                                name: 'CourseBatch',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>Course Information</div>
                         </router-link>
-                    </li>
-                    
+                    </li> -->
+
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseHowIsStructured', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseHowIsStructured',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
@@ -42,28 +54,34 @@
                     </li>
 
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseWhatLearn', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseWhatLearn',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>What You Will Learn</div>
                         </router-link>
                     </li>
-                    
+
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseForWhom' }" 
+                        <router-link
+                            :to="{ name: 'CourseForWhom' }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>Course For Whom</div>
                         </router-link>
                     </li>
-                    
+
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseWhyLearn', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseWhyLearn',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
@@ -72,8 +90,11 @@
                     </li>
 
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseWhatGet', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseWhatGet',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
@@ -82,69 +103,80 @@
                     </li>
 
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseModule', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseModule',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>Course Modules Class</div>
                         </router-link>
                     </li>
-                    
+
                     <!-- <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseBanner', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{ name: 'CourseBanner', params: { id: currentCourse.slug } }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>কোর্স ব্যানার</div>
                         </router-link>
                     </li> -->
-                    
+
                     <!-- <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CoursePreview', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{ name: 'CoursePreview', params: { id: currentCourse.slug } }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>কোর্স প্রিভিউ</div>
                         </router-link>
                     </li> -->
-                    
-                    
+
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseQuiz', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseQuiz',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>Course Class Quiz</div>
                         </router-link>
                     </li>
-                    
+
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseTrainer', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseTrainer',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>Course Trainers</div>
                         </router-link>
                     </li>
-                    
-                    <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseRoutines', params: { id: currentCourse.slug } }" 
+
+                    <!-- <li v-if="currentCourse">
+                        <router-link
+                            :to="{ name: 'CourseRoutines', params: { id: currentCourse.slug } }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
                             <div>Course routine</div>
                         </router-link>
-                    </li>
-                    
+                    </li> -->
+
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseFaq', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseFaq',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
@@ -152,8 +184,11 @@
                         </router-link>
                     </li>
                     <li v-if="currentCourse">
-                        <router-link 
-                            :to="{ name: 'CourseEssentialRequirements', params: { id: currentCourse.slug } }" 
+                        <router-link
+                            :to="{
+                                name: 'CourseEssentialRequirements',
+                                params: { id: currentCourse.slug },
+                            }"
                             class="nav-item"
                         >
                             <i class="far fa-circle mr-1"></i>
@@ -162,55 +197,71 @@
                     </li>
                 </ul>
             </div>
-            
+
             <!-- Main Content Area -->
             <div class="setting_body custom_scroll">
                 <!-- Course Header -->
                 <div v-if="currentCourse" class="course-header mb-4">
                     <div class="course-info">
                         <div class="course-image">
-                            <img 
-                                v-if="currentCourse.image && !imageError" 
-                                :src="`/${currentCourse.image}`" 
+                            <img
+                                v-if="currentCourse.image && !imageError"
+                                :src="`/${currentCourse.image}`"
                                 :alt="currentCourse.title"
                                 class="img-fluid rounded"
                                 @error="handleImageError"
-                            >
+                            />
                             <div v-else class="no-image">
                                 <i class="fas fa-graduation-cap fa-2x"></i>
                             </div>
                         </div>
                         <div class="course-details">
-                            <h4 class="course-title">{{ currentCourse.title }}</h4>
+                            <h4 class="course-title">
+                                {{ currentCourse.title }}
+                            </h4>
                             <p class="course-type">{{ currentCourse.type }}</p>
-                            <span 
-                                :class="['badge', currentCourse.status === 'active' ? 'badge-success' : 'badge-danger']"
+                            <span
+                                :class="[
+                                    'badge',
+                                    currentCourse.status === 'active'
+                                        ? 'badge-success'
+                                        : 'badge-danger',
+                                ]"
                             >
-                                {{ currentCourse.status === 'active' ? 'active' : 'inactive' }}
+                                {{
+                                    currentCourse.status === "active"
+                                        ? "active"
+                                        : "inactive"
+                                }}
                             </span>
                         </div>
                     </div>
-                    
+
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <router-link :to="{ name: 'AllCourses' }">All Courses</router-link>
+                                <router-link :to="{ name: 'AllCourses' }"
+                                    >All Courses</router-link
+                                >
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">
+                            <li
+                                class="breadcrumb-item active"
+                                aria-current="page"
+                            >
                                 {{ currentCourse.title }}
                             </li>
                         </ol>
                     </nav>
                 </div>
-                
+
                 <!-- Loading State -->
                 <div v-if="loading" class="loading-container">
                     <div class="spinner-border text-primary" role="status">
                         <span class="sr-only">loading...</span>
                     </div>
                 </div>
-                
+
                 <!-- Error Message -->
                 <!-- <div v-if="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ errorMessage }}
@@ -218,7 +269,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div> -->
-                
+
                 <!-- Success Message -->
                 <!-- <div v-if="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ successMessage }}
@@ -226,7 +277,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div> -->
-                
+
                 <!-- Router View for Course Content -->
                 <router-view />
             </div>
@@ -234,22 +285,22 @@
     </div>
 </template>
 <script>
-import { ref } from 'vue';
-import { useCourseDetailsStore } from '../../Store/courseDetailsStore.js';
+import { ref } from "vue";
+import { useCourseDetailsStore } from "../../Store/courseDetailsStore.js";
 
 export default {
-    name: 'CourseDetailsLayout',
-    
+    name: "CourseDetailsLayout",
+
     setup() {
         const store = useCourseDetailsStore();
         const imageError = ref(false);
-        
-        return { 
+
+        return {
             store,
-            imageError
+            imageError,
         };
     },
-    
+
     computed: {
         currentCourse() {
             return this.store.currentCourse;
@@ -262,73 +313,73 @@ export default {
         },
         successMessage() {
             return this.store.successMessage;
-        }
+        },
     },
-    
+
     async mounted() {
         const courseSlug = this.$route.params.id; // This is actually the slug now
-        
+
         if (courseSlug) {
             try {
                 // First check if course is in localStorage
-                const storedCourse = localStorage.getItem('current_course');
+                const storedCourse = localStorage.getItem("current_course");
                 if (storedCourse) {
                     const course = JSON.parse(storedCourse);
                     if (course.slug === courseSlug) {
                         this.store.setCurrentCourse(course);
                     }
                 }
-                
+
                 // Always fetch fresh data using slug
                 await this.store.getCourseDetails(courseSlug);
             } catch (error) {
-                console.error('Error loading course details:', error);
+                console.error("Error loading course details:", error);
                 // Redirect to all courses if course not found
                 if (error.response?.status === 404) {
-                    this.$router.push({ name: 'AllCourses' });
+                    this.$router.push({ name: "AllCourses" });
                 }
             }
         }
     },
-    
+
     watch: {
-        '$route.params.id': {
+        "$route.params.id": {
             async handler(newSlug, oldSlug) {
                 if (newSlug && newSlug !== oldSlug) {
                     try {
                         await this.store.getCourseDetails(newSlug);
                     } catch (error) {
-                        console.error('Error loading course details:', error);
+                        console.error("Error loading course details:", error);
                         if (error.response?.status === 404) {
-                            this.$router.push({ name: 'AllCourses' });
+                            this.$router.push({ name: "AllCourses" });
                         }
                     }
                 }
             },
-            immediate: false
+            immediate: false,
         },
-        
+
         currentCourse() {
             // Reset image error when course changes
             this.imageError = false;
-        }
+        },
     },
-    
+
     methods: {
         clearMessages() {
             this.store.clearMessages();
         },
-        
+
         handleImageError() {
             this.imageError = true;
-            console.log('Course image failed to load');
-        }
+            console.log("Course image failed to load");
+        },
     },
-    
+
     beforeUnmount() {
         // Clear messages when leaving the component
         this.store.clearMessages();
-    }
+    },
 };
 </script>
 
@@ -533,17 +584,17 @@ export default {
         flex-direction: column;
         height: auto;
     }
-    
+
     .navs {
         width: 100%;
         max-height: 200px;
     }
-    
+
     .course-info {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .course-image {
         margin-right: 0;
         margin-bottom: 15px;
@@ -558,7 +609,7 @@ export default {
     color: white !important;
 }
 
-.card-header{
+.card-header {
     background: transparent !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
     color: white !important;
@@ -673,7 +724,12 @@ export default {
     color: white !important;
 }
 
-:deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(h5), :deep(h6) {
+:deep(h1),
+:deep(h2),
+:deep(h3),
+:deep(h4),
+:deep(h5),
+:deep(h6) {
     color: white !important;
 }
 

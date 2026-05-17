@@ -334,6 +334,12 @@
                            target="_blank" class="btn-wa mb-3">
                             <i class="fa-brands fa-whatsapp me-2"></i> WhatsApp-এ যোগাযোগ করুন
                         </a>
+                        @if($course->whatsapp_group_link)
+                        <a href="{{ route('whatsapp.group', $course->slug) }}" class="btn-wa mb-3"
+                           style="background:linear-gradient(135deg,#1ebe5d,#128c3c);">
+                            <i class="fa-brands fa-whatsapp me-2"></i> WhatsApp গ্রুপে যোগ দিন
+                        </a>
+                        @endif
                         <a href="tel:{{ preg_replace('/\D/', '', setting('phone_numbers') ?: setting('whatsapp') ?: '') }}" class="btn-enroll mb-3"
                            style="background:linear-gradient(135deg,#002147,#003b7a); box-shadow:0 4px 15px rgba(0,33,71,0.3);">
                             <i class="fa-solid fa-phone me-2"></i> কল করুন

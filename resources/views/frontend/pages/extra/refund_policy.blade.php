@@ -1,33 +1,19 @@
 @php
-    $meta = [
-        // "meta" => [],
-        'seo' => [
-            'title' => 'Refund Policy',
-            'image' => asset('seo.jpg'),
-        ],
-    ];
+    $meta = ['seo' => ['title' => 'Refund Policy — TechPark English', 'image' => asset('seo.jpg')]];
 @endphp
 @extends('frontend.layouts.layout', $meta)
+
+@push('styles')
+@include('frontend.pages.extra._policy_styles')
+@endpush
+
 @section('contents')
-    <style>
-        .divider:after,
-        .divider:before {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #eee;
-        }
-    </style>
-    <section class="py-5 my-5">
-        <div class="container h-custom">
-            <div class="content">
-                <h2 class="text-center">Refund Policy</h2>
-
-                <div class="mt-4">
-                    {!! $website_about->description !!}
-                </div>
-
-            </div>
-        </div>
-    </section>
+@include('frontend.pages.extra._policy_layout', [
+    'icon'       => 'fa-rotate-left',
+    'badge'      => 'Refund & Return',
+    'title'      => 'Refund Policy',
+    'subtitle'   => 'আমরা আপনার সন্তুষ্টিকে সর্বোচ্চ অগ্রাধিকার দিই। আমাদের রিফান্ড নীতি সম্পর্কে বিস্তারিত জানুন।',
+    'icon_color' => '#38bdf8',
+    'content'    => $website_about->description ?? '',
+])
 @endsection

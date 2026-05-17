@@ -258,6 +258,7 @@
                     </div>
 
                     {{-- Batch selection --}}
+                    @if($batches->isNotEmpty())
                     <div class="divider-label">ব্যাচ নির্বাচন করুন *</div>
 
                     @foreach($batches as $batch)
@@ -310,6 +311,7 @@
                         </div>
                     </div>
                     @endforeach
+                    @endif
 
                 </div>
 
@@ -400,18 +402,22 @@
                             <span class="order-row-label">কোর্স:</span>
                             <span class="order-row-value">{{ $course->title }}</span>
                         </div>
+                        @if($batches->isNotEmpty())
                         <div class="order-row">
                             <span class="order-row-label">ব্যাচ:</span>
                             <span class="order-row-value" id="ord_batch">—</span>
                         </div>
+                        @endif
                         <div class="order-row">
                             <span class="order-row-label">নাম:</span>
                             <span class="order-row-value" id="ord_name">—</span>
                         </div>
+                        @if($batches->isNotEmpty())
                         <div class="order-row">
                             <span class="order-row-label">শুরুর তারিখ:</span>
                             <span class="order-row-value" id="ord_date">—</span>
                         </div>
+                        @endif
                         @if($course_fee)
                         <div class="order-row total-row">
                             <span class="order-row-label">কোর্স ফি:</span>
@@ -570,10 +576,11 @@ function selectPayType(type) {
 
 /* ── step 1 → 2 ── */
 var IS_LOGGED_IN = {{ auth()->check() ? 'true' : 'false' }};
+var HAS_BATCHES  = {{ $batches->isNotEmpty() ? 'true' : 'false' }};
 
 function goToStep2() {
     var sel = document.querySelector('.batch-card.selected');
-    if (!sel) { alert('অনুগ্রহ করে একটি ব্যাচ নির্বাচন করুন।'); return; }
+    if (HAS_BATCHES && !sel) { alert('অনুগ্রহ করে একটি ব্যাচ নির্বাচন করুন।'); return; }
 
     var name, phone, address;
 
@@ -598,11 +605,15 @@ function goToStep2() {
     }
 
     /* populate batch hidden + order summary */
-    document.getElementById('h_batch_id').value = sel.dataset.batchId;
-    var batchLabel = 'ব্যাচঃ ' + sel.dataset.batchNumber + (sel.dataset.shift ? ' (' + sel.dataset.shift + ')' : '');
-    document.getElementById('ord_batch').textContent = batchLabel;
-    document.getElementById('ord_name').textContent  = name;
-    document.getElementById('ord_date').textContent  = sel.dataset.startDate || '—';
+    var elBatch = document.getElementById('ord_batch');
+    var elDate  = document.getElementById('ord_date');
+    if (sel) {
+        document.getElementById('h_batch_id').value = sel.dataset.batchId;
+        var batchLabel = 'ব্যাচঃ ' + sel.dataset.batchNumber + (sel.dataset.shift ? ' (' + sel.dataset.shift + ')' : '');
+        if (elBatch) elBatch.textContent = batchLabel;
+        if (elDate)  elDate.textContent  = sel.dataset.startDate || '—';
+    }
+    document.getElementById('ord_name').textContent = name;
 
     goToStep(2);
 }
@@ -691,10 +702,12 @@ function removeUpload(e) {
     document.getElementById('uploadArea').classList.remove('has-file');
 }
 
-/* init first batch selected */
+/* init */
 (function() {
-    var first = document.querySelector('.batch-card');
-    if (first) first.classList.add('selected');
+    if (HAS_BATCHES) {
+        var first = document.querySelector('.batch-card');
+        if (first) first.classList.add('selected');
+    }
     updateStepper(1);
 })();
 </script>

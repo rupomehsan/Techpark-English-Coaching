@@ -312,13 +312,24 @@
                 <div class="abt-cta-badge"><i class="fa-solid fa-graduation-cap me-1"></i> আজই শুরু করুন</div>
                 <h2 class="abt-cta-title">আজই শুরু করুন আপনার <span>ইংরেজি শেখার যাত্রা</span></h2>
                 <p class="abt-cta-sub">Join our next batch and take the first step towards fluency. Limited seats available!</p>
+                @php
+                    $cta_phones = setting('phone_numbers', true);
+                    if (is_array($cta_phones) && isset($cta_phones[0]['setting_values'])) {
+                        $cta_phones = $cta_phones[0]['setting_values'];
+                    }
+                @endphp
                 <div class="abt-cta-btns">
                     <a href="/courses" class="btn-cta-primary">
                         <i class="fa-solid fa-arrow-right"></i> Enroll Now
                     </a>
-                    <a href="tel:01335119223" class="btn-cta-outline">
-                        <i class="fa-solid fa-phone"></i> Call Us
-                    </a>
+                    @if(!empty($cta_phones))
+                        @php $cta_num = is_array($cta_phones[0]) ? ($cta_phones[0]['value'] ?? '') : $cta_phones[0]; @endphp
+                        @if($cta_num)
+                        <a href="tel:{{ $cta_num }}" class="btn-cta-outline">
+                            <i class="fa-solid fa-phone"></i> Call Us
+                        </a>
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>

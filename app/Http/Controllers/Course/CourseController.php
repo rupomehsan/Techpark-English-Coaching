@@ -53,6 +53,7 @@ class CourseController extends Controller
                 ->with(['course_batch' => function ($batch) {
                     $batch->orderBy('id', 'desc')->first();
                 }])
+                ->withCount(['milestones', 'modules', 'classes', 'quizzes'])
                 ->where('course_category_id', $courseIds)
                 ->paginate(6);
         } else {
@@ -60,6 +61,7 @@ class CourseController extends Controller
                 ->with(['course_batch' => function ($batch) {
                     $batch->orderBy('id', 'desc')->take(1);
                 }])
+                ->withCount(['milestones', 'modules', 'classes', 'quizzes'])
                 ->paginate(6);
         }
 
@@ -100,7 +102,7 @@ class CourseController extends Controller
     {
         $course_routines = CourseModuleClassRoutines::select('id', 'course_id', 'date')->where('course_id', $course_id)->get();
         $month = [];
-        
+
         if (count($course_routines) > 0) {
             foreach ($course_routines as $course_routine) {
                 // dd($course_routine->date->format('m'));

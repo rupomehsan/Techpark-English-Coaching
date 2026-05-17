@@ -1,35 +1,50 @@
-
 <template>
     <div>
         <form @submit.prevent="submitHandler">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="text-capitalize">
-                        {{ param_id ? `${setup.edit_page_title}` : `${setup . create_page_title}` }}
-
+                        {{
+                            param_id
+                                ? `${setup.edit_page_title}`
+                                : `${setup.create_page_title}`
+                        }}
                     </h5>
                     <div>
-                        <router-link v-if="item.slug" class="btn btn-outline-info mr-2 btn-sm" :to="{
-                            name: `Details${setup.route_prefix}`,
-                            params: { id: item.slug },
-                        }">
+                        <router-link
+                            v-if="item.slug"
+                            class="btn btn-outline-info mr-2 btn-sm"
+                            :to="{
+                                name: `Details${setup.route_prefix}`,
+                                params: { id: item.slug },
+                            }"
+                        >
                             {{ setup.details_page_title }}
                         </router-link>
-                        <router-link class="btn btn-outline-warning btn-sm" :to="{ name: `All${setup.route_prefix}` }">
+                        <router-link
+                            class="btn btn-outline-warning btn-sm"
+                            :to="{ name: `All${setup.route_prefix}` }"
+                        >
                             {{ setup.all_page_title }}
                         </router-link>
                     </div>
                 </div>
                 <div class="card-body card_body_fixed_height">
                     <div class="row">
-                
-                        <template v-for="(form_field, index) in form_fields" v-bind:key="index">
-
-                            <common-input :label="form_field.label" :type="form_field.type" :name="form_field.name"
-                                :multiple="form_field.multiple" :value="form_field.value"
-                                :data_list="form_field.data_list" :is_visible="form_field.is_visible"
-                                :row_col_class="form_field.row_col_class" />
-
+                        <template
+                            v-for="(form_field, index) in form_fields"
+                            v-bind:key="index"
+                        >
+                            <common-input
+                                :label="form_field.label"
+                                :type="form_field.type"
+                                :name="form_field.name"
+                                :multiple="form_field.multiple"
+                                :value="form_field.value"
+                                :data_list="form_field.data_list"
+                                :is_visible="form_field.is_visible"
+                                :row_col_class="form_field.row_col_class"
+                            />
                         </template>
                     </div>
                 </div>
@@ -50,8 +65,8 @@ import { store } from "../store";
 import setup from "../setup";
 import form_fields from "../setup/form_fields";
 
-        export default {
-        components: {        },
+export default {
+    components: {},
 
     data: () => ({
         setup,
@@ -88,8 +103,11 @@ import form_fields from "../setup/form_fields";
                             this.form_fields[index].value = value[1];
                         }
                         // If the field is a textarea, set its summernote content dynamically
-                        if (field.type === "textarea" && field.name === value[0]) {
-                            $(`#${field . name}`).summernote("code", value[1]);
+                        if (
+                            field.type === "textarea" &&
+                            field.name === value[0]
+                        ) {
+                            $(`#${field.name}`).summernote("code", value[1]);
                         }
                     });
                 });
@@ -103,7 +121,9 @@ import form_fields from "../setup/form_fields";
                 // await this.get_all();
                 if ([200, 201].includes(response.status)) {
                     window.s_alert("Data successfully updated");
-                    this.$router.push({ name: `Details${this . setup . route_prefix}` });
+                    this.$router.push({
+                        name: `Details${this.setup.route_prefix}`,
+                    });
                 }
             } else {
                 this.setSummerEditor();
@@ -112,9 +132,12 @@ import form_fields from "../setup/form_fields";
                 if ([200, 201].includes(response.status)) {
                     $event.target.reset();
                     // Clear summernote editors for all textarea fields
-                    this.form_fields.forEach(field => {
-                        if (field.type === 'textarea' && $(`#${field . name}`).length) {
-                            $(`#${field . name}`).summernote("code", '');
+                    this.form_fields.forEach((field) => {
+                        if (
+                            field.type === "textarea" &&
+                            $(`#${field.name}`).length
+                        ) {
+                            $(`#${field.name}`).summernote("code", "");
                         }
                     });
                     window.s_alert("Data Successfully Created");
@@ -124,16 +147,18 @@ import form_fields from "../setup/form_fields";
         },
         setSummerEditor() {
             // Dynamically set summernote content for all textarea fields
-            this.form_fields.forEach(field => {
-                if (field.type === 'textarea' && $(`#${field . name}`).length) {
-                    const markupStr = $(`#${field . name}`).summernote("code");
+            this.form_fields.forEach((field) => {
+                if (field.type === "textarea" && $(`#${field.name}`).length) {
+                    const markupStr = $(`#${field.name}`).summernote("code");
                     // Set the value in the form field object
                     field.value = markupStr;
                     // Optionally, update a hidden input if your backend expects it
-                    let $input = $(`#${field . name}_hidden`);
+                    let $input = $(`#${field.name}_hidden`);
                     if ($input.length === 0) {
-                        $input = $(`<input type="hidden" id="${field . name}_hidden" name="${field . name}">`);
-                        $(`#${field . name}`).parent().append($input);
+                        $input = $(
+                            `<input type="hidden" id="${field.name}_hidden" name="${field.name}">`,
+                        );
+                        $(`#${field.name}`).parent().append($input);
                     }
                     $input.val(markupStr);
                 }
@@ -148,5 +173,3 @@ import form_fields from "../setup/form_fields";
     },
 };
 </script>
-
-

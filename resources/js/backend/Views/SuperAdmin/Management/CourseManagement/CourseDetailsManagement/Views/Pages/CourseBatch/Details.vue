@@ -108,35 +108,6 @@
                         </div>
                     </div>
 
-                    <!-- Price Information -->
-                    <div class="details-section">
-                        <h6 class="section-title">
-                            <i class="fas fa-dollar-sign mr-2"></i>
-                            Price Information
-                        </h6>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="detail-item">
-                                    <strong>Course Price:</strong>
-                                    <span>{{ formatCurrency(batch.course_price) }}</span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="detail-item">
-                                    <strong>Discount:</strong>
-                                    <span>{{ batch.course_discount || 0 }}%</span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="detail-item">
-                                    <strong>Final Price:</strong>
-                                    <span class="text-success font-weight-bold">{{
-                                        formatCurrency(batch.after_discount_price) }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Progress Statistics -->
                     <div class="details-section">
                         <h6 class="section-title">

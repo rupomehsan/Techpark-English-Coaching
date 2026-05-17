@@ -35,6 +35,7 @@ class HomeController extends Controller
                 ->with(['course_batch' => function ($batch) {
                     $batch->orderBy('id', 'desc')->first();
                 }])
+                ->withCount(['milestones', 'modules', 'classes', 'quizzes'])
                 ->where('course_category_id', $courseIds)
                 ->paginate(6);
         } else {
@@ -42,8 +43,11 @@ class HomeController extends Controller
                 ->with(['course_batch' => function ($batch) {
                     $batch->orderBy('id', 'desc')->take(1);
                 }])
+                ->withCount(['milestones', 'modules', 'classes', 'quizzes'])
                 ->paginate(6);
         }
+
+        // dd($courses);
 
         return ['courses' => $courses, 'course_types' => $course_types];
     }

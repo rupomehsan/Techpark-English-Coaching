@@ -57,6 +57,8 @@ class DataStoreValidation extends FormRequest
             'installment_months' => 'required | sometimes',
             'is_popular' => 'required | sometimes',
             'sort_order' => 'required | sometimes',
+            'start_date' => 'nullable | sometimes | date',
+            'whatsapp_group_link' => 'nullable | sometimes | string | max:500',
             'status' => ['sometimes', Rule::in(['active', 'inactive'])],
         ];
     }

@@ -1,34 +1,19 @@
 @php
-    $meta = [
-        // "meta" => [],
-        'seo' => [
-            'title' => 'Terms & Conditions',
-            'image' => asset('seo.jpg'),
-        ],
-    ];
+    $meta = ['seo' => ['title' => 'Terms & Conditions — TechPark English', 'image' => asset('seo.jpg')]];
 @endphp
 @extends('frontend.layouts.layout', $meta)
+
+@push('styles')
+@include('frontend.pages.extra._policy_styles')
+@endpush
+
 @section('contents')
-    <style>
-        .divider:after,
-        .divider:before {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #eee;
-        }
-    </style>
-    <section class="py-5 my-5">
-        <div class="container h-custom">
-            <div class="content">
-                <h2>Terms & Conditions</h2>
-
-                <div class="mt-4">
-                    {!! $website_about->description !!}
-                </div>
-
-            </div>
-        </div>
-
-    </section>
+@include('frontend.pages.extra._policy_layout', [
+    'icon'       => 'fa-scale-balanced',
+    'badge'      => 'Legal & Terms',
+    'title'      => 'Terms & Conditions',
+    'subtitle'   => 'আমাদের সেবা ব্যবহারের আগে এই শর্তাবলী মনোযোগ দিয়ে পড়ুন। এই শর্তগুলি আপনার এবং TechPark English-এর মধ্যে চুক্তি গঠন করে।',
+    'icon_color' => '#fab005',
+    'content'    => $website_about->description ?? '',
+])
 @endsection

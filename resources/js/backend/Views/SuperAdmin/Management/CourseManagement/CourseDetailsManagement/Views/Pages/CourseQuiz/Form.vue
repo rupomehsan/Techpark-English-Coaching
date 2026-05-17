@@ -153,13 +153,12 @@
                                             @click="selectedClassId && toggleQuizForSelectedClass(quiz.id, !isQuizAssignedToSelectedClass(quiz.id))"
                                         >
                                             <div class="quiz-selection">
-                                                <input 
-                                                    type="checkbox" 
+                                                <input
+                                                    type="checkbox"
                                                     :checked="isQuizAssignedToSelectedClass(quiz.id)"
-                                                    @click.stop
+                                                    @click.stop="selectedClassId && toggleQuizForSelectedClass(quiz.id, !isQuizAssignedToSelectedClass(quiz.id))"
                                                     :disabled="!selectedClassId"
                                                     class="form-check-input"
-                                                    readonly
                                                 >
                                             </div>
                                             <div class="quiz-info">

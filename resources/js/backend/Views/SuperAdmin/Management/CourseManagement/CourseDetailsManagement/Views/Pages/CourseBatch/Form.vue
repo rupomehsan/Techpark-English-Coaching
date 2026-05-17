@@ -109,72 +109,6 @@
                         </div>
                     </div>
 
-                    <!-- Pricing Information -->
-                    <div class="form-section">
-                        <h6 class="section-title">Pricing Information</h6>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="course_price" class="form-label">Course Price *</label>
-                                    <input 
-                                        type="number" 
-                                        id="course_price"
-                                        v-model="formData.course_price"
-                                        class="form-control"
-                                        :class="{ 'is-invalid': errors.course_price }"
-                                        placeholder="5000"
-                                        min="0"
-                                        step="0.01"
-                                        required
-                                        @input="calculateDiscountPrice"
-                                    >
-                                    <div v-if="errors.course_price" class="invalid-feedback">
-                                        {{ errors.course_price }}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="course_discount" class="form-label">Discount (%)</label>
-                                    <input 
-                                        type="number" 
-                                        id="course_discount"
-                                        v-model="formData.course_discount"
-                                        class="form-control"
-                                        :class="{ 'is-invalid': errors.course_discount }"
-                                        placeholder="10"
-                                        min="0"
-                                        max="100"
-                                        step="0.01"
-                                        @input="calculateDiscountPrice"
-                                    >
-                                    <div v-if="errors.course_discount" class="invalid-feedback">
-                                        {{ errors.course_discount }}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="after_discount_price" class="form-label">Final Price</label>
-                                    <input 
-                                        type="number" 
-                                        id="after_discount_price"
-                                        v-model="formData.after_discount_price"
-                                        class="form-control"
-                                        :class="{ 'is-invalid': errors.after_discount_price }"
-                                        step="0.01"
-                                        readonly
-                                    >
-                                    <div v-if="errors.after_discount_price" class="invalid-feedback">
-                                        {{ errors.after_discount_price }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Class Schedule -->
                     <div class="form-section">
                         <h6 class="section-title">Class Schedule</h6>
@@ -346,9 +280,6 @@ export default {
                 admission_end_date: '',
                 batch_student_limit: 50,
                 booked_percent: 0,
-                course_price: '',
-                course_discount: 0,
-                after_discount_price: '',
                 first_class_date: '',
                 class_days: '',
                 class_start_time: '',
@@ -380,18 +311,6 @@ export default {
     
     methods: {
         ...mapActions(useCourseDetailsStore, ['getCourseDetails']),
-        
-        calculateDiscountPrice() {
-            const price = parseFloat(this.formData.course_price) || 0;
-            const discount = parseFloat(this.formData.course_discount) || 0;
-            
-            if (price > 0 && discount > 0) {
-                const discountAmount = (price * discount) / 100;
-                this.formData.after_discount_price = (price - discountAmount).toFixed(2);
-            } else {
-                this.formData.after_discount_price = price.toFixed(2);
-            }
-        },
         
         async loadBatchData() {
             if (!this.isEditMode || !this.batchId) return;
@@ -463,10 +382,6 @@ export default {
             
             if (!this.formData.batch_student_limit || this.formData.batch_student_limit < 1) {
                 this.errors.batch_student_limit = 'Student limit must be 1 or greater';
-            }
-            
-            if (!this.formData.course_price || this.formData.course_price <= 0) {
-                this.errors.course_price = 'Course price is required and must be greater than 0';
             }
             
             // Validate admission dates

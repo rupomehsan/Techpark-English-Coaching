@@ -75,9 +75,82 @@
 .lp-video-section { background:#000; }
 .lp-video-wrap { position:relative; width:100%; padding-bottom:56.25%; background:#000; }
 .lp-video-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+#ytPlayerContainer iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
 .lp-no-video { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:12px; }
 .lp-no-video i { font-size:3rem; color:rgba(255,255,255,0.15); }
 .lp-no-video p { color:rgba(255,255,255,0.35); font-size:0.85rem; }
+
+/* ===== Custom Video Controls ===== */
+/* Click-blocker: sits over iframe, passes clicks through except for custom controls */
+.yt-click-shield {
+    position:absolute; inset:0; z-index:10; cursor:pointer; background:transparent;
+}
+/* Big center play/pause indicator */
+.yt-center-btn {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    z-index:11; pointer-events:none;
+}
+.yt-center-icon {
+    width:64px; height:64px; border-radius:50%;
+    background:rgba(0,0,0,0.55); border:2px solid rgba(255,255,255,0.3);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:1.4rem;
+    opacity:0; transform:scale(0.7);
+    transition:opacity 0.25s, transform 0.25s;
+}
+.yt-center-icon.flash { opacity:1; transform:scale(1); }
+
+/* Bottom controls bar */
+.yt-controls {
+    position:absolute; bottom:0; left:0; right:0; z-index:12;
+    background:linear-gradient(transparent, rgba(0,0,0,0.85));
+    padding:28px 14px 10px;
+    opacity:0; transition:opacity 0.3s;
+    pointer-events:none;
+}
+.lp-video-wrap:hover .yt-controls,
+.yt-controls.always-show { opacity:1; pointer-events:all; }
+
+/* Progress / seek bar */
+.yt-seek-wrap {
+    width:100%; height:4px; background:rgba(255,255,255,0.25);
+    border-radius:4px; margin-bottom:10px; cursor:pointer; position:relative;
+    transition:height 0.15s;
+}
+.yt-seek-wrap:hover { height:7px; }
+.yt-seek-buf { position:absolute; left:0; top:0; height:100%; background:rgba(255,255,255,0.3); border-radius:4px; }
+.yt-seek-fill { position:absolute; left:0; top:0; height:100%; background:#fab005; border-radius:4px; }
+.yt-seek-thumb {
+    position:absolute; top:50%; right:0; transform:translate(50%,-50%);
+    width:12px; height:12px; border-radius:50%; background:#fab005;
+    display:none;
+}
+.yt-seek-wrap:hover .yt-seek-thumb { display:block; }
+
+/* Bottom row */
+.yt-ctrl-row { display:flex; align-items:center; gap:10px; }
+.yt-btn { background:none; border:none; color:#fff; cursor:pointer; padding:4px 6px; font-size:0.9rem; display:flex; align-items:center; line-height:1; opacity:0.85; transition:opacity 0.2s; }
+.yt-btn:hover { opacity:1; }
+.yt-time { color:rgba(255,255,255,0.8); font-size:0.72rem; font-weight:600; white-space:nowrap; }
+.yt-vol-wrap { display:flex; align-items:center; gap:6px; }
+.yt-vol-slider { width:60px; height:3px; cursor:pointer; accent-color:#fab005; }
+.yt-spacer { flex:1; }
+
+/* Paused big overlay (center play button) */
+.yt-paused-overlay {
+    position:absolute; inset:0; z-index:11;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; background:rgba(0,0,0,0.25);
+    display:none;
+}
+.yt-big-play {
+    width:72px; height:72px; border-radius:50%;
+    background:rgba(0,0,0,0.65); border:2px solid rgba(255,255,255,0.4);
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:1.6rem; padding-left:4px;
+    transition:transform 0.2s, background 0.2s;
+}
+.yt-paused-overlay:hover .yt-big-play { transform:scale(1.08); background:rgba(250,176,5,0.75); }
 
 .lp-controls { padding:14px 20px; background:var(--card); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
 .lp-ctrl-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 18px; border-radius:50px; font-weight:700; font-size:0.8rem; text-decoration:none; border:none; cursor:pointer; transition:all 0.25s; }
@@ -234,11 +307,44 @@
     <div class="lp-main">
         {{-- Video player --}}
         <div class="lp-video-section">
-            <div class="lp-video-wrap">
-                <iframe id="classVideoIframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+            <div class="lp-video-wrap" id="videoWrap" oncontextmenu="return false;">
+                {{-- YouTube player mounts here --}}
+                <div id="ytPlayerContainer" style="position:absolute;inset:0;width:100%;height:100%;background:#000;"></div>
+                {{-- Fallback iframe for non-YouTube --}}
+                <iframe id="classVideoIframe" src="" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" style="display:none;"></iframe>
+                {{-- Empty state --}}
                 <div class="lp-no-video" id="noVideoMsg">
                     <i class="fa-solid fa-circle-play"></i>
                     <p>বাম পাশ থেকে ক্লাস সিলেক্ট করুন</p>
+                </div>
+                {{-- Click shield: intercepts clicks on iframe, toggles play/pause --}}
+                <div class="yt-click-shield" id="ytClickShield" onclick="togglePlayPause()" style="display:none;"></div>
+                {{-- Paused overlay with big play button --}}
+                <div class="yt-paused-overlay" id="ytPausedOverlay" onclick="resumeVideo()">
+                    <div class="yt-big-play"><i class="fa-solid fa-play"></i></div>
+                </div>
+                {{-- Flash icon on click --}}
+                <div class="yt-center-btn" id="ytCenterBtn">
+                    <div class="yt-center-icon" id="ytCenterIcon"><i class="fa-solid fa-play" id="ytCenterIconI"></i></div>
+                </div>
+                {{-- Custom controls bar --}}
+                <div class="yt-controls" id="ytCustomControls" style="display:none;">
+                    <div class="yt-seek-wrap" id="ytSeekWrap" onmousedown="seekStart(event)" onclick="seekClick(event)">
+                        <div class="yt-seek-buf" id="ytSeekBuf" style="width:0%"></div>
+                        <div class="yt-seek-fill" id="ytSeekFill" style="width:0%">
+                            <div class="yt-seek-thumb"></div>
+                        </div>
+                    </div>
+                    <div class="yt-ctrl-row">
+                        <button class="yt-btn" onclick="togglePlayPause()" id="ytPlayBtn"><i class="fa-solid fa-play"></i></button>
+                        <span class="yt-time" id="ytTime">0:00 / 0:00</span>
+                        <div class="yt-spacer"></div>
+                        <div class="yt-vol-wrap">
+                            <button class="yt-btn" onclick="toggleMute()" id="ytMuteBtn"><i class="fa-solid fa-volume-high"></i></button>
+                            <input type="range" class="yt-vol-slider" id="ytVolSlider" min="0" max="100" value="100" oninput="setVolume(this.value)">
+                        </div>
+                        <button class="yt-btn" onclick="toggleFullscreen()" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -321,18 +427,193 @@ allClasses.push({ video: '{{ $cl->class_video_link }}', title: '{{ addslashes($c
 @endforeach
 
 let currentIdx = 0;
+let ytPlayer   = null;
+let ytApiReady = false;
+let pendingVideoId = null;
+let progressTimer  = null;
+let isMuted = false;
 
-function toEmbed(url) {
-    if (!url) return '';
-    if (url.includes('youtube.com/watch')) {
-        const id = url.split('v=')[1]?.split('&')[0];
-        return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : url;
+function getYtId(url) {
+    if (!url) return null;
+    let m;
+    m = url.match(/[?&]v=([^&#]+)/);            if (m) return m[1];
+    m = url.match(/youtu\.be\/([^?&#]+)/);       if (m) return m[1];
+    m = url.match(/youtube\.com\/embed\/([^?&#]+)/); if (m) return m[1];
+    return null;
+}
+
+function onYouTubeIframeAPIReady() {
+    ytApiReady = true;
+    if (pendingVideoId) { loadYtVideo(pendingVideoId); pendingVideoId = null; }
+}
+
+function showCustomControls(show) {
+    const ctrl  = document.getElementById('ytCustomControls');
+    const shield = document.getElementById('ytClickShield');
+    if (ctrl)   ctrl.style.display   = show ? '' : 'none';
+    if (shield) shield.style.display = show ? '' : 'none';
+}
+
+function onPlayerStateChange(e) {
+    const pausedOvr = document.getElementById('ytPausedOverlay');
+    const playBtn   = document.getElementById('ytPlayBtn');
+    // 0=ended, 1=playing, 2=paused, 3=buffering
+    if (e.data === 1 || e.data === 3) {
+        pausedOvr.style.display = 'none';
+        if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        startProgressTimer();
+    } else {
+        pausedOvr.style.display = 'flex';
+        if (playBtn) playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        stopProgressTimer();
     }
-    if (url.includes('youtu.be/')) {
-        const id = url.split('youtu.be/')[1]?.split('?')[0];
-        return id ? `https://www.youtube.com/embed/${id}?autoplay=1` : url;
+}
+
+function startProgressTimer() {
+    stopProgressTimer();
+    progressTimer = setInterval(updateProgress, 500);
+}
+function stopProgressTimer() {
+    if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
+}
+
+function updateProgress() {
+    if (!ytPlayer || !ytPlayer.getCurrentTime) return;
+    try {
+        const cur = ytPlayer.getCurrentTime() || 0;
+        const dur = ytPlayer.getDuration()    || 1;
+        const pct = (cur / dur * 100).toFixed(2);
+        const buf = (ytPlayer.getVideoLoadedFraction() * 100).toFixed(2);
+        const fill = document.getElementById('ytSeekFill');
+        const bufEl = document.getElementById('ytSeekBuf');
+        const timeEl = document.getElementById('ytTime');
+        if (fill)  fill.style.width  = pct + '%';
+        if (bufEl) bufEl.style.width = buf + '%';
+        if (timeEl) timeEl.textContent = fmtTime(cur) + ' / ' + fmtTime(dur);
+    } catch(e){}
+}
+
+function fmtTime(s) {
+    s = Math.floor(s);
+    const m = Math.floor(s/60), sec = s%60;
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function loadYtVideo(videoId) {
+    document.getElementById('classVideoIframe').style.display = 'none';
+    document.getElementById('noVideoMsg').style.display       = 'none';
+    showCustomControls(true);
+
+    if (!ytApiReady) { pendingVideoId = videoId; return; }
+
+    const container = document.getElementById('ytPlayerContainer');
+    if (ytPlayer) {
+        ytPlayer.loadVideoById(videoId);
+        return;
     }
-    return url;
+    container.innerHTML = '<div id="ytPlayer" style="width:100%;height:100%;"></div>';
+    ytPlayer = new YT.Player('ytPlayer', {
+        videoId: videoId,
+        width: '100%', height: '100%',
+        playerVars: {
+            autoplay: 1,
+            controls: 0,       // ← hides ALL YouTube UI
+            rel: 0,
+            modestbranding: 1,
+            iv_load_policy: 3,
+            showinfo: 0,
+            disablekb: 1,
+            playsinline: 1,
+            fs: 0,             // disable YouTube fullscreen button (we have our own)
+            enablejsapi: 1,
+        },
+        events: { onStateChange: onPlayerStateChange }
+    });
+}
+
+function togglePlayPause() {
+    if (!ytPlayer) return;
+    const state = ytPlayer.getPlayerState();
+    if (state === 1 || state === 3) {
+        ytPlayer.pauseVideo();
+        flashIcon('pause');
+    } else {
+        ytPlayer.playVideo();
+        flashIcon('play');
+    }
+}
+
+function resumeVideo() {
+    if (!ytPlayer) return;
+    ytPlayer.playVideo();
+    document.getElementById('ytPausedOverlay').style.display = 'none';
+    flashIcon('play');
+}
+
+function flashIcon(type) {
+    const icon = document.getElementById('ytCenterIcon');
+    const iconI = document.getElementById('ytCenterIconI');
+    if (!icon) return;
+    iconI.className = type === 'play' ? 'fa-solid fa-play' : 'fa-solid fa-pause';
+    icon.classList.add('flash');
+    setTimeout(() => icon.classList.remove('flash'), 600);
+}
+
+function seekClick(e) {
+    if (!ytPlayer || !ytPlayer.getDuration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct  = (e.clientX - rect.left) / rect.width;
+    ytPlayer.seekTo(ytPlayer.getDuration() * pct, true);
+    updateProgress();
+}
+
+let isSeeking = false;
+function seekStart(e) { isSeeking = true; seekClick(e); }
+document.addEventListener('mouseup',   () => { isSeeking = false; });
+document.addEventListener('mousemove', (e) => {
+    if (!isSeeking) return;
+    const wrap = document.getElementById('ytSeekWrap');
+    if (!wrap) return;
+    const rect = wrap.getBoundingClientRect();
+    const pct  = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    if (ytPlayer && ytPlayer.getDuration) ytPlayer.seekTo(ytPlayer.getDuration() * pct, true);
+    updateProgress();
+});
+
+function toggleMute() {
+    if (!ytPlayer) return;
+    isMuted = !isMuted;
+    isMuted ? ytPlayer.mute() : ytPlayer.unMute();
+    const btn = document.getElementById('ytMuteBtn');
+    if (btn) btn.innerHTML = isMuted
+        ? '<i class="fa-solid fa-volume-xmark"></i>'
+        : '<i class="fa-solid fa-volume-high"></i>';
+}
+
+function setVolume(val) {
+    if (ytPlayer) { ytPlayer.setVolume(val); if (val > 0 && isMuted) { ytPlayer.unMute(); isMuted = false; } }
+    const btn = document.getElementById('ytMuteBtn');
+    if (btn) btn.innerHTML = val == 0 ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+}
+
+function toggleFullscreen() {
+    const wrap = document.getElementById('videoWrap');
+    if (!document.fullscreenElement) {
+        wrap.requestFullscreen().catch(()=>{});
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+function playNonYt(url) {
+    if (ytPlayer) { try { ytPlayer.destroy(); } catch(e){} ytPlayer = null; }
+    document.getElementById('ytPlayerContainer').innerHTML = '';
+    showCustomControls(false);
+    document.getElementById('ytPausedOverlay').style.display = 'none';
+    const iframe = document.getElementById('classVideoIframe');
+    iframe.src = url;
+    iframe.style.display = '';
+    document.getElementById('noVideoMsg').style.display = 'none';
 }
 
 function playClass(el, courseId, msId, modId, classId) {
@@ -341,35 +622,25 @@ function playClass(el, courseId, msId, modId, classId) {
     const type  = el.dataset.type;
     const no    = el.dataset.classno;
 
-    // Update sidebar active
     document.querySelectorAll('.lp-class-row').forEach(r => r.classList.remove('active'));
     el.classList.add('active');
-
-    // Update index
     currentIdx = allClasses.findIndex(c => c.title === title && c.no == no);
 
-    // Update video
-    const iframe = document.getElementById('classVideoIframe');
-    const noMsg  = document.getElementById('noVideoMsg');
     if (video) {
-        iframe.src = toEmbed(video);
-        iframe.style.display = '';
-        noMsg.style.display = 'none';
+        const ytId = getYtId(video);
+        if (ytId) { loadYtVideo(ytId); } else { playNonYt(video); }
     } else {
-        iframe.src = '';
-        iframe.style.display = 'none';
-        noMsg.style.display = 'flex';
+        if (ytPlayer) { try { ytPlayer.destroy(); } catch(e){} ytPlayer = null; }
+        document.getElementById('ytPlayerContainer').innerHTML = '';
+        document.getElementById('classVideoIframe').style.display = 'none';
+        showCustomControls(false);
+        document.getElementById('noVideoMsg').style.display = 'flex';
     }
 
-    // Update now-playing
     document.getElementById('nowPlayingTitle').textContent = title;
-    document.getElementById('nowPlayingMeta').textContent = `Class ${no} · ${type === 'live' ? 'Live Class' : 'Recorded'}`;
-    document.getElementById('classInfoText').textContent = title;
-
-    // Scroll into view
+    document.getElementById('nowPlayingMeta').textContent  = `Class ${no} · ${type === 'live' ? 'Live Class' : 'Recorded'}`;
+    document.getElementById('classInfoText').textContent   = title;
     document.querySelector('.lp-main').scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Mark complete
     courseCompletion(courseId, msId, modId, classId);
 }
 
@@ -409,6 +680,14 @@ const routineObserver = new MutationObserver(function(muts) {
     });
 });
 routineObserver.observe(document.getElementById('routineModal'), { attributes: true });
+
+// Load YouTube IFrame API
+(function() {
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    var first = document.getElementsByTagName('script')[0];
+    first.parentNode.insertBefore(tag, first);
+})();
 
 // Auto-play first class
 document.addEventListener('DOMContentLoaded', function() {

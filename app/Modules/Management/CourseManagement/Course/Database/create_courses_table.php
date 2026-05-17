@@ -28,6 +28,9 @@ return new class extends Migration
             $table->text('meta_description')->nullable();
             $table->text('meta_keywords')->nullable();
 
+            $table->bigInteger('regular_price')->unsigned()->nullable();
+            $table->bigInteger('sales_price')->unsigned()->nullable();
+
             $table->bigInteger('creator')->unsigned()->nullable();
             $table->string('slug', 50)->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');

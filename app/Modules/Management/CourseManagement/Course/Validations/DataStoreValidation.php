@@ -56,6 +56,8 @@ class DataStoreValidation extends FormRequest
             'intro_video' => 'required | sometimes',
             'published_at' => 'required | sometimes',
             'is_published' => 'required | sometimes',
+            'regular_price' => 'required | sometimes',
+            'sales_price' => 'required | sometimes',
             'what_is_this_course' => 'required | sometimes',
             'why_is_this_course' => 'required | sometimes',
             'status' => ['sometimes', Rule::in(['active', 'inactive'])],

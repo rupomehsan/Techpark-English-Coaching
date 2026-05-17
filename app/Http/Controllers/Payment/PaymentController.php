@@ -12,7 +12,6 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Gateways\SSLCommerz\SSLCommerz;
 use App\Modules\Management\CourseManagement\Course\Models\Model as Course;
-use App\Modules\Management\CourseManagement\CourseBatch\Models\Model as CourseBatches;
 
 class PaymentController extends Controller
 {
@@ -30,17 +29,15 @@ class PaymentController extends Controller
 
     public function success(Request $request)
     {
-        $trx_id = $request->tran_id;
+        $trx_id      = $request->tran_id;
         $course_slug = $request->value_a;
-        $batch_id = $request->value_b;
 
-        // Get course and batch details
-        $course = Course::active()->where('slug', $course_slug)->select('id', 'slug', 'title')->first();
-        $batch = CourseBatches::active()->where('id', $batch_id)->first();
-
-        $subtotal = $batch->course_price ?? 0;
-        $discount = $batch->course_discount ?? 0;
-        $total    = round($batch->after_discount_price ?? 0);
+        $course   = Course::active()->where('slug', $course_slug)->select('id', 'slug', 'title', 'regular_price', 'sales_price')->first();
+        $orig     = $course->regular_price ?? 0;
+        $disc     = $course->sales_price ?? 0;
+        $subtotal = $orig;
+        $discount = ($orig > 0 && $disc > 0 && $disc < $orig) ? ($orig - $disc) : 0;
+        $total    = round($disc > 0 && $disc < $orig ? $disc : $orig);
 
         $validate = SSLCommerz::validate_payment($request);
 
@@ -67,7 +64,7 @@ class PaymentController extends Controller
                 // Insert into order_details
                 DB::table('order_details')->insert([
                     'order_id'    => $orderId,
-                    'product_id'  => $batch->id,
+                    'product_id'  => $course->id,
                     'qty'         => 1,
                     'unit_price'  => $total,
                     'total_price' => $total,
@@ -96,22 +93,22 @@ class PaymentController extends Controller
 
                 // Insert into enroll_informations
                 DB::table('enroll_informations')->insert([
-                    'course_id'     => $course->id,
-                    'student_id'    => auth()->id(),
-                    'batch_id'      => $batch->id,
-                    'trx_id'        => $trx_id,
-                    'payment_type'  => 'online',
-                    'payment_by'    => auth()->id(),
+                    'course_id'      => $course->id,
+                    'student_id'     => auth()->id(),
+                    'batch_id'       => null,
+                    'trx_id'         => $trx_id,
+                    'payment_type'   => 'online',
+                    'payment_by'     => auth()->id(),
                     'payment_status' => 'paid',
-                    'total_amount'  => $total,
-                    'paid_amount'   => $request->amount,
-                    'slug'          => Str::slug($course->title . '-' . time() . '-' . Str::random(6))
+                    'total_amount'   => $total,
+                    'paid_amount'    => $request->amount,
+                    'slug'           => Str::slug($course->title . '-' . time() . '-' . Str::random(6))
                 ]);
 
                 // Insert into course_batch_students
                 DB::table('course_batch_students')->insert([
                     'course_id'   => $course->id,
-                    'batch_id'    => $batch->id,
+                    'batch_id'    => null,
                     'student_id'  => auth()->id(),
                     'is_complete' => 'incomplete',
                     'slug'        => Str::slug($course->title . '-' . time() . '-' . Str::random(6))

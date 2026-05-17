@@ -77,14 +77,14 @@
     "src": "resources/js/backend/Views/Admin/app.js"
   },
   "resources/js/backend/Views/SuperAdmin/app.css": {
-    "file": "assets/app-021bbca3.css",
+    "file": "assets/app-ed15723e.css",
     "src": "resources/js/backend/Views/SuperAdmin/app.css"
   },
   "resources/js/backend/Views/SuperAdmin/app.js": {
     "css": [
-      "assets/app-021bbca3.css"
+      "assets/app-ed15723e.css"
     ],
-    "file": "assets/app-f8130a71.js",
+    "file": "assets/app-5c218fe8.js",
     "imports": [
       "_routes-3778abcd.js",
       "_pinia-d42e99ee.js"

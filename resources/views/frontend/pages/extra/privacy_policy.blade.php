@@ -1,33 +1,19 @@
 @php
-    $meta = [
-        // "meta" => [],
-        'seo' => [
-            'title' => 'Privacy Policy',
-            'image' => asset('seo.jpg'),
-        ],
-    ];
+    $meta = ['seo' => ['title' => 'Privacy Policy — TechPark English', 'image' => asset('seo.jpg')]];
 @endphp
 @extends('frontend.layouts.layout', $meta)
+
+@push('styles')
+@include('frontend.pages.extra._policy_styles')
+@endpush
+
 @section('contents')
-    <style>
-        .divider:after,
-        .divider:before {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #eee;
-        }
-    </style>
-    <section class="py-5 my-5">
-        <div class="container h-custom">
-            <div class="content">
-                <h2 class="text-center">Privacy Policy</h2>
-
-                <div class="mt-4">
-                    {!! $website_about->description !!}
-                </div>
-            </div>
-        </div>
-
-    </section>
+@include('frontend.pages.extra._policy_layout', [
+    'icon'       => 'fa-shield-halved',
+    'badge'      => 'Privacy & Data',
+    'title'      => 'Privacy Policy',
+    'subtitle'   => 'আপনার তথ্য আমাদের কাছে সুরক্ষিত। আমরা কীভাবে আপনার ডেটা ব্যবহার করি তা এখানে স্বচ্ছভাবে জানানো হয়েছে।',
+    'icon_color' => '#22c55e',
+    'content'    => $website_about->description ?? '',
+])
 @endsection

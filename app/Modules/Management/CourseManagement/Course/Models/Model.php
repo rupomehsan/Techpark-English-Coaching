@@ -128,4 +128,9 @@ class Model extends EloquentModel
     {
         return $this->hasMany(\App\Modules\Management\CourseManagement\CourseEssentialRequirement\Models\Model::class, 'course_id');
     }
+
+    public function quizzes()
+    {
+        return $this->hasMany(\App\Modules\Management\CourseManagement\CourseModuleClassQuiz\Models\Model::class, 'course_id', 'id');
+    }
 }

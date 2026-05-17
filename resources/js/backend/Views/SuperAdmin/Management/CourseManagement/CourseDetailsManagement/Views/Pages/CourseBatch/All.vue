@@ -24,8 +24,6 @@
                                 <th>Name</th>
                                 <th>Admission Start Date</th>
                                 <th>Admission End Date</th>
-                                <th>Price</th>
-                                <th>Sale Price</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -49,14 +47,6 @@
                                         {{ formatDateTime(batch.admission_end_date) }}
                                     </div>
                                     <span v-else class="text-muted">-</span>
-                                </td>
-                                <td>
-                                    <div class="price-info">
-                                        <div class="original-price">{{ formatCurrency(batch.course_price) }}</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <strong class="text-success">{{ formatCurrency(batch.after_discount_price) }}</strong>
                                 </td>
                                 <td>
                                     <span v-if="batch.status === 'active'" class="badge badge-success">Active</span>
@@ -84,7 +74,7 @@
                         </tbody>
                         <tbody v-else>
                             <tr>
-                                <td colspan="8" class="text-center">
+                                <td colspan="6" class="text-center">
                                     <div class="no-data-container">
                                         <div class="no-data-icon">
                                             <i class="fas fa-calendar-alt fa-3x"></i>

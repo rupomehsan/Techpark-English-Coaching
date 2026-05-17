@@ -29,7 +29,7 @@
 .crs-img-wrap { position: relative; overflow: hidden; }
 .crs-img-wrap img { width: 100%; height: 210px; object-fit: cover; display: block; transition: transform 0.45s ease; }
 .crs-card:hover .crs-img-wrap img { transform: scale(1.06); }
-.crs-img-overlay { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.crs-img-overlay { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; gap: 6px; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; width: calc(100% - 24px); }
 .crs-badge { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 50px; }
 .crs-badge-blue { background: #002147; color: #fff; }
 .crs-badge-gold { background: #fab005; color: #fff; }
@@ -52,6 +52,9 @@
 .btn-crs i { font-size: 0.7rem; }
 .btn-crs-enroll { background: linear-gradient(135deg, #fab005, #e09600) !important; }
 .btn-crs-enroll:hover { background: linear-gradient(135deg, #e09600, #c87800) !important; box-shadow: 0 6px 18px rgba(250,176,5,0.4) !important; }
+
+/* ===== Discount Ribbon ===== */
+.rc-disc-ribbon { position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #ff3d00, #d50000); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 5px 12px; border-radius: 50px; box-shadow: 0 3px 12px rgba(213,0,0,0.4); z-index: 2; }
 
 /* ===== Empty State ===== */
 .empty-state { text-align: center; padding: 80px 20px; }
@@ -128,37 +131,39 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="crs-card">
                             <div class="crs-img-wrap">
-                                @php $crs_fallback = 'https://dummyimage.com/600x340/002147/fab005&text='.urlencode($course->title ?? 'Course'); @endphp
+                                @php
+                                    $crs_fallback = 'https://dummyimage.com/600x340/002147/fab005&text='.urlencode($course->title ?? 'Course');
+                                    $crsDiscount = 0;
+                                    $crsOriginal = $course->regular_price ?? 0;
+                                    $crsPrice = $course->sales_price ?? $crsOriginal;
+                                    if ($crsOriginal > 0 && $crsPrice < $crsOriginal) {
+                                        $crsDiscount = round((($crsOriginal - $crsPrice) / $crsOriginal) * 100);
+                                    }
+                                @endphp
                                 <img src="{{ $course->image ? asset($course->image) : $crs_fallback }}"
                                      alt="{{ $course->title }}" loading="lazy"
                                      onerror="this.onerror=null;this.src='{{ $crs_fallback }}'">
                                 <div class="crs-img-overlay">
                                     <span class="crs-badge crs-badge-blue">TechPark English</span>
-                                    @if($courseBatch && $courseBatch->show_percentage_on_cards === 'yes')
-                                        <span class="crs-badge crs-badge-gold">{{ $courseBatch->booked_percent ?? 0 }}% Booked</span>
-                                    @endif
                                 </div>
+                                @if($crsDiscount > 0)
+                                    <span class="rc-disc-ribbon">{{ $crsDiscount }}% OFF</span>
+                                @endif
                             </div>
                             <div class="crs-body">
                                 <h3 class="crs-title">{{ $course->title }}</h3>
                                 <ul class="crs-meta">
-                                    @if($courseBatch?->class_days)
-                                        <li><i class="fa-solid fa-calendar-days"></i> {{ $courseBatch->class_days }}</li>
-                                    @endif
-                                    @if($courseBatch?->class_start_time && $courseBatch?->class_end_time)
-                                        <li><i class="fa-regular fa-clock"></i> {{ \Carbon\Carbon::parse($courseBatch->class_start_time)->format('g:i A') }} – {{ \Carbon\Carbon::parse($courseBatch->class_end_time)->format('g:i A') }}</li>
-                                    @endif
-                                    @if($courseBatch?->batch_student_limit)
-                                        @php $remaining = ($courseBatch->batch_student_limit - ($courseBatch->seat_booked ?? 0)); @endphp
-                                        <li><i class="fa-solid fa-users"></i> আসন: {{ $remaining > 0 ? $remaining.' টি বাকি' : 'সীমিত আসন' }}</li>
-                                    @endif
-                                    <li><i class="fa-solid fa-certificate"></i> কোর্স শেষে সার্টিফিকেট</li>
+                                    <li><i class="fa-solid fa-layer-group"></i> <strong>মোট মডিউল:</strong> {{ $course->modules_count ?? 0 }}</li>
+                                    <li><i class="fa-solid fa-book"></i> <strong>মোট ক্লাস:</strong> {{ $course->classes_count ?? 0 }}</li>
+                                    <li><i class="fa-solid fa-video"></i> <strong>মোট ভিডিও:</strong> {{ $course->classes_count ?? 0 }}</li>
+                                    <li><i class="fa-solid fa-brain"></i> <strong>মোট কুইজ:</strong> {{ $course->quizzes_count ?? 0 }}</li>
+                                    <li><i class="fa-solid fa-flag"></i> <strong>মোট মাইলস্টোন:</strong> {{ $course->milestones_count ?? 0 }}</li>
                                 </ul>
                                 <div class="crs-footer">
                                     <div class="crs-price">
-                                        <span class="current">৳{{ number_format($courseBatch->after_discount_price ?? $courseBatch->course_price ?? 0, 0, '.', ',') }}</span>
-                                        @if(($courseBatch->course_price ?? 0) > ($courseBatch->after_discount_price ?? 0))
-                                            <span class="old">৳{{ number_format($courseBatch->course_price, 0, '.', ',') }}</span>
+                                        <span class="current">৳{{ number_format($crsPrice, 0, '.', ',') }}</span>
+                                        @if($crsDiscount > 0)
+                                            <span class="old">৳{{ number_format($crsOriginal, 0, '.', ',') }}</span>
                                         @endif
                                     </div>
                                     <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">

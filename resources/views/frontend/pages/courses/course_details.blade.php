@@ -104,7 +104,7 @@
 }
 .cd-card-header {
     display:flex; align-items:center; gap:12px;
-    padding:20px 26px 18px; border-bottom:1px solid var(--border);
+    padding:14px 20px 12px; border-bottom:1px solid var(--border);
 }
 .cd-card-icon {
     width:38px; height:38px; border-radius:10px; flex-shrink:0;
@@ -198,7 +198,7 @@
 .class_module_details { display:flex; flex-direction:column; gap:14px; }
 .class_module_features { list-style:none; padding:0; margin:0; }
 
-.milestone-item { border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,33,71,0.09); border:1px solid #dce8f5; background:#fff; }
+.milestone-item { border-radius:16px; overflow:hidden; box-shadow:0 4px 20px rgba(0,33,71,0.09); background:#fff; }
 .milestone-header {
     display:flex; align-items:center; justify-content:space-between;
     padding:16px 20px; cursor:pointer; user-select:none;
@@ -474,16 +474,11 @@ ul.timer li .timer-label { color:rgba(255,255,255,0.45) !important; font-size:0.
                 $heroData = $heroController->course_batch_details($data->id);
                 $heroBatch = $heroData['batch'] ?? null;
             @endphp
-            @if($heroBatch?->class_days)
-                <span class="cd-hero-chip"><i class="fa-solid fa-calendar-days"></i> {{ $heroBatch->class_days }}</span>
-            @endif
-            @if($heroBatch?->class_start_time && $heroBatch?->class_end_time)
-                <span class="cd-hero-chip"><i class="fa-regular fa-clock"></i> {{ \Carbon\Carbon::parse($heroBatch->class_start_time)->format('g:i A') }} – {{ \Carbon\Carbon::parse($heroBatch->class_end_time)->format('g:i A') }}</span>
-            @endif
-            @if($heroBatch?->batch_student_limit)
-                <span class="cd-hero-chip"><i class="fa-solid fa-users"></i> সীমিত আসন ({{ $heroBatch->batch_student_limit }})</span>
-            @endif
-            <span class="cd-hero-chip"><i class="fa-solid fa-certificate"></i> সার্টিফিকেট প্রদান</span>
+            <span class="cd-hero-chip"><i class="fa-solid fa-layer-group"></i> মোট মডিউল: {{ $data->modules_count ?? 0 }}</span>
+            <span class="cd-hero-chip"><i class="fa-solid fa-book"></i> মোট ক্লাস: {{ $data->classes_count ?? 0 }}</span>
+            <span class="cd-hero-chip"><i class="fa-solid fa-video"></i> মোট ভিডিও: {{ $data->classes_count ?? 0 }}</span>
+            <span class="cd-hero-chip"><i class="fa-solid fa-brain"></i> মোট কুইজ: {{ $data->quizzes_count ?? 0 }}</span>
+            <span class="cd-hero-chip"><i class="fa-solid fa-flag"></i> মোট মাইলস্টোন: {{ $data->milestones_count ?? 0 }}</span>
         </div>
     </div>
 </section>
@@ -529,7 +524,7 @@ ul.timer li .timer-label { color:rgba(255,255,255,0.45) !important; font-size:0.
                         <div class="cd-card-icon"><i class="fa-solid fa-list-check"></i></div>
                         <span class="cd-card-title">কোর্স কারিকুলাম</span>
                     </div>
-                    <div class="cd-card-body" style="padding:20px;">
+                    <div class="cd-card-body" style="padding:10px 16px;">
                         @include('frontend.pages.courses.includes.course_module')
                     </div>
                 </div>

@@ -73,6 +73,20 @@ export default [
     },
 
     {
+        name: "start_date",
+        label: "Start Date",
+        type: "date",
+        value: "",
+    },
+
+    {
+        name: "whatsapp_group_link",
+        label: "WhatsApp Group Link",
+        type: "text",
+        value: "",
+    },
+
+    {
         name: "description",
         label: "Enter your description",
         type: "textarea",

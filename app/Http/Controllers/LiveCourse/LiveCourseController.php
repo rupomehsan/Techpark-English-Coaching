@@ -81,9 +81,14 @@ class LiveCourseController extends Controller
     public function enroll_submit(Request $request, $slug)
     {
         $isLoggedIn = auth()->check();
+        $course     = LiveCourse::active()->where('slug', $slug)->firstOrFail();
+
+        $hasBatches = LiveCourseBatch::active()
+            ->where('live_course_id', $course->id)
+            ->exists();
 
         $rules = [
-            'batch_id'      => 'required|integer',
+            'batch_id'      => $hasBatches ? 'required|integer' : 'nullable|integer',
             'payment_type'  => 'required|in:online,offline',
             'payment_photo' => 'nullable|image|max:2048',
         ];
@@ -97,11 +102,13 @@ class LiveCourseController extends Controller
 
         $request->validate($rules);
 
-        $course = LiveCourse::active()->where('slug', $slug)->firstOrFail();
-        $batch  = LiveCourseBatch::active()
-                    ->where('id', $request->batch_id)
-                    ->where('live_course_id', $course->id)
-                    ->firstOrFail();
+        $batch = null;
+        if ($request->batch_id) {
+            $batch = LiveCourseBatch::active()
+                ->where('id', $request->batch_id)
+                ->where('live_course_id', $course->id)
+                ->firstOrFail();
+        }
 
         // Resolve student info
         if ($isLoggedIn) {
@@ -128,7 +135,7 @@ class LiveCourseController extends Controller
 
         $enrollData = [
             'live_course_id' => $course->id,
-            'batch_id'       => $batch->id,
+            'batch_id'       => $batch?->id,
             'student_info'   => [
                 'name'    => $stuName,
                 'phone'   => $stuPhone,
@@ -183,9 +190,13 @@ class LiveCourseController extends Controller
             $wa_number = '';
         }
 
+        $batch_label = $batch
+            ? 'ব্যাচঃ ' . $batch->batch_number . ($batch->shift_name ? ' (' . $batch->shift_name . ')' : '')
+            : '';
+
         $msg = 'ভর্তির আবেদন:' . "\n"
              . 'কোর্স: ' . $course->title . "\n"
-             . 'ব্যাচ: ' . $batch->batch_number . ($batch->shift_name ? ' (' . $batch->shift_name . ')' : '') . "\n"
+             . ($batch_label ? $batch_label . "\n" : '')
              . 'নাম: ' . $stuName . "\n"
              . 'মোবাইল: ' . $stuPhone . "\n"
              . 'ঠিকানা: ' . $stuAddr . "\n"
@@ -198,7 +209,7 @@ class LiveCourseController extends Controller
         session([
             'lce_success' => [
                 'course_title' => $course->title,
-                'batch_label'  => 'ব্যাচঃ ' . $batch->batch_number . ($batch->shift_name ? ' (' . $batch->shift_name . ')' : ''),
+                'batch_label'  => $batch_label,
                 'name'         => $stuName,
                 'wa_url'       => 'https://api.whatsapp.com/send/?phone=' . $wa_number . '&text=' . urlencode($msg) . '&type=phone_number&app_absent=0',
                 'paid_online'  => false,

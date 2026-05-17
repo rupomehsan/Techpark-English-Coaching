@@ -988,14 +988,14 @@
             </div>
             <div class="row g-4 justify-content-center">
                 @if(isset($courses) && count($courses) > 0)
-                    @foreach($courses->take(3) as $course)
+                    @foreach($courses->take(6) as $course)
                     @php
                         $cc = new App\Http\Controllers\Course\CourseController();
                         $cdata = $cc->course_batch_details($course->id);
                         $homeBatch  = $cdata['batch'] ?? null;
-                        $rcPrice    = $homeBatch->after_discount_price ?? $homeBatch->course_price ?? 0;
-                        $rcOriginal = $homeBatch->course_price ?? 0;
-                        $rcDiscount = ($rcOriginal > 0 && $rcOriginal > $rcPrice) ? round((($rcOriginal - $rcPrice) / $rcOriginal) * 100) : 0;
+                        $rcOriginal = $course->regular_price ?? 0;
+                        $rcPrice    = $course->sales_price ?? $rcOriginal;
+                        $rcDiscount = ($rcOriginal > 0 && $rcPrice < $rcOriginal) ? round((($rcOriginal - $rcPrice) / $rcOriginal) * 100) : 0;
                         $rcFallback = 'https://dummyimage.com/600x340/002147/fff&text='.urlencode($course->title ?? 'Course');
                     @endphp
                     <div class="col-lg-4 col-md-6">
@@ -1012,15 +1012,11 @@
                             <div class="rc-body">
                                 <h3 class="rc-title">{{ $course->title }}</h3>
                                 <ul class="rc-meta">
-                                    @if($homeBatch?->class_days)
-                                        <li><i class="fa-solid fa-calendar-days"></i><span><strong>ক্লাস:</strong> {{ $homeBatch->class_days }}</span></li>
-                                    @endif
-                                    @if($homeBatch?->class_start_time && $homeBatch?->class_end_time)
-                                        <li><i class="fa-regular fa-clock"></i><span><strong>সময়:</strong> {{ \Carbon\Carbon::parse($homeBatch->class_start_time)->format('g:i A') }} – {{ \Carbon\Carbon::parse($homeBatch->class_end_time)->format('g:i A') }}</span></li>
-                                    @endif
-                                    @if($homeBatch?->first_class_date)
-                                        <li><i class="fa-solid fa-flag-checkered"></i><span><strong>প্রথম ক্লাস:</strong> {{ \Carbon\Carbon::parse($homeBatch->first_class_date)->format('d M Y') }}</span></li>
-                                    @endif
+                                    <li><i class="fa-solid fa-layer-group"></i><span><strong>মোট মডিউল:</strong> {{ $course->modules_count ?? 0 }}</span></li>
+                                    <li><i class="fa-solid fa-book"></i><span><strong>মোট ক্লাস:</strong> {{ $course->classes_count ?? 0 }}</span></li>
+                                    <li><i class="fa-solid fa-video"></i><span><strong>মোট ভিডিও:</strong> {{ $course->classes_count ?? 0 }}</span></li>
+                                    <li><i class="fa-solid fa-brain"></i><span><strong>মোট কুইজ:</strong> {{ $course->quizzes_count ?? 0 }}</span></li>
+                                    <li><i class="fa-solid fa-flag"></i><span><strong>মোট মাইলস্টোন:</strong> {{ $course->milestones_count ?? 0 }}</span></li>
                                 </ul>
                                 <div class="rc-footer">
                                     <div class="rc-price-block">
