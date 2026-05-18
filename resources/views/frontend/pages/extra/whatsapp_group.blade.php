@@ -92,15 +92,18 @@
         <div class="wa-icon-wrap">
             <i class="fa-brands fa-whatsapp"></i>
         </div>
-        <h1 class="wa-title">আমাদের WhatsApp গ্রুপে যোগ দিন</h1>
-        <p class="wa-subtitle">
-            @if($course_name)
-                <strong>{{ $course_name }}</strong>-এর অফিশিয়াল WhatsApp গ্রুপে যোগ দিন।
-            @else
-                TechPark English-এর অফিশিয়াল WhatsApp গ্রুপে যোগ দিন।
-            @endif
-            কোর্স আপডেট, নোটিশ এবং শিক্ষার্থীদের সাথে সংযুক্ত থাকুন।
-        </p>
+        @if($course_name)
+            <h1 class="wa-title"> <strong>{{ $course_name }}</strong>- ব্যাচের গ্রুপে জয়েন করুন <br></h1>
+            <p class="wa-subtitle">
+            {{ $course_name ?? "TechPark English" }} ব্যাচের ফ্রি ক্লাসের লিংক কেবল এই গ্রুপেই শেয়ার করা হবে।ফ্রি ক্লাসের লিংক পেতে ও কোর্স সম্পর্কে বিস্তারিত জানতে গ্রুপে জয়েন করুন।
+            </p>
+        @else
+            <h1 class="wa-title"> <strong>Spoken English With Phonetics (SSC Special) ব্যাচের গ্রুপে যুক্ত হোন <br></h1>
+            <p class="wa-subtitle">
+              Spoken English With Phonetics (SSC Special) ব্যাচের ফ্রি ক্লাসের লিংক কেবল এই গ্রুপেই শেয়ার করা হবে।ফ্রি ক্লাসের লিংক পেতে ও কোর্স সম্পর্কে বিস্তারিত জানতে গ্রুপে যুক্ত হোন।
+            </p>
+        @endif
+
         <a href="{{ $wa_link }}" target="_blank" rel="noopener noreferrer" class="wa-btn">
             <i class="fa-brands fa-whatsapp"></i>
             Join WhatsApp Group
